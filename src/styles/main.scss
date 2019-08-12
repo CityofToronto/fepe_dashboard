@@ -1,65 +1,79 @@
-//A sample main scss file. Use this as a starting point for your css.
-//Learn more about SASS here: http://sass-lang.com/guide
-@import "partial_styles"; //A sample usage of a SASS partials!
+.dashboard__container{
+  background: #f4f4f4;
+}
 
-$light-gray: #eee; //A sample usage of SASS variables!
+.dashboard__header{}
+.dashboard__nav{}
 
-#fepe_dashboard_container {
-  ul.example-section-menu {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    li {
-      padding: 0;
-      margin: 5px;
-      a {
-        display: block;
-        padding: 5px;
-        &.selected-section {
-          background-color: $light-gray;
-        }
-      }
+
+.dashboard__main{}
+
+.dashboard__grid--tile{
+  display: grid;
+  grid-template-columns: repeat(auto-fill ,minmax(200px, 1fr));
+  grid-auto-rows: minmax(150px, auto);
+  grid-auto-flow: dense;
+  grid-gap: 1em;
+}
+
+.dashboard__main--layout1{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(150px, 1fr 100vh);
+  grid-gap: 1em;
+
+  --chart-height: 80vh;
+
+  .dashboard__content--navigation{
+    background: #f4f4f4;
+    padding: 1em;
+  }
+
+  .dashboard__content{
+    grid-column: 1/-1;
+    height:var(--chart-height);
+
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(150px, auto);
+    grid-gap: 1em;
+
+    @media (min-width: 320px) and (max-width: 480px) {
+      height: auto;
+      grid-template-columns: repeat(1, 1fr);
     }
   }
-  .example-section {
-    display: none;
-    button {
-      margin-right: 5px;
-    }
-    &#fepe_dashboard_map > div {
-      height: 400px;
-      .example-map-info-box {
-        background: white;
-        margin: 10px;
-        padding: 10px;
-        div {
-          clear: both;
-        }
-      }
-    }
-  }
-}
-.custom-modal {
-  .modal-header {
-    background-color: $light-gray;
-  }
 }
 
-//Core uses https://www.npmjs.com/package/gulp-preprocess to allow for preprocessing.
-//You could include some styles based on build environment:
-/* @if ENV=='local' || ENV=='dev'*/
-.test-style {
-  color: red;
-  font-size: 36px;
+.dashboard__chart{
+  padding: 1em;
+  grid-column: 1/span 8;
+  width: 100%;
+  height:85%;
 }
-/* @endif */
+.dashboard__notes{
 
-//you could also generate selector names with preprocessar vars:
-.env-class-/* @echo ENV*/
-{
+  grid-column: span 4;
+  overflow: auto;
 }
 
-//IMPORTANT: you should generate all resource references with the SRC_PATH var:
-.test-background-image{
-  background-image: url(/* @echo SRC_PATH*//img/sample.jpg);
-}
+
+
+.card{ height: 100%; }
+
+
+.dashboard__footer{}
+
+/*
+.card--full{ grid-column: 1 / -1; }
+
+.card-col-2{ grid-column-end: span 2}
+.card-row-2{ grid-row-end: span 2}
+
+.card-col-3{ grid-column-end: span 3}
+.card-row-3{ grid-row-end: span 3}
+
+.card-col-5{ grid-column-end: span 5}
+.card-row-5{ grid-row-end: span 5}
+*/
+/*https://stackoverflow.com/questions/29773850/set-leaflet-map-to-height-100-of-container/29800139*/

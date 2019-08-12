@@ -77,3 +77,9 @@ core.embeddedApp.createTasks(gulp, options);
 //                             //On WP, this will be something different
 //   return gulp.src(['src/data/**/*']).pipe(gulp.dest('dist' + myDataPath));
 // });
+
+gulp.task('_data', () => {
+  let cotuiDEVPath = '/resources/cdn/cotui/cotui';
+  //gulp.src(['node_modules/cotui/dist/cotui/**/*']).pipe(gulp.dest('dist' + cotuiDEVPath));
+  gulp.src(['/usr/local/node_apps/cot-apps/COT_UI/dist/**/*']).pipe(gulp.dest('dist' + cotuiDEVPath));
+})

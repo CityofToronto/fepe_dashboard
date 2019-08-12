@@ -26,6 +26,16 @@ It should contain stylesheet references (and possibly other stuff) that this app
 <meta name="DC.language" content="en-CA">
 <meta name="DC.subject" content="fepe_dashboard">
 <meta charset="UTF-8">
+<script>
+window.COTUI= function(){
+  
+}
+</script>
+<!--@endif-->
+
+<!--@if ENV=='local'-->
+<script type="text/javascript" src="/resources/cdn/cotui/cotui/cotui.js"></script>
+<link rel="stylesheet" type="text/css" href="/resources/cdn/cotui/cotui/cotui.css">
 <!--@endif-->
 
 <!-- From here to the next endbuild tag, all the files will be concatenated into a single file called main.css: -->
@@ -38,6 +48,8 @@ It should contain stylesheet references (and possibly other stuff) that this app
 <link rel="stylesheet" type="text/css" href="<!-- @echo SRC_PATH -->/styles/main.css">
 
 <!-- endbuild -->
+
+
 
 <!-- From here to the next endbuild tag, all the files will be concatenated into a single print-only file called core_print.css: -->
 <!--@exec startBuildTagWithCacheBuster('styles/core_print.css', 'media="print"')-->
@@ -58,79 +70,194 @@ IMPORTANT:
 Remember to use unique element IDs and class names so that this app doesn't interfere with other parts of the cframe/website
 -->
 <!-- cot-app:body -->
-<div id="fepe_dashboard_container">
-  <div class="row">
-    <div class="col-xs-12 col-sm-3">
-      <ul class="example-section-menu">
-        <li><a href="#fepe_dashboard_form">Forms</a></li>
-        <li><a href="#fepe_dashboard_map">Maps</a></li>
-        <li><a href="#fepe_dashboard_calendar">Calendars</a></li>
-        <!-- @if !IS_EMBEDDED -->
-        <li><a href="#fepe_dashboard_login">Intranet Login</a></li>
-        <!-- @endif -->
-        <li><a href="#fepe_dashboard_modals">Modal Dialogs</a></li>
-        <li><a href="#fepe_dashboard_tac">Terms and Conditions</a></li>
-        <li><a href="#fepe_dashboard_preprocessor">Preprocessor Usage</a></li>
-        <li><a href="#fepe_dashboard_dropzone">CoT Dropzone</a></li>
-      </ul>
-    </div>
-    <div class="col-xs-12 col-sm-9">
-      <div id="fepe_dashboard_welcome" class="example-section">
-        <p>Hello World! This default code contains examples of things you can do with corejs.</p>
-        <p>Select any item on the left to see some sample stuff.</p>
-      </div>
-      <div id="fepe_dashboard_form" class="example-section">
-        <p>CoreJS has a full featured form builder with many different field types and AODA compliance.</p>
-        <p>An example form is shown here. You can combine Backbone-based model objects with forms as well (<button class="btn btn-sm btn-info">Connect a sample model</button>)</p>
-        <div></div>
-      </div>
-      <div id="fepe_dashboard_map" class="example-section">
-        <p>CoreJS apps often use google maps to show items from data feeds. The OMS library can help with crowded pin placement, like in this example:</p>
-        <div id="mapWrapper"></div>
-      </div>
-      <div id="fepe_dashboard_calendar" class="example-section">
-        <p>You can use the <a target="_blank" href="https://fullcalendar.io/">full calendar plugin</a> with corejs to render a nice calendar from a data feed:</p>
-        <div></div>
-      </div>
-      <!-- @if !IS_EMBEDDED -->
-      <div id="fepe_dashboard_login" class="example-section">
-        <p>CoreJS has login classes to help with Common Component authentication. You can use the standard UI (shown here) with the cot_login class or a custom UI with the CotSession class.</p>
-        <div></div>
-      </div>
-      <!-- @endif -->
-      <div id="fepe_dashboard_modals" class="example-section"></div>
-      <div id="fepe_dashboard_tac" class="example-section">
-        <p>You can use the showTerms method of CotApp or CotApp to show a standard terms and conditions UI with callback methods:</p>
-        <div></div>
-      </div>
-      <div id="fepe_dashboard_preprocessor" class="example-section">
-        <p>Core uses <a target="_blank" href="https://www.npmjs.com/package/gulp-preprocess">gulp-preprocess</a> to preprocess HTML, Javascript, and CSS files. Here are some ways to use it:</p>
-        <ul>
-          <li>Generate a url to a project resource, for example an image: <!-- @echo SRC_PATH -->/img/sample.jpg</li>
-          <li>Print out preprocessor values. Here are the ones included in every core project (you can add more in your gulpfile):
-            <ul>
-              <li>ENV is the current build/run environment: <!-- @echo ENV --> </li>
-              <li>SRC_PATH is the deployment path to the src folder: <!-- @echo SRC_PATH --> </li>
-              <li>BUILD_ID is a unique id/timestamp generated every time you build the app: <!-- @echo BUILD_ID --></li>
-              <li>QA_RELEASE is the current value of the qaRelease property of your package.json file: <!-- @echo QA_RELEASE --></li>
-              <li>VERSION is the current value of the version property of your package.json file: <!-- @echo VERSION --></li>
-              <li>IS_EMBEDDED indicates whether or not this is an embedded app: <!-- @echo IS_EMBEDDED --></li>
-            </ul>
-          </li>
-          <li>Include code based on the current build environment:
-            <!-- @if ENV='local' || ENV='dev' -->
-            <span>This sentence, for example, is only visible when running on your local machine or on a development build.</span>
-            <!-- @endif -->
-          </li>
-          <li>You can do more advanced things as well. See <a target="_blank" href="https://github.com/jsoverson/preprocess#directive-syntax">preprocess</a> for more about preprocessor syntax.</li>
-        </ul>
-      </div>
-      <div id="fepe_dashboard_dropzone" class="example-section">
-        <h2>CoT Dropzone</h2>
-      </div>
+<div id="fepe_dashboard_container" class="dashboard__container">
+  <div class="dashboard__header">
+      <h1>Housing Committee Dashboard</h1>
+      <p>Previous Year Comparisons (2019 / 2018)</p>
+  </div>
+  <div class="dashboard__nav">
+      Select Category:
+      <button><i style="height: 10px; width:10px; display:inline-block; background: #fff;"></i> Overview</button>
+      <button><i style="height: 10px; width:10px; display:inline-block; background: #BF360C;"></i> Affordability</button>
+      <button><i style="height: 10px; width:10px; display:inline-block; background: #bfd3e6;"></i> Demographics</button>
+      <button><i style="height: 10px; width:10px; display:inline-block; background: #9ebcda;"></i> Employment</button>
+      <button><i style="height: 10px; width:10px; display:inline-block; background: #8c96c6;"></i> Funding-Supports</button>
+      <button><i style="height: 10px; width:10px; display:inline-block; background: #8c6bb1;"></i> Housing-Homeless</button>
+      <button><i style="height: 10px; width:10px; display:inline-block; background: #88419d;"></i> Outcomes</button>
+      <button><i style="height: 10px; width:10px; display:inline-block; background: #6e016b;"></i> Supply</button>
+  </div>
+  <div class="dashboard__main">
+        
+
+        <div class="dashboard__grid--tile">
+            <div class="card card-height"><cotui-chart id="card-1" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of active affordable rental developments" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-2" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of affordable rental units in  pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-3" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="# of affordable rental units under development" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-4" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="New Affordable Ownership Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Average and Asking Prices and Rents (annual) " x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-1" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of affordable rental units under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-2" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="New Affordable Ownership Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-3" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="New Affordable Rental Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-4" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="New Affordable Rental Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+    
+    
+            <div class="card card-height"><cotui-chart id="card-2" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816"  chart-title="Misc Census variables (e.g., HH Spending 30% on Core Housing, Strucure Type etc)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            
+    
+            <div class="card card-height"><cotui-chart id="card-2" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16"  chart-title="# of jobs to be created from active rental projects" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+    
+    
+            <div class="card card-height"><cotui-chart id="card-3" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="Total City funding for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-4" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="Total estimated City incentives for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Total Provincial/Federal funding for active rental projects (in $M) " x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+    
+    
+            <div class="card card-height"><cotui-chart id="card-4" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# New Refugees Entering Shelters" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# Refugee Households on Family Palcement List" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Refugee Claiments Average Nightly Stays" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+    
+    
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="# of people to be housed by 2024 from active rentals" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="# Refugee Discharges to permanent Housing" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+    
+    
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="# of active developments under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of projects in pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="Vacancy rates (annual)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of condo rental units/secondary market rental units vs primary rental units in the rental universe " x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="# of total proposed residential units by Project Status of Built, Active and Under Review" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="# of second unit and laneway housing building permits (annual) (Toronto Building)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="24hr Respite Sites - Occupancy and Capacity" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        </div>
+
+        <h2><a href="#overview">Overview</a>: <a href="#"><small>Category</small> Affordability</a></h2>
+        <div class="dashboard__main--layout1" style="background-color: #ffffff;">
+                <div class="dashboard__content--navigation" style="grid-column: 1/-1;">
+                    <select>
+                        <option># of active affordable rental developments</option>
+                        <option># of affordable rental units in  pre-development</option>
+                        <option># of affordable rental units under development</option>
+                        <option>New Affordable Ownership Homes Completed</option>
+                        <option>Average and Asking Prices and Rents (annual)</option>
+                        <option># of affordable rental units under construction</option>
+                        <option>New Affordable Ownership Homes Approved</option>
+                        <option>New Affordable Rental Homes Approved</option>
+                        <option>New Affordable Rental Homes Completed</option>                     
+                    </select>
+                    <button>Previous</button><button>Next</button>
+                </div>
+                <div class="dashboard__content">
+                    <div class="dashboard__chart">
+                        <!--
+                                                    <button><i style="height: 10px; width:10px; display:inline-block; background: #E64A19;"></i> 2019</button><button><i style="height: 10px; width:10px; display:inline-block; background: #FF5722;"></i> 2018</button><button><i style="height: 10px; width:10px; display:inline-block; background: #FF8A65;"></i> 2017</button><button><i style="height: 10px; width:10px; display:inline-block; background: #FFCCBC;"></i> 2016</button><button><i style="height: 10px; width:10px; display:inline-block; background: #FBE9E7;"></i> 2015</button>
+
+                        -->
+                        <div style="height: 120px;">
+                        <div class="card" style="width: 30%; display: inline-block;"><cotui-chart id="card-4" chart-type="card" chart-colour="#374047" chart-title="2019 Actual" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+                        <div class="card" style="width: 30%; display: inline-block;"><cotui-chart id="card-5" chart-type="card" chart-colour="#374047" chart-title="2019 Target" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+                        <div class="card" style="width: 30%; display: inline-block;"><cotui-chart id="card-5" chart-type="card" chart-colour="#88161f" chart-title="% Acheived" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+                        </div>
+
+
+                        <div class="card"><cotui-chart id="pothole-bar1" chart-type="bar"  chart-stacked chart-title="Active Affordable Rental Developments compared to previous years" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+                    </div>
+                    <div class="dashboard__notes">
+                        <h3>Notes</h3>
+                        <p>The Affordable and Seniors' Housing&nbsp;Task Force identified several strategies and actions to address the need for more affordable rental housing for low- and moderate-income households, and the need for more housing choices for seniors.</p>
+                        <p>The <a title="Open file in new window: Final-Accessible-Task-Force-Report.pdf" href="/en/doing-business/resources/Documents/HousingDevelopment/At-Home-in-Durham/Final-Accessible-Task-Force-Report.pdf" target="_blank">Championing Affordable Rental and Seniors' Housing Across Durham Region</a> report provides a six-point plan of action:&nbsp;</p>
+                        <ul type="disc">
+                        <li><strong>Lead by example </strong>by ensuring that the Region is strategic, proactive and anticipatory, and is ready to champion affordable rental and seniors' housing.</li>
+                        <li><strong>Overcome the barriers</strong> that are preventing affordable rental and seniors' housing by reducing risks, increasing certainty and offsetting costs.</li>
+                        <li><strong>Partner and build support</strong> for affordable housing through improved education, communication, outreach and awareness, and by supporting partners who are in the business of creating and maintaining affordable rental and/or seniors' housing in Durham Region.</li>
+                        <li><strong>Showcase best practices</strong> and share information to build Durham Region's reputation as an affordable housing and seniors' housing exemplar, fit for imitation by others.</li>
+                        <li><strong>Advocate responsibly</strong> to senior levels of government for affordable and suitable housing that meets the needs of all.</li>
+                        <li><strong>Monitor progress and report on results </strong>to ensure that objectives are being met and that success is being realized through on-the-ground action.</li>
+                        </ul>
+                        <p>The six-point plan of action sets the stage for 34 recommendations that focus on a full spectrum of solutions, including policy, regulatory, educational, communications, outreach, partnership development, advocacy and reporting efforts.</p>
+                        <p>This report builds on the <a title="Open file in new window: Region-of-Durham-Strategic-Plan.pdf" href="/en/regional-government/resources/Documents/Region-of-Durham-Strategic-Plan.pdf" target="_blank">Durham Region Strategic Plan 2015-2019</a>, <a title="View our Official Plan page" href="/en/doing-business/official-plan.aspx">Regional Official Plan</a>&nbsp;and <a title="Open file in new window: AtHomeAnnualReportSummary_accessible.pdf" href="/en/doing-business/resources/Documents/HousingDevelopment/AtHomeAnnualReportSummary_accessible.pdf" target="_blank">At Home in Durham, the Durham Region Housing Plan 2014-2024</a>&nbsp;to support the creation and maintenance of affordable rental and seniors' housing.</p>
+                        <p class="emphasis-Yellow"><a title="Open new window to view https://www.durham.ca/Modules/News/index.aspx?newsId=68dc4c5d-b5d5-42ac-8c2a-5e677510add2" href="/Modules/News/index.aspx?newsId=68dc4c5d-b5d5-42ac-8c2a-5e677510add2">Affordable and Seniors' Housing Task Force six-month progress report (June 2018)</a></p>
+                    </div>
+                </div>
+                <div class="dashboard__content--navigation" style="grid-column: 1/-1;">
+                    <select>
+                        <option># of active affordable rental developments</option>
+                        <option># of affordable rental units in  pre-development</option>
+                        <option># of affordable rental units under development</option>
+                        <option>New Affordable Ownership Homes Completed</option>
+                        <option>Average and Asking Prices and Rents (annual)</option>
+                        <option># of affordable rental units under construction</option>
+                        <option>New Affordable Ownership Homes Approved</option>
+                        <option>New Affordable Rental Homes Approved</option>
+                        <option>New Affordable Rental Homes Completed</option>                     
+                    </select>
+                    <button>Previous</button><button>Next</button>
+                </div>
+            </div>
+
+
+
+    <div class="dashboard__grid--tile hide">
+        <div class="card card-height"><cotui-chart id="card-1" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#e08214" chart-title="# of active affordable rental developments" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-2" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#e08214" chart-title="# of affordable rental units in  pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-3" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#e08214" chart-title="# of affordable rental units under development" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-4" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#e08214" chart-title="New Affordable Ownership Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#e08214" chart-title="Average and Asking Prices and Rents (annual) " x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-1" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#e08214" chart-title="# of affordable rental units under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-2" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#e08214" chart-title="New Affordable Ownership Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-3" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#e08214" chart-title="New Affordable Rental Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-4" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#e08214" chart-title="New Affordable Rental Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+
+
+        <div class="card card-height"><cotui-chart id="card-2" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#bfd3e6"  chart-title="Misc Census variables (e.g., HH Spending 30% on Core Housing, Strucure Type etc)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        
+
+        <div class="card card-height"><cotui-chart id="card-2" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#9ebcda"  chart-title="# of jobs to be created from active rental projects" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+
+
+        <div class="card card-height"><cotui-chart id="card-3" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#8c96c6" chart-title="Total City funding for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-4" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#8c96c6" chart-title="Total estimated City incentives for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#8c96c6" chart-title="Total Provincial/Federal funding for active rental projects (in $M) " x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+
+
+        <div class="card card-height"><cotui-chart id="card-4" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#8c6bb1" chart-title="# New Refugees Entering Shelters" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#8c6bb1" chart-title="# Refugee Households on Family Palcement List" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#8c6bb1" chart-title="Refugee Claiments Average Nightly Stays" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+
+
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88419d" chart-title="# of people to be housed by 2024 from active rentals" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88419d" chart-title="# Refugee Discharges to permanent Housing" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+
+
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#6e016b" chart-title="# of active developments under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#6e016b" chart-title="# of projects in pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#6e016b" chart-title="Vacancy rates (annual)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#6e016b" chart-title="# of condo rental units/secondary market rental units vs primary rental units in the rental universe " x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#6e016b" chart-title="# of total proposed residential units by Project Status of Built, Active and Under Review" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#6e016b" chart-title="# of second unit and laneway housing building permits (annual) (Toronto Building)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#6e016b" chart-title="24hr Respite Sites - Occupancy and Capacity" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
     </div>
   </div>
 
+
+  
+  <!--
+  <div class="dashboard__main">
+        <h1>Main</h1>
+        <div class="card card-height"><cotui-chart id="card-1" chart-type="card" chart-colour="#08415C"  chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-2" chart-type="card" chart-colour="#CC2936"  chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-3" chart-type="card" chart-colour="#EBBAB9"  chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-4" chart-type="card" chart-colour="#388697"  chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="card-5" chart-type="card" chart-colour="#B5FFE1"  chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+
+        <div class="card card-height"><cotui-chart id="pothole-bar1" chart-type="bar"  chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" y-axisLabel="Total Fills"  hide-legend ></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="pothole-bar2" chart-type="line"  chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" y-axislabel-hide y-axisLabel="Total Fills" hide-legend ></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="pothole-bar3" chart-type="polarArea" chart-stacked="true" chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" y-axisLabel="Total Fills" chart-title-hide y-axislabel-hide x-axislabel-hide hide-legend ></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="pothole-bar4" chart-type="radar"  chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" chart-title-hide hide-legend x-axislabel-hide y-axislabel-hide y-axisLabel="Total Fills"></cotui-chart></div>
+        <div class="card card-height"><cotui-chart id="pothole-bar5" chart-type="doughnut" chart-title="Year To Date Potholes Filled" x-axisLabel="Fill Date" y-axisLabel="Total Fills"  hide-legend ></cotui-chart></div>
+
+  </div>
+  -->
+  <div class="dashboard__footer">Footer</div>
 </div>
 <!-- cot-app:body end-->
 
@@ -140,6 +267,7 @@ Everything inside the cot-app:footer tag will be loaded at the end of the page's
 It should contain script references that this application requires.
 -->
 <!-- cot-app:footer -->
+
 
 <!-- From here to the next endbuild tag, all the files will be concatenated into a single file called main.js: -->
 <!--@exec startBuildTagWithCacheBuster('scripts/main.js')-->
