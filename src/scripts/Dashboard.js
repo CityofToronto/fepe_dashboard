@@ -44,13 +44,14 @@ class Dashboard{
               xAxis:'Month',
               yAxis:'Total Bankruptcies'
             },
+            change: '-',
             data:{
                calculatedValue: 6007,
                labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
                datasets:[
-                    { label:'2017 YTD Actual', data:[1066,2233,3774,5129,6630,7993,9113,10325,11619,12945,14206,15339] },
-                    { label:'2018 YTD Actual', data:[992,2090,3458,4796,6218,7483,8705,9907,11073,12365,13577,14660] },
-                    { label:'2019 YTD Actual', data:[1004,2030,3264,4551,6007] }
+                    { label:'2017 YTD Actual', data:[1066,2233,3774,5129,6630,7993,9113,10325,11619,12945,14206,15339], sum:null },
+                    { label:'2018 YTD Actual', data:[992,2090,3458,4796,6218,7483,8705,9907,11073,12365,13577,14660], sum:null },
+                    { label:'2019 YTD Actual', data:[1004,2030,3264,4551,6007], sum:null }
                ]
             }
           }]

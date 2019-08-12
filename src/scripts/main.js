@@ -7,7 +7,7 @@ class PotholeData{
   }
 
 
-
+ sum(){};
 
   affordableRentalUnits(){}
 
@@ -48,19 +48,19 @@ class PotholeData{
         datasets:[{
           label:'2019',
           data:[18000,1900,200000,98000,62000,100],
-          backgroundColor: '#E64A19'
+          backgroundColor: '#a50026'
         },{
           label:'2018',
           data:[351,1935,19480,115,81688,241].reverse(),
-          backgroundColor: '#FF5722'
+          backgroundColor: '#d73027'
         },{
           label:'2017',
           data:[31,1365,1540,11665,1688,2431],
-          backgroundColor: '#FF8A65'
+          backgroundColor: '#f46d43'
         },{
           label:'2016',
           data:[311,1963,15948,131,18688,431].reverse(),
-          backgroundColor: '#FFCCBC'
+          backgroundColor: '#fdae61'
         }].filter(set=>{
          
           if(set.label == year){
@@ -77,6 +77,7 @@ class PotholeData{
     if(dimension == 'ytd')
     return {
       chartOptions:{ 
+        
         onClick:function(e,d,t){ onClick('mth',e,d,t);}
       },
       chartData:{
@@ -85,23 +86,23 @@ class PotholeData{
         datasets:[{
           label:'2019',
           data:[64460,19340,28144,54847,74737,15067,40961,16394],
-          backgroundColor: '#E64A19'
+          backgroundColor: '#141a6d'
         },{
           label:'2018',
           data:[99709,13594,71937,96909,95436,26412,33484,38825,22803,70869,113,85823],
-          backgroundColor: '#FF5722'
+          backgroundColor: '#808080'
         },{
           label:'2017',
           data:[99045,89027,45638,75805,11863,50575,87555,76614,56320,17203,34553,35621],
-          backgroundColor: '#FF8A65'
+          backgroundColor: '#ffa52d'
         },{
           label:'2016',
           data:[6117,94368,29616,23871,67665,9726,56983,68328,60851,83282,89432,1786],
-          backgroundColor: '#FFCCBC'
+          backgroundColor: '#85027d'
         },{
           label:'2015',
           data:[43098,9985,9322,84755,58456,10795,53779,77941,5454,69801,3318,76210],
-          backgroundColor: '#FBE9E7'
+          backgroundColor: '#ac292e'
         }]
       }
     }
@@ -190,14 +191,69 @@ $(function () {
   ]);
   //@endif
 
-  app.render(); //render the application
-  let $potholeBar;
+  document.querySelector('h1').innerText = "Housing Dashboard";
   let phdata;
+  new (Backbone.Router.extend({
+    routes: {
+      "": () => {
+        document.getElementById('master').classList.remove('hide')
+        document.getElementById('detail').classList.add('hide')
+        document.querySelector('.dashboard__nav').classList.remove('hide')
+      },
+      "detail": (s) => {
+        document.getElementById('master').classList.add('hide')
+        document.getElementById('detail').classList.remove('hide')
 
-  phdata = new PotholeData();
+        document.querySelector('.dashboard__nav').classList.add('hide')
+        phdata = new PotholeData();
+        document.getElementById(`pothole-bar1`).data = phdata.getData('ytd')
+      }
+    }
+  }))();
+  Backbone.history.start();
+
+
+
+
+
+
+  app.render(); //render the application
+  
+  l
+
+  
+  /*
   for(var i =1; i<6; i++ ){
     document.getElementById(`pothole-bar${i}`).data = phdata.getData('ytd');
   }
-
   document.getElementById(`pothole-bar6`).data = new ChartData();
+  */
+  
+  document.getElementById(`chartTable`).data = phdata.getData('ytd')
+ 
+
+
+
+  const $btns = document.querySelectorAll('.dropdown-menu button');
+  $btns.forEach($btn=>{
+    $btn.addEventListener('click',evt=>{
+      evt.preventDefault();
+      const cat = evt.target.getAttribute('data-category');
+      const $tiles = document.querySelectorAll(`.dashboard__grid--tile [data-category]`);
+      $tiles.forEach(tile=>{ tile.classList.remove('hide') })
+      
+      if(cat!='all'){
+        $tiles.forEach(tile=>{ tile.classList.add('hide') })
+
+        const $tiles_selected = document.querySelectorAll(`.dashboard__grid--tile [data-category=${cat}]`);
+        $tiles_selected.forEach(tile=>{ tile.classList.remove('hide') })
+      }
+    })
+  })
+  
 });
+
+
+
+
+  
