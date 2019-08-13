@@ -6,9 +6,6 @@ class PotholeData{
     _self = this;
   }
 
-
- sum(){};
-
   affordableRentalUnits(){}
 
 
@@ -192,64 +189,10 @@ $(function () {
   //@endif
 
   document.querySelector('h1').innerText = "Housing Dashboard";
-  let phdata;
-  new (Backbone.Router.extend({
-    routes: {
-      "": () => {
-        document.getElementById('master').classList.remove('hide')
-        document.getElementById('detail').classList.add('hide')
-        document.querySelector('.dashboard__nav').classList.remove('hide')
-      },
-      "detail": (s) => {
-        document.getElementById('master').classList.add('hide')
-        document.getElementById('detail').classList.remove('hide')
-
-        document.querySelector('.dashboard__nav').classList.add('hide')
-        phdata = new PotholeData();
-        document.getElementById(`pothole-bar1`).data = phdata.getData('ytd')
-      }
-    }
-  }))();
-  Backbone.history.start();
-
-
-
-
-
-
   app.render(); //render the application
   
-  l
-
   
-  /*
-  for(var i =1; i<6; i++ ){
-    document.getElementById(`pothole-bar${i}`).data = phdata.getData('ytd');
-  }
-  document.getElementById(`pothole-bar6`).data = new ChartData();
-  */
   
-  document.getElementById(`chartTable`).data = phdata.getData('ytd')
- 
-
-
-
-  const $btns = document.querySelectorAll('.dropdown-menu button');
-  $btns.forEach($btn=>{
-    $btn.addEventListener('click',evt=>{
-      evt.preventDefault();
-      const cat = evt.target.getAttribute('data-category');
-      const $tiles = document.querySelectorAll(`.dashboard__grid--tile [data-category]`);
-      $tiles.forEach(tile=>{ tile.classList.remove('hide') })
-      
-      if(cat!='all'){
-        $tiles.forEach(tile=>{ tile.classList.add('hide') })
-
-        const $tiles_selected = document.querySelectorAll(`.dashboard__grid--tile [data-category=${cat}]`);
-        $tiles_selected.forEach(tile=>{ tile.classList.remove('hide') })
-      }
-    })
-  })
   
 });
 
