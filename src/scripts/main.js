@@ -1,5 +1,130 @@
 // The main javascript file for fepe_dashboard.
 
+$(document).ready(function(){
+  const dashboard = new Dashboard();
+  console.log(dashboard);
+  dashboard.search('Bankruptcies');
+
+  var cards = document.querySelectorAll('#master [data-category]')
+  var list = []
+      cards.forEach((card,ndx)=>{
+        card.id = `widget-${ndx}`
+        list.push({
+          id: card.id ,
+          title: card.firstChild.getAttribute('chart-title'),
+          keywords: card.dataset.keywords,
+          status: card.dataset.status,
+          category: card.dataset.category
+        })
+      })
+  var options = {
+    shouldSort: true,
+    threshold: 0.6,
+    location: 0,
+    distance: 100,
+    maxPatternLength: 32,
+    minMatchCharLength: 1,
+    keys: [
+      'title',
+      'keywords',
+      'category'
+    ]
+  };
+  var fused = new Fuse(list, options);
+
+  var input = document.getElementById('js-datatable__input');
+  input.addEventListener('keyup',evt=>{
+    var cards = document.querySelectorAll('#master [data-category]');
+    var val = evt.target.value;
+    var results = fused.search(val);
+
+    cards.forEach(card=>{
+      console.log(val, card)
+      if(val != ''){
+        card.style.display = 'none';
+      } else {
+        card.style.display = null;
+      }
+    });
+
+    results.forEach(res=>{
+      var card  = document.getElementById(res.id)
+      card.style.display = null;
+    })
+    /*
+    var cards = document.querySelectorAll('#master [data-category]')
+    var val = evt.target.value;
+    var filteredCards = [];
+    cards.forEach(card=>{
+      if(val != ''){
+        card.style.display = 'none';
+      } else {
+        card.style.display = null;
+      }
+
+      if(card.dataset.hasOwnProperty('keywords')){
+        if(card.dataset.keywords.indexOf(val) != -1 ) filteredCards.push(card);
+      } 
+
+
+    })
+
+    if(val != ''){
+      filteredCards.forEach(card=>{
+        card.style.display = null;
+      })
+    }
+    */
+  })
+
+  var themeBtn = document.querySelectorAll('#theme-filter [data-category]')
+  themeBtn.forEach(btn=>{
+    btn.addEventListener('click',evt=>{
+      var cat = evt.target.dataset.category;
+      var cards = document.querySelectorAll(`#master [data-category]`);
+        cards.forEach(card=>{ card.style.display = 'none';  })
+
+      if(cat !== 'all'){
+        var cards = document.querySelectorAll(`#master [data-category="${cat}"]`);
+        console.log(cat,cards)
+        cards.forEach(card=>{
+          card.style.display = null;
+        })
+      } else {
+        var cards = document.querySelectorAll(`#master [data-category]`);
+        cards.forEach(card=>{
+          card.style.display = null;
+        })
+      }
+      evt.preventDefault();      
+    })
+  });
+
+  var statusBtn = document.querySelectorAll('#status-filter [data-status]')
+  statusBtn.forEach(btn=>{
+    btn.addEventListener('click',evt=>{
+      var cat = evt.target.dataset.status;
+      var cards = document.querySelectorAll(`#master [data-status]`);
+        cards.forEach(card=>{ card.style.display = 'none';  })
+
+
+      if(cat !== 'all'){
+        var cards = document.querySelectorAll(`#master [data-status="${cat}"]`);
+        console.log(cat,cards)
+        cards.forEach(card=>{
+          card.style.display = null;
+        })
+      } else {
+        var cards = document.querySelectorAll(`#master [data-status]`);
+        cards.forEach(card=>{
+          card.style.display = null;
+        })
+      }
+      evt.preventDefault();      
+    })
+  });
+})
+
 
 class PotholeData{
   constructor(){

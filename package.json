@@ -38,7 +38,8 @@
   },
   "dependencies": {
     "core": "git+https://github.com/CityofToronto/corejs.git#9.1.0",
-    "cotui": "git+https://github.com/CityofToronto/COT_UI.git#develop"
+    "cotui": "git+https://github.com/CityofToronto/COT_UI.git#develop",
+    "fuse.js": "^3.4.5"
   },
   "coreConfig": {
     "isEmbedded": true,

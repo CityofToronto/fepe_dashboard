@@ -84,114 +84,130 @@ Remember to use unique element IDs and class names so that this app doesn't inte
     <div style="margin: 1em">
         <label>Filter Indicators: </label>
         <!-- Single button -->
-        <div class="btn-group">
-        <button type="button" style="width: 200px;" data-category="all" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Select Theme(s) <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><button class="btn btn-link"  data-category="all">All Themes</button></li>
-          <li role="separator" class="divider"></li>
-          <li><button class="btn btn-link" data-category="affordability">Affordability</button></li>
-          <li><button class="btn btn-link" data-category="demographics">Demographics</button></li>
-          <li><button class="btn btn-link" data-category="employment">Employment</button></li>
-          <li><button class="btn btn-link" data-category="funding-supports">Funding-Supports</button></li>
-          <li><button class="btn btn-link" data-category="housing-homeless">Housing-Homeless</button></li>
-          <li><button class="btn btn-link" data-category="outcomes">Outcomes</button></li>
-          <li><button class="btn btn-link" data-category="supply">Supply</button></li>
-        </ul>
+        <div id="theme-filter" class="btn-group">
+            <button type="button" style="width: 200px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select Theme(s) <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+            <li><button class="btn btn-link"  data-category="all">All Themes</button></li>
+            <li role="separator" class="divider"></li>
+            <li><button class="btn btn-link" data-category="affordability">Affordability</button></li>
+            <li><button class="btn btn-link" data-category="demographics">Demographics</button></li>
+            <li><button class="btn btn-link" data-category="employment">Employment</button></li>
+            <li><button class="btn btn-link" data-category="funding-supports">Funding-Supports</button></li>
+            <li><button class="btn btn-link" data-category="housing-homeless">Housing-Homeless</button></li>
+            <li><button class="btn btn-link" data-category="outcomes">Outcomes</button></li>
+            <li><button class="btn btn-link" data-category="supply">Supply</button></li>
+            </ul>
         </div>
 
         <!-- Single button -->
-        <div class="btn-group">
-                <button type="button" style="width: 200px;" data-category="all" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div id="status-filter"  class="btn-group">
+                <button type="button" style="width: 200px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Select Status <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                  <li><button type="button" class="btn btn-link" data-category="all"><i style="height: 10px; width:10px; display:inline-block; background: #374047"></i> All</button></li>
+                  <li><button type="button" class="btn btn-link" data-status="all"><i style="height: 10px; width:10px; display:inline-block; background: #f5f5f4;"></i> All</button></li>
                   <li role="separator" class="divider"></li>
-                  <li><button type="button" class="btn btn-link" data-category="affordability"><i style="height: 10px; width:10px; display:inline-block; background: #88161f"></i> Negative Direction</button></li>
-                  <li><button type="button" class="btn btn-link" data-category="demographics"><i style="height: 10px; width:10px; display:inline-block; background: #887f16;"></i> Stable</button></li>
-                  <li><button type="button" class="btn btn-link" data-category="demographics"><i style="height: 10px; width:10px; display:inline-block; background: #208816;"></i> Positive Direction</button></li>
+                  <li><button type="button" class="btn btn-link" data-status="negative"><i style="height: 10px; width:10px; display:inline-block; background: #88161f"></i> Negative Direction</button></li>
+                  <li><button type="button" class="btn btn-link" data-status="stable"><i style="height: 10px; width:10px; display:inline-block; background: #374047"></i> Stable</button></li>
+                  <li><button type="button" class="btn btn-link" data-status="positive"><i style="height: 10px; width:10px; display:inline-block; background: #208816;"></i> Positive Direction</button></li>
                 </ul>
                 </div>
     </div>
   </div>
   <div class="dashboard__main">
         <div id="master" class="dashboard__grid--tile">
-            <div data-category="affordability" class="card card-height"><cotui-chart id="card-1" chart-value="1,066" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of active affordable rental developments" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="affordability" data-status="negative" data-keywords="a,b,c" class="card card-height"><cotui-chart id="card-1" chart-value="1,066" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of active affordable rental developments" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #88161f"></span>
             </cotui-chart></div>
-            <div data-category="affordability" class="card card-height"><cotui-chart id="card-2" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of affordable rental units in  pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="affordability" data-status="positive" data-keywords="a,b,c" class="card card-height"><cotui-chart id="card-2" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of affordable rental units in  pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
             </cotui-chart></div>
-            <div data-category="affordability" class="card card-height"><cotui-chart id="card-3" chart-value="374" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="# of affordable rental units under development" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="affordability" data-status="stable" data-keywords="a,b,c" class="card card-height"><cotui-chart id="card-3" chart-value="374" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="# of affordable rental units under development" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
             </cotui-chart></div>
-            <div data-category="affordability" class="card card-height"><cotui-chart id="card-4" chart-value="1,656" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="New Affordable Ownership Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="affordability" data-status="positive" data-keywords="d,e,f" class="card card-height"><cotui-chart id="card-4" chart-value="1,656" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="New Affordable Ownership Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
             </cotui-chart></div>
-            <div data-category="affordability" class="card card-height"><cotui-chart id="card-5" chart-value="4,139" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Average and Asking Prices and Rents (annual) " x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="affordability" data-status="negative" class="card card-height"><cotui-chart id="card-5" chart-value="4,139" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Average and Asking Prices and Rents (annual) " x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
             </cotui-chart></div>
-            <div data-category="affordability" class="card card-height"><cotui-chart id="card-1" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of affordable rental units under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="affordability" data-status="negative" class="card card-height"><cotui-chart id="card-1" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of affordable rental units under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
             </cotui-chart></div>
-            <div data-category="affordability" class="card card-height"><cotui-chart id="card-2" chart-value="7,664" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="New Affordable Ownership Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="affordability" data-status="stable" class="card card-height"><cotui-chart id="card-2" chart-value="7,664" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="New Affordable Ownership Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
             </cotui-chart></div>
-            <div data-category="affordability" class="card card-height"><cotui-chart id="card-3" chart-value="5,288" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="New Affordable Rental Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="affordability" data-status="stable" class="card card-height"><cotui-chart id="card-3" chart-value="5,288" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="New Affordable Rental Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                     <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
             </cotui-chart></div>
-            <div data-category="affordability" class="card card-height"><cotui-chart id="card-4" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="New Affordable Rental Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="affordability" data-status="negative" class="card card-height"><cotui-chart id="card-4" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="New Affordable Rental Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
             </cotui-chart></div>
     
     
-            <div data-category="demographics" class="card card-height"><cotui-chart id="card-2" chart-value="7,993" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816"  chart-title="Misc Census variables (e.g., HH Spending 30% on Core Housing, Strucure Type etc)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="demographics" data-status="positive" class="card card-height"><cotui-chart id="card-2" chart-value="7,993" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816"  chart-title="Misc Census variables (e.g., HH Spending 30% on Core Housing, Strucure Type etc)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
             </cotui-chart></div>
             
     
-            <div data-category="employment" class="card card-height"><cotui-chart id="card-2" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16"  chart-title="# of jobs to be created from active rental projects" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="employment" data-status="negative" class="card card-height"><cotui-chart id="card-2" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f"  chart-title="# of jobs to be created from active rental projects" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
             </cotui-chart></div>
     
     
-            <div data-category="funding-supports" class="card card-height"><cotui-chart id="card-3" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="Total City funding for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="funding-supports" data-status="stable" class="card card-height"><cotui-chart id="card-3" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="Total City funding for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
             </cotui-chart></div>
-            <div data-category="funding-supports" class="card card-height"><cotui-chart id="card-4" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="Total estimated City incentives for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="funding-supports" data-status="positive" class="card card-height"><cotui-chart id="card-4" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="Total estimated City incentives for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
             </cotui-chart></div>
-            <div data-category="funding-supports" class="card card-height"><cotui-chart id="card-5" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Total Provincial/Federal funding for active rental projects (in $M) " x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="funding-supports" data-status="negative" class="card card-height"><cotui-chart id="card-5" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Total Provincial/Federal funding for active rental projects (in $M) " x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
             </cotui-chart></div>
     
     
-            <div data-category="housing-homeless" class="card card-height"><cotui-chart id="card-4" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# New Refugees Entering Shelters" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="housing-homeless" data-status="positive" class="card card-height"><cotui-chart id="card-4" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# New Refugees Entering Shelters" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
             </cotui-chart></div>
-            <div data-category="housing-homeless" class="card card-height"><cotui-chart id="card-5" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# Refugee Households on Family Palcement List" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="housing-homeless" data-status="positive" class="card card-height"><cotui-chart id="card-5" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# Refugee Households on Family Palcement List" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
             </cotui-chart></div>
-            <div data-category="housing-homeless" class="card card-height"><cotui-chart id="card-5" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Refugee Claiments Average Nightly Stays" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="housing-homeless" data-status="negative" class="card card-height"><cotui-chart id="card-5" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Refugee Claiments Average Nightly Stays" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
             </cotui-chart></div>
     
     
-            <div data-category="outcomes" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="7,993" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="# of people to be housed by 2024 from active rentals" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
-            <div data-category="outcomes" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="7,993" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="# Refugee Discharges to permanent Housing" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div data-category="outcomes" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="7,993" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of people to be housed by 2024 from active rentals" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            <div data-category="outcomes" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="7,993" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# Refugee Discharges to permanent Housing" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
     
     
-            <div data-category="supply" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="7,993" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="# of active developments under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+            <div data-category="supply" data-status="stable" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="7,993" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="# of active developments under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
                 <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
             </cotui-chart></div>
-            <div data-category="supply" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="925" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of projects in pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
-            <div data-category="supply" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="328" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="Vacancy rates (annual)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
-            <div data-category="supply" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="045" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of condo rental units/secondary market rental units vs primary rental units in the rental universe " x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
-            <div data-category="supply" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="601" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="# of total proposed residential units by Project Status of Built, Active and Under Review" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
-            <div data-category="supply" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="451" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="# of second unit and laneway housing building permits (annual) (Toronto Building)" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
-            <div data-category="supply" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="117" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#887f16" chart-title="24hr Respite Sites - Occupancy and Capacity" x-axisLabel="Fill Date" y-axisLabel="Total Fills"></cotui-chart></div>
+            <div data-category="supply" data-status="positive" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="925" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of projects in pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="positive" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="328" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="Vacancy rates (annual)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="positive" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="045" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of condo rental units/secondary market rental units vs primary rental units in the rental universe " x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="601" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of total proposed residential units by Project Status of Built, Active and Under Review" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="451" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of second unit and laneway housing building permits (annual) (Toronto Building)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="117" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="24hr Respite Sites - Occupancy and Capacity" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
         </div>
 
         <div id="detail">        
@@ -441,6 +457,8 @@ It should contain script references that this application requires.
 <!-- endinject -->
 
 <!-- place your application script references here: -->
+<script type="text/javascript" src="../node_modules/fuse.js/dist/fuse.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/Dashboard.js"></script>
 <script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/example_form.js"></script>
 <script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/example_app.js"></script>
 <script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/main.js"></script>
