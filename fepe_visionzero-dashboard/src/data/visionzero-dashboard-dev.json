@@ -1,0 +1,128 @@
+[{
+	
+    "ksi-data": [{
+            "id": "card-detail--0",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Motorist"
+        },
+        {
+            "id": "card-detail--1",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Pedestrian"
+        },
+        {
+            "id": "card-detail--2",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Cyclist"
+        },
+        {
+            "id": "card-detail--3",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Motorcyclist"
+        },
+        {
+            "id": "card-detail--ksi",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": ""
+        }],
+    "single-data": [{
+        "id": "card - detail--current",
+        "type": "card",
+        "colour": "#598816",
+        "title": "Installed in 2019"
+    }, {
+        "id": "card-detail--target",
+        "type": "card",
+        "colour": "#d0d3d5",
+        "title": "2019 Target"
+    }, {
+        "id": "card-detail--chart",
+        "type": "bar",
+        "colour": "#d0d3d5",
+        "title": ""
+    }],
+    "general-data": [{
+            "id": "card-1",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Community Safety Zones",
+            "url": "?page_id=20012"
+        },
+        {
+            "id": "card-2",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Senior Safety Zones",
+            "url": "?page_id=20022"
+        },
+        {
+            "id": "card-3",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "School Safety Zones",
+            "url": "?page_id=20024"
+        },
+        {
+            "id": "card-4",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Traffic Signals & Pedestrian Crossovers",
+            "url": "?page_id=20026"
+        },
+        {
+            "id": "card-5",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Pedestrian Head Start Signals",
+            "url": "?page_id=20028"
+        },
+        {
+            "id": "card-6",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Red Light Cameras",
+            "url": "?page_id=20030"
+        },
+        {
+            "id": "card-7",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Accessible Pedestrian Signals",
+            "url": "?page_id=20033"
+        },
+        {
+            "id": "card-8",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "LED Blank-out Signs",
+            "url": "?page_id=17764"
+        },
+        {
+            "id": "card-00",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Fatalities 2019",
+            "url": "?page_id=20193"
+        },
+        {
+            "id": "card-01",
+            "type": "card",
+            "colour": "#d0d3d5",
+            "title": "Seriously Injured 2019",
+            "url": "?page_id=20195"
+        }, {
+            "id": "TrendByModeFatalities",
+            "type": "bar",
+            "title": "2019 Fatalities by Road User"
+        }, {
+            "id": "TrendByModeSeriouslyInjured",
+            "type": "bar",
+            "title": "2019 Seriously Injured by Road User"
+        }
+    ]
+}]

@@ -4,7 +4,28 @@ class Dashboard{
       this.fuse = '';
       this.data = new this.Model();
     }
+
+    calculateCumulativeData(_dataset,id){
+      var b = [null];
+      var sum = 0;
+      _dataset.data.reduce((prev,curr,ndx,arr)=>{
+        sum += arr[ndx-1];
+        b.push(sum);
+      });
   
+      return [{
+        stack:`ytd-${_dataset.label}`,
+        label:`Previous Total (${_dataset.label})`,
+        backgroundColor:'#ddd' ,
+        data:b,
+      },{
+        stack:`ytd-${_dataset.label}`,
+        label:`Added (${_dataset.label})`,
+        backgroundColor: _dataset.backgroundColor,
+        data:_dataset.data
+      }];
+    }
+
     Model(){
       return{
         meta:{

@@ -1,0 +1,281 @@
+<!--
+IMPORTANT:
+Any resources from this project should be referenced using SRC_PATH preprocessor var.
+See examples below in the boilerplate code
+-->
+
+<!-- cot-app:head -->
+  <!--@exec startBuildTagWithCacheBuster('styles/main.css')-->
+    <!-- core:css -->
+    <!-- endinject -->
+    <!-- place your application stylesheet references here: -->
+    <link rel="stylesheet" type="text/css" href="<!-- @echo SRC_PATH -->/styles/main.css">
+  <!-- endbuild -->
+  <!--@exec startBuildTagWithCacheBuster('styles/core_print.css', 'media="print"')-->
+    <!-- core_print:css -->
+    <!-- endinject -->
+    <!-- place any application print-only stylesheet references here -->
+  <!-- endbuild -->
+  
+<!-- cot-app:head end-->
+
+<!-- cot-app:body -->
+<div id="fepe_visionzero-dashboard_container" >
+  <div id="general-data" hidden>
+    <h2>Installations (2016 - Year-to-Date)</h2>
+    <div class="">
+      <div class="row">
+        <div class="col-sm-12 col-md-6 col-print-12">
+          
+          <div class="row cards">
+            <div class="col-md-6">
+              <cotui-chart 
+              id="card-1" 
+              chart-type="card" 
+              chart-title="Community Safety Zones" 
+              chart-value="00" 
+              chart-colour="#d0d3d5" 
+              href="?page_id=20012"
+              caption="Last updated: N/A"
+              ></cotui-chart>
+            </div>
+            <div class="col-md-6">
+              <cotui-chart 
+              id="card-2" 
+              chart-type="card" 
+              chart-title="Senior Safety Zones" 
+              chart-value="00"
+              chart-colour="#d0d3d5" 
+              href="?page_id=20022"
+              caption="Last updated: N/A"
+              ></cotui-chart>
+            </div>
+          </div>
+          
+        </div>
+        <div class="col-sm-12 col-md-6 col-print-12">
+
+          <div class="row cards">
+            <div class="col-md-6">
+              <cotui-chart 
+              id="card-3" 
+              chart-type="card" 
+              chart-title="School Safety Zones" 
+              chart-value="00"
+              chart-colour="#d0d3d5" 
+              href="?page_id=20024"
+              caption="Last updated: N/A"
+              ></cotui-chart> 
+            </div>
+            <div class="col-md-6">
+              <cotui-chart 
+              id="card-4" 
+              chart-type="card" 
+              chart-title="Traffic Signals & Pedestrian Crossovers" 
+              chart-value="00"
+              chart-colour="#d0d3d5" 
+              href="?page_id=20026"
+              caption="Last updated: N/A"
+              ></cotui-chart> 
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="">
+        <div class="row">
+          <div class="col-md-6 col-print-12">
+            
+            <div class="row cards">
+              <div class="col-md-6">
+                <cotui-chart 
+                id="card-5" 
+                chart-type="card" 
+                chart-title="Pedestrian Head Start Signals" 
+                chart-value="00" 
+                chart-colour="#d0d3d5" 
+                caption="Last updated: N/A"
+                ></cotui-chart>
+              </div>
+              <div class="col-md-6">
+                <cotui-chart 
+                id="card-6" 
+                chart-type="card" 
+                chart-title="Red Light Cameras" 
+                chart-value="00" 
+                chart-colour="#d0d3d5" 
+                caption="Last updated: N/A"
+                ></cotui-chart>
+              </div>
+            </div>
+            
+          </div>
+          <div class="col-md-6 col-print-12">
+  
+            <div class="row cards">
+              <div class="col-md-6">
+                <cotui-chart 
+                id="card-7" 
+                chart-type="card" 
+                chart-title="Accessible Pedestrian Signals" 
+                chart-value="00" 
+                chart-colour="#d0d3d5" 
+                caption="Last updated: N/A"
+                ></cotui-chart>
+              </div>
+              <div class="col-md-6">
+                <cotui-chart 
+                id="card-8" 
+                chart-type="card" 
+                chart-title="LED Blank-Out Signs"
+                chart-value="00" 
+                chart-colour="#d0d3d5"
+                caption="Last updated: N/A"
+                ></cotui-chart> 
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+
+ 
+
+    <h2>Fatalities & Seriously Injured (2019)</h2>
+    <div class="row cards">
+        <div class="col-md-6">
+            <cotui-chart 
+            id="card-00" 
+            chart-type="card" 
+            chart-colour="#d0d3d5"
+            chart-title="Fatalities 2019" 
+            chart-value="00" 
+            caption="Last updated: N/A"
+            ></cotui-chart>
+        </div>
+        <div class="col-md-6">
+          <cotui-chart 
+            id="card-01" 
+            chart-type="card" 
+            chart-colour="#d0d3d5"
+            chart-title="Seriously Injured 2019" 
+            chart-value="00"
+            caption="Last updated: N/A"
+            ></cotui-chart>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-print-12">
+        <h3 class="sr-only">2019 Fatalities by Road User</h3>
+        <cotui-chart id="TrendByModeFatalities" chart-type="bar" legend-label="Road User" chart-stacked="true" chart-title="2019 Fatalities by Road User" x-axisLabel="Month" y-axisLabel="Fatalities"></cotui-chart>
+      </div>
+      <div class="col-md-6  col-print-12" >
+         <h3 class="sr-only">2019 Seriously Injured by Road User</h3>
+        <cotui-chart id="TrendByModeSeriouslyInjured" chart-type="bar" legend-label="Road User" chart-stacked="true" chart-title="2019 Seriously Injured by Road User"  x-axisLabel="Month" y-axisLabel="Seriously Injured"></cotui-chart>
+      </div>
+    </div>
+  </div>
+
+  <div id="single-data" hidden>
+    <div class="row">
+      <div class="col-md-3" >
+        <cotui-chart 
+          id="card-detail--current" 
+          chart-type="card" 
+          chart-colour="#598816"
+          chart-title="Installed in 2019" 
+          chart-value="00" 
+          caption="Last updated: N/A"
+          ></cotui-chart>
+
+        <cotui-chart 
+          id="card-detail--target" 
+          chart-type="card"
+          chart-colour="#d0d3d5"
+          chart-title="2019 Target" 
+          chart-value="00" 
+          caption="Year-to-Date Installs by End of 2019"
+          ></cotui-chart>
+      </div>
+
+      <div class="col-md-9">
+        <cotui-chart id="card-detail--chart"  chart-type="bar" legend-label="Installations" chart-stacked="false" chart-title="Year-to-Date Installations" x-axislabel="Installation Year" y-axislabel="Total Installs"></cotui-chart>
+      </div>
+    </div>
+  </div>
+
+  <div id="ksi-data" hidden>
+    <div class="row cards">
+      <div class="col-sm-3 col-print-6">
+        <cotui-chart 
+        id="card-detail--0" 
+        chart-type="card"
+        chart-colour="#d0d3d5"
+        chart-title="Motorist" 
+        chart-value="00" 
+        caption="N/A"
+        ></cotui-chart>
+      </div>
+      <div class="col-sm-3 col-print-6">
+        <cotui-chart 
+        id="card-detail--1" 
+        chart-type="card"
+        chart-colour="#d0d3d5"
+        chart-title="Pedestrian" 
+        chart-value="00" 
+        caption="N/A"
+        ></cotui-chart>
+      </div>
+      <div class="col-sm-3 col-print-6">
+        <cotui-chart 
+        id="card-detail--2" 
+        chart-type="card"
+        chart-colour="#d0d3d5"
+        chart-title="Cyclist" 
+        chart-value="00" 
+        caption="N/A"
+        ></cotui-chart>
+      </div>
+      <div class="col-sm-3 col-print-6">
+        <cotui-chart 
+        id="card-detail--3" 
+        chart-type="card"
+        chart-colour="#d0d3d5"
+        chart-title="Motorcyclist" 
+        chart-value="00" 
+        caption="N/A"
+        ></cotui-chart>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <cotui-chart id="card-detail--ksi"  chart-type="bar" legend-label="Road User"  chart-stacked="true" chart-title="By Road User" x-axislabel="Year" y-axislabel="Total"></cotui-chart>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+<!-- cot-app:body end-->
+
+<!-- cot-app:footer -->
+
+
+  <!--@exec startBuildTagWithCacheBuster('scripts/main.js')-->
+    <!-- core:js -->
+    <!-- endinject -->
+    <!-- place your application script references here: -->
+    <script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/VisionZeroData.js"></script>
+    <script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/main.js"></script>
+  <!-- endbuild -->
+  <!--@if ENV!='prod'-->
+  <script type="text/javascript">
+    console.log('fepe_visionzero-dashboard running on <!--@echo ENV--> environment');
+    console.log('fepe_visionzero-dashboard qa release: <!--@echo QA_RELEASE-->');
+    console.log('fepe_visionzero-dashboard build: <!--@echo BUILD_ID-->');
+  </script>
+  <!--@endif-->
+<!-- cot-app:footer end-->
