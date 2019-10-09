@@ -4,6 +4,7 @@
 .idea
 .settings
 .project
+.DS_Store
 
 #ignore npm-generated directories
 node_modules
