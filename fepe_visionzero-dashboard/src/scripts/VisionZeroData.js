@@ -76,7 +76,7 @@ class VisionZero{
       const datasets = []
   
       return fetch(URI).then(res=>{return res.json()}).then(res=>{
-        console.log('getKSIData',DATERANGE,res);
+        
         var data= [];
         var labels = [];
         var label = '';
@@ -84,6 +84,18 @@ class VisionZero{
 
         var dtK = [];
         var dtSI = [];
+        var datasets = [];
+      
+        console.debug('getKSIData',res);
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         res.features.map(({properties}=feature)=>{
           label = 'Fatalities';
@@ -658,7 +670,16 @@ class VisionZero{
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE);
         console.debug('getSeriouslyInjuredData', URI,res)
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
+
         res.features.map(({properties}=feature)=>{
           label = 'Fatalities';
           //labels.push(properties.STREET);
@@ -722,7 +743,15 @@ class VisionZero{
         var dtObj = {};
 
         console.debug('getFatalitiesData',res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE);
@@ -791,7 +820,15 @@ class VisionZero{
         var dtObj = {};
 
         console.debug('getCyclingNetworkData',res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -862,7 +899,15 @@ class VisionZero{
         
 
         console.debug('getTrafficCalmingData',res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -919,7 +964,7 @@ class VisionZero{
     }
   
     getRedLightCameraData({from=2016,to=2019}){
-      const URI = `https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_SAFETY_MEASURE_POINT/FeatureServer/0/query?where=DT%20BETWEEN%20date'${moment(new Date(from,0,1)).format('YYYY-MM-DD')}'%20AND%20CURRENT_DATE AND%20SAFETY_PROGRAM_TYPE%20IN%20(%27Red%20Light%20Cameras%27)&outSr=4326&outFields=*&orderByFields=DT&inSr=4326&f=geojson`;
+      const URI = `https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_SAFETY_MEASURE_POINT/FeatureServer/0/query?where=DT BETWEEN date'${moment(new Date(from,0,1)).format('YYYY-MM-DD')}' AND CURRENT_DATE AND SAFETY_PROGRAM_TYPE IN ('Red Light Cameras')&outSr=4326&outFields=*&orderByFields=DT&inSr=4326&returnGeometry=false&f=geojson`;
       const datasets = []
   
       return fetch(URI).then(res=>{return res.json()}).then(res=>{
@@ -929,10 +974,18 @@ class VisionZero{
         var dtObj = {};
 
         console.debug('getRedLightCameraData',res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
-        lastModified = new Date(res.features[totalResults-1].properties.YEAR);
+        lastModified = new Date(res.features[totalResults-1].properties.DT);
 
         res.features.map(({properties}=feature)=>{
           //console.log(properties)
@@ -993,7 +1046,15 @@ class VisionZero{
         var dtObj = {};
 
         console.debug('getAudiblePedestrianSignalData',res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -1057,7 +1118,15 @@ class VisionZero{
         var dtObj = {};
         
         console.debug('getLeadingPedestrianIntervalData',res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -1120,7 +1189,15 @@ class VisionZero{
         var dtObj = {};
         
         console.debug('getCommunitySafetyZoneData',res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -1185,7 +1262,15 @@ class VisionZero{
         var dtObj = {};
 
         console.debug('getTrafficSignalData', res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -1249,7 +1334,15 @@ class VisionZero{
         var dtObj = {};
 
         console.debug('getPedestrianCrossoversData', res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -1302,7 +1395,8 @@ class VisionZero{
     }
   
     getLEDBlankoutSignData({from=2016,to=2019}){
-      const URI = `https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_SAFETY_MEASURE_POINT/FeatureServer/0/query?where=DT%20BETWEEN%20date'${moment(new Date(from,0,1)).format('YYYY-MM-DD')}'%20AND%20CURRENT_DATE%20AND%20SAFETY_PROGRAM_TYPE%20IN%20(%27LED%20Blankout%20Signs%27)&outSr=4326&outFields=*&orderByFields=DT&inSr=4326&f=geojson`;
+      //const URI = `https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_SAFETY_MEASURE_POINT/FeatureServer/0/query?where=DT%20BETWEEN%20date'${moment(new Date(from,0,1)).format('YYYY-MM-DD')}'%20AND%20CURRENT_DATE%20AND%20SAFETY_PROGRAM_TYPE%20IN%20(%27LED%20Blankout%20Signs%27)&outSr=4326&outFields=*&orderByFields=DT&inSr=4326&f=geojson`;
+      const URI = `https://services3.arcgis.com/b9WvedVPoizGfvfD/ArcGIS/rest/services/COTGEO_SAFETY_MEASURE_POINT/FeatureServer/0/query?where=DT+BETWEEN+date'${moment(new Date(from,0,1)).format('YYYY-MM-DD')}'+AND+CURRENT_DATE+AND+SAFETY_PROGRAM_TYPE+IN+%28%27LED+Blankout+Signs%27%29&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=&returnGeometry=true&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=true&cacheHint=false&orderByFields=DT&groupByFieldsForStatistics=SAFETY_ZONE_ID%2CSAFETY_PROGRAM_TYPE%2CSAFETY_MEASURE_NAME%2C+LOC%2C+DT%2C+YEAR%2C+STREET%2C+INTERSECTION_FROM%2C+INTERSECTION_TO%2C+WARD_NUMBER&outStatistics=%5B%7B%22statisticType%22%3A%22count%22%2C%22onStatisticField%22%3A%22LOC%22%2C%22outStatisticFieldName%22%3A%22loc_count%22%7D%5D&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=false&quantizationParameters=&sqlFormat=standard&f=geojson&token=`
       const datasets = []
   
       return fetch(URI).then(res=>{return res.json()}).then(res=>{
@@ -1312,7 +1406,15 @@ class VisionZero{
         var dtObj = {};
 
         console.debug('getLEDBlankoutSignData',res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -1375,7 +1477,15 @@ class VisionZero{
         var dtObj = {};
 
         console.debug('getSeniorSafetyZoneData',URI,res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
 
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -1430,7 +1540,7 @@ class VisionZero{
     
 
     getSchoolSafetyZoneData({from=2016,to=2019}){
-      const URI = `https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_SAFETY_MEASURE_POLYGON/FeatureServer/0/query?where=DT%20BETWEEN%20date'${moment(new Date(from,0,1)).format('YYYY-MM-DD')}'%20AND%20CURRENT_DATE%20AND%20SAFETY_PROGRAM_TYPE%20IN%20(%27School%20Safety%20Zones%27)&outSr=4326&outFields=*&orderByFields=DT&inSr=4326&f=geojson`;
+      const URI = `https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_SAFETY_MEASURE_POLYGON/FeatureServer/0/query?where=DT BETWEEN date'${moment(new Date(from,0,1)).format('YYYY-MM-DD')}' AND CURRENT_DATE AND SAFETY_PROGRAM_TYPE IN ('School Safety Zones')&outSr=4326&outFields=*&orderByFields=DT&inSr=4326&f=geojson`;
       const datasets = []
   
       return fetch(URI).then(res=>{return res.json()}).then(res=>{
@@ -1440,7 +1550,15 @@ class VisionZero{
         var dtObj = {};
 
         console.debug('getSchoolSafetyZoneData',res);
-        if(res.features.length == 0) return Promise.reject();
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
         
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
@@ -1503,7 +1621,17 @@ class VisionZero{
         var label = '';
         var dtObj = {};
 
-        console.log('getPedestrianSafetyCorridorsData',res);
+        console.debug('getPedestrianSafetyCorridorsData',res);
+        if(res.features.length == 0) return Promise.resolve({
+          chartOptions:{
+            caption: `Last Reported: N/A`,
+          },
+          chartData:{
+            labels,
+            datasets
+          }
+        });
+
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
 

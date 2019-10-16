@@ -9,7 +9,7 @@ core.embeddedApp.createTasks(gulp, {
   deploymentPath: '',
   preprocessorContext: {
     local: {
-      APP_CONFIG: '/app_content/visionzero-dashboard.json'
+      APP_CONFIG: '/app_content/visionzero-dashboard-dev.json'
     },
     dev: {
       APP_CONFIG: '/app_content/visionzero-dashboard/'

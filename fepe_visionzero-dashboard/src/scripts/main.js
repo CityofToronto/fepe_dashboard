@@ -43,7 +43,6 @@ var $ariaLive = document.createElement('div')
 document.body.appendChild($ariaLive);
 $(document).ready(function(){
   
-
   $.ajax('/*@echo APP_CONFIG*/').then(res=>{
     console.log('/*@echo APP_CONFIG*/',res[0])
     initApp(res[0])
@@ -115,51 +114,13 @@ const initApp = function(apiContent){
           widget.setAttribute('chart-colour', content.colour);
           widget.setAttribute('chart-value', total.toString().formatNumber());
         })
-
-        
-
-
-  /*
-        var widgetA = document.getElementById('card-detail--0');
-        var totalA = 0;
-        content = apiContent['ksi-data'][0];
-        if(res.chartData.datasets[0].length > 0) res.chartData.datasets[0].data.map(val=>{ totalA += val; });
-        widgetA.chartTitle = `Motorist (${to})`;
-        widgetA.setAttribute('caption', res.chartOptions.caption );
-        widgetA.setAttribute('chart-colour', content.colour);
-        widgetA.setAttribute('chart-value', totalA.toString().formatNumber());
-        
-        var widgetB = document.getElementById('card-detail--1');
-        var totalB = 0;
-        content = apiContent['ksi-data'][1];
-        if(res.chartData.datasets[1].length > 0) res.chartData.datasets[1].data.map(val=>{ totalB += val; });
-        widgetB.chartTitle = `Pedestrian (${to})`;
-        widgetB.setAttribute('caption', res.chartOptions.caption );
-        widgetB.setAttribute('chart-colour', content.colour);
-        widgetB.setAttribute('chart-value', totalB.toString().formatNumber());
-  
-        var widgetC = document.getElementById('card-detail--2');
-        var totalC = 0;
-        content = apiContent['ksi-data'][2];
-        res.chartData.datasets[2].data.map(val=>{ totalC += val; });
-        widgetC.chartTitle = `Cyclist (${to})`;
-        widgetC.setAttribute('caption', res.chartOptions.caption );
-        widgetC.setAttribute('chart-colour', content.colour);
-        widgetC.setAttribute('chart-value', totalC.toString().formatNumber());
-  
-        var widgetD = document.getElementById('card-detail--3');
-        var totalD = 0;
-        content = apiContent['ksi-data'][3];
-        res.chartData.datasets[3].data.map(val=>{ totalD += val; });
-        widgetD.chartTitle = `Motorcyclist (${to})`;
-        widgetD.setAttribute('caption', res.chartOptions.caption );
-        widgetD.setAttribute('chart-colour', content.colour);
-        widgetD.setAttribute('chart-value', totalD.toString().formatNumber());
-*/
       })
     ]).then(res=>{
       $ariaLive.innerText = 'Finished loading dashboard data';
-    })
+    }).catch(err=>{
+      $('#fepe_visionzero-dashboard_container').html('<div class="well">Error Loading Data</div>');
+      $ariaLive.innerText = 'Error loading dashboard data';
+    });
     
    
   } else {
@@ -183,53 +144,79 @@ const initApp = function(apiContent){
     $('#ksi-data').attr('hidden');
     $('#single-data').removeAttr('hidden');
 
-    var showLastUpdated = false;
+    var lastUpdated = '';
     $ariaLive.innerText = 'Loading dashboard data';
     Promise.all(
       [
         vs[page]({from:2019, to:2019}).then(res=>{
-          var widget = document.getElementById('card-detail--current');
-          var total = 0;
+          let widget = document.getElementById('card-detail--current');
+          let total = 0;
           content = apiContent['single-data'][0];
-          res.chartData.datasets[0].data.map(val=>{ total += val.y; });
-          //widget.setAttribute('caption', res.chartOptions.caption );
+          if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+
+          if(page === 'getRedLightCameraData'){
+            widget.chartTitle = 'Intersection Installs in 2019';
+          } else {
+            widget.chartTitle = content.title;
+          }
+          lastUpdated = res.chartOptions.caption;
           widget.setAttribute('chart-value', total.toString().formatNumber());
-        }).catch(res=>{
-          var widget = document.getElementById('card-detail--current');
-          widget.setAttribute('chart-value', 0);
+          widget.setAttribute('caption', lastUpdated );
+          return res;
+        }).catch(err=>{
+          content = apiContent['single-data'][0];
+          let widget = document.getElementById('card-detail--current');
+              widget.setAttribute('chart-value', '&ndash;');
+
+          $ariaLive.innerText = `Error loading ${content.title} data`;
         }),
 
         vs[page]({from:2016, to:2019}).then(res=>{
-          var widgetA = document.getElementById('card-detail--target');
-          var totalA = target||0;
+          let widgetA = document.getElementById('card-detail--target');
+          let totalA = target||0;
           content = apiContent['single-data'][1];
           //res.chartData.datasets[0].data.map(val=>{ totalA += val.y; });
           widgetA.setAttribute('caption', '' );
           widgetA.setAttribute('chart-value', totalA.toString().formatNumber());
     
-          
-          var widgetB = document.getElementById('card-detail--current');
+          let widgetB = document.getElementById('card-detail--current');
           // var totalB = 0;
           // content = apiContent['single-data'][0];
           // res.chartData.datasets[0].data.map(val=>{ totalB += val.y; });
           widgetB.setAttribute('caption', res.chartOptions.caption );
           // widgetB.setAttribute('chart-value', totalB.toString().formatNumber());
+          lastUpdated = res.chartOptions.caption;
     
-    
-          var widgetC = document.getElementById('card-detail--chart');
-          var totalC = 0;
+          let widgetC = document.getElementById('card-detail--chart');
+          let totalC = 0;
           content = apiContent['single-data'][2];
           widgetC.setAttribute('caption', res.chartOptions.caption );
           widgetC.data = res;
-        })
+          return res;
+        }).catch(err=>{
+          content = apiContent['single-data'][2];        
+          var widgetA = document.getElementById('card-detail--target');
+          var widgetB = document.getElementById('card-detail--current');
+          var widgetC = document.getElementById('card-detail--chart');
+
+          widgetA.setAttribute('chart-value', '&ndash;');
+          widgetB.setAttribute('chart-value', '&ndash;');
+          $('#card-detail--chart').html(`<div class="well">Error loading ${content.title} data</div>`);
+
+          $ariaLive.innerText = `Error loading ${content.title} data`;
+        }),
       ]
     ).then(data=>{
-      console.log('All Data Loaded');
-      $ariaLive.innerText = 'Finished loading dashboard data';
-    })
-    
+      console.log('All Data Loaded',data,lastUpdated, data[1].chartOptions.caption);
+      let widget = document.getElementById('card-detail--current');
+          //widget.setAttribute('caption', lastUpdated );
+          widget.querySelector('.chart--caption').innerText = data[1].chartOptions.caption;
 
-    ;
+      $ariaLive.innerText = 'Finished loading dashboard data';
+    }).catch(err=>{
+      $('#fepe_visionzero-dashboard_container').html(`<div class="well">Error</div>`);
+      $ariaLive.innerText = 'Error loading dashboard data';
+    });
 
   } else {
     $('#single-data').attr('hidden','');    
@@ -246,35 +233,55 @@ const initApp = function(apiContent){
         var widget = document.getElementById('TrendByModeFatalities');
         widget.chartTitle = content.title;
         widget.data = res;
+      }).catch(err=>{
+        var content = apiContent['general-data'][10];
+        $('#TrendByModeFatalities').html(`<div class="well">Error loading ${content.title} data</div>`);
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       vs.getModeOfTravelByMonth({from:2019, to:2019, INJURY_TYPE:3}).then(res=>{
         var content = apiContent['general-data'][11];
         var widget = document.getElementById('TrendByModeSeriouslyInjured');
         widget.chartTitle = content.title;
         widget.data = res;
+      }).catch(err=>{
+        var content = apiContent['general-data'][11];
+        $('#TrendByModeSeriouslyInjured').html(`<div class="well">Error loading ${content.title} data</div>`);
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       
       vs.getFatalitiesData({from:2019,to:2019}).then(res=>{
         var content = apiContent['general-data'][8];
         var widget = document.getElementById('card-00');
         var total = 0;
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+      }).catch(err=>{
+        var content = apiContent['general-data'][8];
+        var widget = document.getElementById('card-00');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       vs.getSeriouslyInjuredData({from:2019,to:2019}).then(res=>{
         var content = apiContent['general-data'][9];
         var widget = document.getElementById('card-01');
         var total = 0;
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+      }).catch(err=>{
+        var content = apiContent['general-data'][9];
+        var widget = document.getElementById('card-01');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
 
 
@@ -282,94 +289,143 @@ const initApp = function(apiContent){
         var content = apiContent['general-data'][0];
         var widget = document.getElementById('card-1');
         var total = 0;
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+      }).catch(err=>{
+        var content = apiContent['general-data'][0];
+        var widget = document.getElementById('card-1');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       vs.getSeniorSafetyZoneData({from:2016,to:2019}).then(res=>{
         var content = apiContent['general-data'][1];
         var widget = document.getElementById('card-2');
         var total = 0;
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+      }).catch(err=>{
+        var content = apiContent['general-data'][1];
+        var widget = document.getElementById('card-2');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       vs.getSchoolSafetyZoneData({from:2016,to:2019}).then(res=>{
         var content = apiContent['general-data'][2];
         var widget = document.getElementById('card-3');
         var total = 0;
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+      }).catch(err=>{
+        var content = apiContent['general-data'][2];
+        var widget = document.getElementById('card-3');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       vs.getTrafficSignalData({from:2016,to:2019}).then(res=>{
         var content = apiContent['general-data'][3];
         var widget = document.getElementById('card-4');
         var total = 0;
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+      }).catch(err=>{
+        var content = apiContent['general-data'][3];
+        var widget = document.getElementById('card-4');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       vs.getLeadingPedestrianIntervalData({from:2016,to:2019}).then(res=>{
         var content = apiContent['general-data'][4];
         var widget = document.getElementById('card-5');
         var total = 0;
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+      }).catch(err=>{
+        var content = apiContent['general-data'][4];
+        var widget = document.getElementById('card-5');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       vs.getRedLightCameraData({from:2016,to:2019}).then(res=>{
         var content = apiContent['general-data'][5];
         var widget = document.getElementById('card-6');
         var total = 0;
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+      }).catch(err=>{
+        var content = apiContent['general-data'][5];
+        var widget = document.getElementById('card-6');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       vs.getAudiblePedestrianSignalData({from:2016,to:2019}).then(res=>{
         var content = apiContent['general-data'][6];
         var widget = document.getElementById('card-7');
         var total = 0;
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+      }).catch(err=>{
+        var content = apiContent['general-data'][6];
+        var widget = document.getElementById('card-7');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       vs.getLEDBlankoutSignData({from:2016,to:2019}).then(res=>{
         var content = apiContent['general-data'][7];
         var widget = document.getElementById('card-8');
         var total = 0;        
-        res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+        if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
         widget.chartTitle = content.title;
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
-      })      
+      }).catch(err=>{
+        var content = apiContent['general-data'][7];
+        var widget = document.getElementById('card-8');
+        widget.setAttribute('chart-value', '&ndash;');
+        widget.removeAttribute('href');
+        $ariaLive.innerText = `Error loading ${content.title} data`;
+      })
+
     ])
     .then(res=>{
       $ariaLive.innerText = 'Finished loading dashboard data';
-    });
+    })
   }
 }
 
