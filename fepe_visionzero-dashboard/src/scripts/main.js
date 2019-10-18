@@ -96,6 +96,7 @@ const initApp = function(apiContent){
         var to = moment().format('YYYY');
         var from = moment().format('YYYY');
 
+        
         for(var i = 0; i < 4; i++){
           var widget = document.getElementById(`card-detail--${i}`);
           var total = 0;
@@ -103,16 +104,27 @@ const initApp = function(apiContent){
           widget.setAttribute('caption', res.chartOptions.caption );
           widget.setAttribute('chart-value', total.toString().formatNumber());
         }
+        
 
         res.chartData.datasets.map((dataset,ndx)=>{
-          var widget = document.getElementById(`card-detail--${ndx}`);
           var total = 0;
+          if(dataset.label === 'Motorist') ndx=0;
+          if(dataset.label === 'Pedestrian') ndx=1;
+          if(dataset.label === 'Cyclist') ndx=2;
+          if(dataset.label === 'Motorcyclist') ndx=3;
+          
+
+          if(dataset.label === 'Pedestrian') console.log('Pedestrian',dataset);
+
+
+          var widget = document.getElementById(`card-detail--${ndx}`);
           content = apiContent['ksi-data'][ndx];
           dataset.data.map(val=>{ total += val; });
-          widget.chartTitle = `${dataset.label!=''?dataset.label:widget.chartTitle} (${to})`;
+          widget.chartTitle = `${widget.chartTitle}`;
           widget.setAttribute('caption', res.chartOptions.caption );
           widget.setAttribute('chart-colour', content.colour);
           widget.setAttribute('chart-value', total.toString().formatNumber());
+
         })
       })
     ]).then(res=>{
@@ -154,7 +166,7 @@ const initApp = function(apiContent){
           content = apiContent['single-data'][0];
           if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
 
-          if(page === 'getRedLightCameraData'){
+          if(page === 'getRedLightCameraData' || page === 'getLEDBlankoutSignData' || page === 'getAudiblePedestrianSignalData'){
             widget.chartTitle = 'Intersection Installs in 2019';
           } else {
             widget.chartTitle = content.title;
