@@ -176,9 +176,9 @@ class VisionZero{
             case "02":
             case "18":
             case "22":
-                categoryLabel = 'Motorist';
-                color = '#E17C05';
-                break;
+              categoryLabel = 'Motorist';
+              color = '#E17C05';
+              break;
             case "03":
             case "17":
             case "19":
@@ -198,6 +198,10 @@ class VisionZero{
             case "09":
               categoryLabel = 'Motorcyclist';
               color = '#0F8554';
+              break;
+            default:
+              categoryLabel = 'Other';
+              color = '#D54B1A';
               break;
           }
 
@@ -261,14 +265,14 @@ class VisionZero{
           requests.push(fetch(URI).then(res=>{return res.json()}).then(res=>{
             const totalResults = res.features.length;
             if(res.features[totalResults-1] ){
-              lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE)
+              lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE) > lastModified?res.features[totalResults-1].properties.ACCIDENT_DATE:lastModified;
             }
               
             const results = processResults(res);
             console.debug('getModeOfTravelByYear')
             console.log('getModeOfTravelByYear:ResultsURI', URI)
             console.log('getModeOfTravelByYear:ResultsRaw', res)
-            console.log('getModeOfTravelByYear:ResultsProcessed', results)
+            console.log('getModeOfTravelByYear:ResultsProcessed', results, lastModified)
             return Promise.resolve(results);
             })
           )
@@ -320,33 +324,29 @@ class VisionZero{
       })
     }
 
-    getModeOfTravelByMonth({from=2016,to=2019,INJURY_TYPE=null}){
+    getModeOfTravelByMonth({from=2019,to=2019,INJURY_TYPE=null}){
       const DATERANGE = {from,to}
       
       const processResults = function (res){
-        var data= new Array(12).fill(0,0,moment().month());
-        var labels = [];
+        var data= new Array(12).fill(0,0,moment().month()+1);
         var backgroundColor = [];
         var label = '';
-        var dtObj = {};
         var categories = {}
         var types = {}
-
         var colours = {};
-        var dt
         
         res.features.map(({properties}=feature)=>{
-          dt = new Date(properties.ACCIDENT_DATE);
-          
+          let dt = new Date(properties.ACCIDENT_DATE);
+    
           var categoryLabel, color;
           switch(properties.INVOLVEMENT_TYPE){
             case "01":
             case "02":
             case "18":
             case "22":
-                categoryLabel = 'Motorist';
-                color = '#E17C05';
-                break;
+              categoryLabel = 'Motorist';
+              color = '#E17C05';
+              break;
             case "03":
             case "17":
             case "19":
@@ -367,20 +367,29 @@ class VisionZero{
               categoryLabel = 'Motorcyclist';
               color = '#0F8554';
               break;
+            default:
+              categoryLabel = 'Other';
+              color = '#D54B1A';
+              break;
           }
 
           
           
 
-          if(categories.hasOwnProperty(categoryLabel)){
+          // if(categories.hasOwnProperty(categoryLabel)){
+          //   categories[categoryLabel]++;
+          //   data[dt.getMonth()]++;
+          // } else {
             categories[categoryLabel] += 1;
-            data[dt.getMonth()]++;
-          } else {
-            categories[categoryLabel] = 1;
             colours[categoryLabel] = color;
-            data[dt.getMonth()]++;
-          }
+            data[dt.getMonth()] += 1;
+            if(properties.INJURY == 4)
+            console.log( categoryLabel, properties,  dt, data)
+          //}
           
+          
+
+
 
           if(types.hasOwnProperty(properties.INJURY)){
             types[properties.INJURY].push(res)
@@ -388,6 +397,9 @@ class VisionZero{
             types[properties.INJURY] = [res]
           }
           type = properties.INJURY;
+
+
+          console.log(categoryLabel, categories[categoryLabel], type );
         })
 
         for(var category in categories){          
@@ -399,13 +411,12 @@ class VisionZero{
         return { type, label, data,  backgroundColor}
       }
 
-
       const INVOLVEMENT_TYPE = {
         pedestrian_motorist:['01','02','18','22'],//#e6194b
         pedestrian:['03','17','19','20'],//#e6194b
         cyclist:['04','05','21'],//#3cb44b
         motorcyclist:['06','07','08','09'],//#ffe119
-        //motorist:[]//#4363d8
+        other:['99']//#4363d8
       }
       
       const INJURY = (type)=>{
@@ -444,7 +455,7 @@ class VisionZero{
 
           requests.push(fetch(URI).then(res=>{return res.json()}).then(res=>{           
             const totalResults = res.features.length||0;
-            console.debug('getModeOfTravelByMonth:Results',res)
+            console.debug('getModeOfTravelByMonth:Results',res, totalResults, INJURY_STR, INVOLVEMENT_TYPE_STR)
             if(totalResults>0) lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE)||''
               const results = processResults(res);
               return Promise.resolve(results);
@@ -1249,6 +1260,11 @@ class VisionZero{
       })
       
     }
+
+/*
+TODO: SPLIT into TWO DATASETS
+*/
+
 
     getTrafficSignalData({from=2016,to=2019}){
       /*-- /* MERGED WITH PedstrianCrossover */

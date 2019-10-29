@@ -11,7 +11,7 @@ class SampleApp extends (window['CotApp'] || window['CotApp']) {
     super.render(); //this function only exists in CotApp
     //@endif
 
-    this.startRouter();
+    //this.startRouter();
     this.enableIndicatorFilters();
   }
 
@@ -23,9 +23,6 @@ class SampleApp extends (window['CotApp'] || window['CotApp']) {
     }
     document.getElementById(`pothole-bar6`).data = new ChartData();
     */
-  let phdata;
-  document.getElementById(`chartTable`).data = phdata.getData('ytd')
-
   const $btns = document.querySelectorAll('button');
   console.log($btns);
 
@@ -50,6 +47,7 @@ class SampleApp extends (window['CotApp'] || window['CotApp']) {
 
   }
 
+  /*
   startRouter() {
     new (Backbone.Router.extend({
       routes: {
@@ -70,5 +68,6 @@ class SampleApp extends (window['CotApp'] || window['CotApp']) {
     }))();
     Backbone.history.start();
   }
+  */
 
 }

@@ -71,7 +71,12 @@ const initApp = function(apiContent){
     return maxDatePromise.promise();
   }
 
-  if( $container.parent().data('page-ksi') ){
+  /*
+  
+  LOAD KSI PAGEs
+  
+  */
+  if( !$container.parent().data('page-ksi') ){
     var page = $container.parent().data('page-ksi');
     var type = $container.parent().data('injurytype')||4;
     
@@ -83,50 +88,34 @@ const initApp = function(apiContent){
     $ariaLive.innerText = 'Loading dashboard data';
     Promise.all(
       [vs.getModeOfTravelByYear({from:lastFiveYear, to:2019, INJURY_TYPE:type}).then(res=>{
-        var content;
-        var widget = document.getElementById('card-detail--ksi');
+        let content;
+        let now = moment().format('YYYY');
+        let widget = document.getElementById('card-detail--ksi');
         content = apiContent['ksi-data'][4];
         widget.chartTitle = type==4?'Fatalities By Road User':'Seriously Injured By Road User';
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('caption', res.chartOptions.caption );
         widget.data = res;
-      }),  
-      vs.getModeOfTravelByYear({from:2019, to:2019, INJURY_TYPE:type}).then(res=>{
-        var content;
-        var to = moment().format('YYYY');
-        var from = moment().format('YYYY');
 
-        
+
+        /* Set the titles and default values */
+        let total = 0;
         for(var i = 0; i < 4; i++){
-          var widget = document.getElementById(`card-detail--${i}`);
-          var total = 0;
-          widget.chartTitle = `${widget.chartTitle} (${to})`;
-          widget.setAttribute('caption', res.chartOptions.caption );
-          widget.setAttribute('chart-value', total.toString().formatNumber());
+          let widgeta = document.getElementById(`card-detail--${i}`);
+          widgeta.chartTitle = `${widgeta.chartTitle} (${now})`;
         }
-        
-
-        res.chartData.datasets.map((dataset,ndx)=>{
-          var total = 0;
-          if(dataset.label === 'Motorist') ndx=0;
-          if(dataset.label === 'Pedestrian') ndx=1;
-          if(dataset.label === 'Cyclist') ndx=2;
-          if(dataset.label === 'Motorcyclist') ndx=3;
-          
-
-          if(dataset.label === 'Pedestrian') console.log('Pedestrian',dataset);
 
 
-          var widget = document.getElementById(`card-detail--${ndx}`);
+        res.chartData.datasets.forEach((dataset,ndx)=>{
+          let widget = document.getElementById(`card-detail--${ndx}`);
           content = apiContent['ksi-data'][ndx];
-          dataset.data.map(val=>{ total += val; });
-          widget.chartTitle = `${widget.chartTitle}`;
+          total = dataset.data[ dataset.data.length-1 ]||0;
+          //widget.chartTitle = `${dataset.label} (${now})`;
           widget.setAttribute('caption', res.chartOptions.caption );
           widget.setAttribute('chart-colour', content.colour);
           widget.setAttribute('chart-value', total.toString().formatNumber());
-
         })
-      })
+      }),
     ]).then(res=>{
       $ariaLive.innerText = 'Finished loading dashboard data';
     }).catch(err=>{
@@ -140,6 +129,10 @@ const initApp = function(apiContent){
   }
 
 
+
+  /*
+    LOAD SUBPAGE
+  */
 
   if( $container.parent().data('page') ){
     var page = $container.parent().data('page');
@@ -236,6 +229,9 @@ const initApp = function(apiContent){
 
   
 
+  /*
+  LOAD MAIN PAGE
+  */
   if( !$container.parent().data('page') && !$container.parent().data('page-ksi')  ){
     $ariaLive.innerText = 'Loading dashboard data';
   Promise.all(
@@ -261,6 +257,8 @@ const initApp = function(apiContent){
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
       
+
+
       vs.getFatalitiesData({from:2019,to:2019}).then(res=>{
         var content = apiContent['general-data'][8];
         var widget = document.getElementById('card-00');

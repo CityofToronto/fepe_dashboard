@@ -22,18 +22,17 @@ let options = {
   //You can add environment-specific vars or general vars
   preprocessorContext: {
     local: {
-      SOME_ENV: 'SOME_ENV will have this value in the local build environment'
+      DATA_SRC: '/data/some_data.json'
     },
     dev: {
-      SOME_ENV: 'SOME_ENV will have this value in the dev build environment'
+      DATA_SRC: '/app_content/tpp_measures/'
     },
     qa: {
-      SOME_ENV: 'SOME_ENV will have this value in the qa build environment'
+      DATA_SRC: '/app_content/tpp_measures/'
     },
     prod: {
-      SOME_ENV: 'SOME_ENV will have this value in the prod build environment'
+      DATA_SRC: '/app_content/tpp_measures/'
     },
-    SOME_OTHER_ENV: 'this var will be in the context of any environment'
   },
 
   //If you want to override the environment that the build process uses, specify it here
@@ -79,7 +78,8 @@ core.embeddedApp.createTasks(gulp, options);
 // });
 
 gulp.task('_data', () => {
-  let cotuiDEVPath = '/resources/cdn/cotui/cotui';
-  //gulp.src(['node_modules/cotui/dist/cotui/**/*']).pipe(gulp.dest('dist' + cotuiDEVPath));
+  let cotuiDEVPath = '/resources/cdn/cotui';
+  let dataSrc = '/data';
   gulp.src(['/usr/local/node_apps/toronto_ca/cot-apps/COT_UI/dist/cotui/**/*']).pipe(gulp.dest('dist' + cotuiDEVPath));
+  gulp.src(['src/data/**/*']).pipe(gulp.dest('dist' + dataSrc));
 })

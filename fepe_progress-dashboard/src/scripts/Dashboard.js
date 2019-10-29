@@ -5,6 +5,35 @@ class Dashboard{
       this.data = new this.Model();
     }
 
+    getDateRange(period){
+      let months = moment.months()
+      switch(period.toLowerCase()){
+        case 'season':
+          let seasonTemp = [...months];
+              seasonTemp.pop();
+              seasonTemp.unshift('December');
+          return {
+             winter: seasonTemp.slice(0,3),
+             spring: seasonTemp.slice(3,6),
+             summer: seasonTemp.slice(6,9),
+             fall: seasonTemp.slice(9,12)
+          }
+          break;
+        case 'quarter':
+            let quarterTemp = [...months];
+            return {
+                q1: quarterTemp.slice(0,3),
+                q2: quarterTemp.slice(3,6),
+                q3: quarterTemp.slice(6,9),
+                q4: quarterTemp.slice(9,12)
+            }
+            break;
+        default:
+            return months;
+            break;
+      }
+    }
+
     calculateCumulativeData(_dataset,id){
       var b = [null];
       var sum = 0;
@@ -26,11 +55,105 @@ class Dashboard{
       }];
     }
 
+    startRouter() {
+      new (Backbone.Router.extend({
+        routes: {
+          "": () => {
+            document.getElementById('master').classList.remove('hide')
+            document.getElementById('detail').classList.add('hide')
+            document.querySelector('.dashboard__nav').classList.remove('hide')
+          },
+          "detail": (s) => {
+            document.getElementById('master').classList.add('hide')
+            document.getElementById('detail').classList.remove('hide')    
+            document.querySelector('.dashboard__nav').classList.add('hide')
+          },
+          "detail/:id": (id) => {
+            let cached = localStorage.getItem('HousingDashboardData');
+            let panel = JSON.parse(cached).find(d=>d.id==id);
+            let similarPanels = [];
+            
+            JSON.parse(cached).forEach(d=>{
+              if(d.category.includes(panel.category[0])){
+                similarPanels.push(d)
+              }
+            });
+
+            let $widget = document.getElementById('pothole-bar1');
+            let $notes = document.querySelector('.dashboard__notes');
+            let $title = document.querySelector('.dashboard__detail--title')
+            let $chartTitle = document.querySelector('.dashboard__chart--title');
+            let $description = document.querySelector('.dashboard__detail--description');
+            let $mightBeInterestedIn = document.querySelector('.dashboard__content--navigation select');
+
+            let data = {
+              chartData:{
+                labels: panel.data.labels,
+                datasets: panel.data.datasets
+              }
+            }
+            
+            $title.innerText =  panel.category.toString();
+            $widget.yAxisLabel = "Total Units";
+            $widget.xAxisLabel = "Year";
+            $widget.chartTitle = panel.label;
+            $widget.data = data;
+
+            $chartTitle.innerText = panel.label;
+            $description.innerHTML = panel.description;
+            $notes.innerHTML = panel.body;
+
+            $mightBeInterestedIn.innerHTML = ''
+            similarPanels.forEach(panel=>{
+              $mightBeInterestedIn.innerHTML += `<option>${panel.label}</option>`
+            });
+
+
+           document.querySelectorAll('[name=options]').forEach(radio=>{
+             radio.parentElement.addEventListener('click',evt=>{
+              var dash = new HousingDashboard()
+              dash.getHousingData(evt.target.innerText.toLowerCase()).then(res=>{
+                let results = res.filter(res=>res.id == panel.id)[0];
+                let data = {
+                  chartData:{
+                    labels: results.data.labels,
+                    datasets: results.data.datasets
+                  }
+                }
+
+                if(data) $widget.data = data;
+                
+              });
+              
+             });
+           })
+
+            
+
+            document.getElementById('master').classList.add('hide')
+            document.getElementById('detail').classList.remove('hide')
+            document.querySelector('.dashboard__nav').classList.add('hide')
+          }
+        }
+      }))();
+      Backbone.history.start();
+    }
+
     Model(){
       return{
         meta:{
           title:'',
           enableSearch: true,
+          filters:{
+            display: true,
+            label:'Filter Indicators',
+            options:[{
+              label:'Select Category',
+              options:[{
+                label:''
+              }]
+            }]
+          },
           cssGrid:{
             master:{
               'grid-template-columns': '40px 50px auto 50px 40px',
@@ -53,7 +176,8 @@ class Dashboard{
               'grid-row-start': 'row1-start',
               'grid-row-end': '3'
             }
-          }]
+          }],
+          
         },
         panels:[{
             id:'panel-0000',
@@ -427,6 +551,7 @@ class Dashboard{
       }
     }
 
+    /*
     search(term){
       var options = {
         shouldSort: true,
@@ -447,4 +572,5 @@ class Dashboard{
 
       console.log(results);
     }
+    */
   }
