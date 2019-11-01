@@ -416,7 +416,7 @@ class VisionZero{
         pedestrian:['03','17','19','20'],//#e6194b
         cyclist:['04','05','21'],//#3cb44b
         motorcyclist:['06','07','08','09'],//#ffe119
-        other:['99']//#4363d8
+        //other:['99']//#4363d8
       }
       
       const INJURY = (type)=>{
@@ -1266,6 +1266,7 @@ TODO: SPLIT into TWO DATASETS
 */
 
 
+
     getTrafficSignalData({from=2016,to=2019}){
       /*-- /* MERGED WITH PedstrianCrossover */
       const URI = `https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_SAFETY_MEASURE_POINT/FeatureServer/0/query?where=DT BETWEEN date'${moment(new Date(from,0,1)).format('YYYY-MM-DD')}' AND CURRENT_DATE%20AND%20SAFETY_PROGRAM_TYPE%20IN%20(%27Traffic%20Signals%27%2C%27Pedestrian%20Crossovers%27)&outSr=4326&outFields=*&orderByFields=DT&f=geojson`;
@@ -1276,6 +1277,9 @@ TODO: SPLIT into TWO DATASETS
         var labels = [];
         var label = '';
         var dtObj = {};
+
+        var tempData = {};
+        
 
         console.debug('getTrafficSignalData', res);
         if(res.features.length == 0) return Promise.resolve({
@@ -1291,27 +1295,47 @@ TODO: SPLIT into TWO DATASETS
         const totalResults = res.features.length;
         lastModified = new Date(res.features[totalResults-1].properties.DT);
 
-        res.features.map(({properties}=feature)=>{
+        res.features.map(({properties}=feature,ndx)=>{
           label = 'Traffic Signals & Pedestrian Crossovers'||properties.SAFETY_PROGRAM_TYPE;
           //labels.push(properties.STREET);
           var dt = new Date(properties.DT)
           var date = dt.getUTCFullYear()
           
           if(dtObj.hasOwnProperty(date)){
-            dtObj[date] += 1;
+            dtObj[date] += 1
           } else {
             labels.push(date);
-            dtObj[date] = 1;
-          }  
+            dtObj[date] = 1
+          }
+          
+          if(tempData.hasOwnProperty(properties.SAFETY_PROGRAM_TYPE)){
+
+            
+            if(tempData[properties.SAFETY_PROGRAM_TYPE].hasOwnProperty(date)){
+              tempData[properties.SAFETY_PROGRAM_TYPE][date] += 1;
+            } else {
+              tempData[properties.SAFETY_PROGRAM_TYPE][date] = 1;
+            }
+
+          } else {
+            tempData[properties.SAFETY_PROGRAM_TYPE] = {};
+            tempData[properties.SAFETY_PROGRAM_TYPE][date] = 1;
+          }
+          
+          
         })
 
-        for(var date in dtObj){
+        
+               
+        for(var date in dtObj){ 
           data.push({
             t:date,
-            y:dtObj[date]
+            y:dtObj[date],
           })
         }
         
+
+
         labels.sort(function(a,b){
           return a-b
         })
@@ -1322,9 +1346,30 @@ TODO: SPLIT into TWO DATASETS
           var dateA = new Date(at[0],at[1],at[2]);
           var dateB = new Date(bt[0],bt[1],bt[2])
           return dateA-dateB
-        })
+        })        
         
-        datasets.push({ label, data ,backgroundColor:"#165788"})
+        //datasets.push({ label, data ,backgroundColor:"#165788"})
+
+        var pos = 0;
+        for(var obj in tempData){
+          var tLabel = obj;
+          var tData = [];
+          
+
+          for (var objData in tempData[obj]){
+            var ndx = labels.findIndex(v=>v==objData);
+            tData[ndx] = ({
+              t:objData,
+              y:tempData[obj][objData],
+            })
+          }
+
+          console.log(pos)
+          var backgroundColor = datasets.length<1?"#165788":"#CC883A";
+          datasets.push({ label: tLabel, data:tData ,backgroundColor})
+          ndx++;
+        }
+
         
         return Promise.resolve({
           chartOptions:{

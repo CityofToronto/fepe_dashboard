@@ -76,7 +76,7 @@ const initApp = function(apiContent){
   LOAD KSI PAGEs
   
   */
-  if( !$container.parent().data('page-ksi') ){
+  if( $container.parent().data('page-ksi') ){
     var page = $container.parent().data('page-ksi');
     var type = $container.parent().data('injurytype')||4;
     
@@ -157,7 +157,12 @@ const initApp = function(apiContent){
           let widget = document.getElementById('card-detail--current');
           let total = 0;
           content = apiContent['single-data'][0];
-          if(res.chartData.datasets.length > 0) res.chartData.datasets[0].data.map(val=>{ total += val.y; });
+          //if(res.chartData.datasets.length > 0) {
+            res.chartData.datasets.forEach(d=>{
+              console.log(d)
+              d.data.map(val=>{ total += val.y; });
+            })
+          //}
 
           if(page === 'getRedLightCameraData' || page === 'getLEDBlankoutSignData' || page === 'getAudiblePedestrianSignalData'){
             widget.chartTitle = 'Intersection Installs in 2019';
@@ -165,6 +170,9 @@ const initApp = function(apiContent){
             widget.chartTitle = content.title;
           }
           lastUpdated = res.chartOptions.caption;
+
+        
+
           widget.setAttribute('chart-value', total.toString().formatNumber());
           widget.setAttribute('caption', lastUpdated );
           return res;
