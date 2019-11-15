@@ -41,6 +41,11 @@ $(function () {
     $widget.data = res;
   });
 
+  toronto311Data.getContactCentreData('setTwo').then(res=>{
+    let $widget = $('#js-channel-useage')[0];
+    $widget.data = res;
+  });
+
   /* Maximize Self Service */
   toronto311Data.getServiceRequestsData('setOne').then(res=>{
     let $widget = $('#maximize-self-service__a')[0];

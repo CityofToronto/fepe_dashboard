@@ -24,54 +24,44 @@ See examples below in the boilerplate code
 <div id="text-decrease"></div>
 
 <div id="feis_cxupdate_container">
-    
     <cotui-tabs id="js-view" selected="summary" label="Charts Showing Potholes Filled"  class="col-md-12">
         <div data-label="Summary" id="summary">
           <div>
               <div class="row">
                   <div class="col-md-12">
                       <h2>Contact Summary and Metrics</h2>
-                  </div>
-              
-                  <div class="col-md-12">
-                    <div class="row">
-                      <div class="col-md-4" style="margin-bottom: 1em; height: 130px;">
-                        <cotui-chart id="contact-center0"  chart-type="card" chart-value="$11.64" caption="as of August ended" chart-colour="#d0d3d5" chart-title="Cost per contact phone"></cotui-chart>
-                      </div>
-                      <div class="col-md-4" style="margin-bottom: 1em; height: 130px;">
-                        <cotui-chart id="contact-center1"  chart-type="card"  chart-value="$0.51" caption="as of August ended" chart-colour="#d0d3d5" chart-title="Cost per online transaction"></cotui-chart>
-                      </div>
-                      <div class="col-md-4" style="margin-bottom: 1em; height: 130px;">
-                        <cotui-chart id="contact-center1"  chart-type="card"  chart-value="6.5%" caption="as of August ended" chart-colour="#d0d3d5" chart-title="Abandonment Rate for Jan to Aug"></cotui-chart>
-                        </div>
-                    </div>
-                  </div>
-               
+                  </div>              
                   <div class="col-md-6">
                     <div class="panel panel-default">
-                      <div class="panel-heading">Contact Centre</div>
+                      <div class="panel-heading">Phone</div>
+                      <cotui-chart id="contact-center0"  chart-type="card"  card-style="option1" chart-colour="#fff" chart-value="$11.64" caption="as of August ended" chart-colour="#d0d3d5" chart-title="Cost per contact phone"></cotui-chart>
+                      <hr />
                       <div class="panel-body">
-                        <cotui-chart id="contact-center" chart-type="bar" legend-label="Installations By Quarter" chart-stacked="false" chart-title="311 Contact Centre Summary" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                        <cotui-chart id="contact-center" style="height: 400px;" chart-type="line" chart-title-hide legend-label="Installations By Quarter" chart-stacked="true" chart-title="311 Contact Centre Summary" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
                       </div>
                     </div>     
                   </div>
                   <div class="col-md-6">
-              
-              
                     <div class="panel panel-default">
-                      <div class="panel-heading">Public Online Knowledge Base Views</div>
+                      <div class="panel-heading">Online</div>
+                      <cotui-chart id="contact-center1" style="height: 400px;"  chart-type="card" card-style="option1" chart-colour="#fff" chart-value="$0.51" caption="as of August ended" chart-colour="#d0d3d5" chart-title="Cost per online transaction"></cotui-chart>
+                      <hr />
                       <div class="panel-body">
-                        <cotui-chart style="height: 230px" id="online-setone" chart-type="doughnut" caption="1,731,792" chart-title="Public Online Knowledge Base Views" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                        <cotui-chart id="online-setone" style="height: 400px;" chart-type="line" caption="1,731,792" chart-title-hide  chart-title="Public Online Knowledge Base Views" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
                       </div>
                     </div>
-                    <div class="panel panel-default">
-                      <div class="panel-heading">Service Requests</div>
-                      <div class="panel-body">
-                        <cotui-chart  style="height: 240px" id="online-settwo" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
-                      </div>
-                    </div>
-
                   </div>
+
+                  <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <cotui-chart id="contact-center1"  chart-type="card"  chart-value="6.5%" caption="as of August ended" chart-colour="#d0d3d5" chart-title="Abandonment Rate for Jan to Aug"></cotui-chart>
+                        </div>
+                        <div class="col-md-4" style="margin-bottom: 1em; height: 130px;"></div>
+                        <div class="col-md-4" style="margin-bottom: 1em; height: 130px;"></div>
+                        <div class="col-md-4" style="margin-bottom: 1em; height: 130px;"></div>
+                      </div>
+                    </div>
                 </div>
           </div>
         </div>
@@ -85,12 +75,7 @@ See examples below in the boilerplate code
                       <div class="panel-heading">Take-up for Self-Serve Channels</div>
                       <div class="panel-body">Goal: Increase the % of customers using self-serve channels</div>
                       <div class="panel-body">
-                        <h3>Service Requests</h3>
-                        <cotui-chart style="height: 230px"  id="maximize-self-service__a" chart-type="doughnut" caption="1,731,792" chart-title="Takeup Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
-                      </div>
-                      <div class="panel-body">
-                        <h3>General Inquiries</h3>
-                        <cotui-chart style="height: 230px"  id="maximize-self-service__b" chart-type="doughnut" caption="1,731,792" chart-title="Public Online Knowledge Base Views" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                        <cotui-chart style="height: 500px"  id="maximize-self-service__a" chart-type="line" caption="1,731,792" chart-title="Takeup Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
                       </div>
                     </div>
                 </div>
@@ -99,14 +84,14 @@ See examples below in the boilerplate code
                     <div class="panel-heading">Availability of Services on Self-Serve Channels</div>
                     <div class="panel-body">Goal: Increase the % of customers using self-serve channels</div>
                     <div class="panel-body">
-                      <cotui-chart style="height: 230px"  id="maximize-self-service__c" chart-type="doughnut" caption="1,731,792" chart-title="Public Online Knowledge Base Views" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                      <cotui-chart style="height: 155px"  id="maximize-self-service__c" chart-type="doughnut" caption="1,731,792" chart-title="Public Online Knowledge Base Views" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
                     </div>
                   </div>
                   <div class="panel panel-default">
                     <div class="panel-heading">Evolution of Use Across Channel Mix</div>
                     <div class="panel-body">Goal: Increase the % of customers using self-serve channels</div>
                     <div class="panel-body">
-                      <cotui-chart  style="height: 240px" id="maximize-self-service__d" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                      <cotui-chart  style="height: 155px" id="maximize-self-service__d" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
                     </div>
                   </div>
                 </div>
@@ -118,38 +103,57 @@ See examples below in the boilerplate code
             <div>
               <h2>Provide Consistent Customer Service Experience</h2>
               <div class="row">
-                <div class="col-md-6">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">Phone Call Abandonment Rate</div>
-                    <div class="panel-body">Goal: Decrease the rate at which customers abandon phone customer service interactions.</div>
-                    <div class="panel-body">
-                      <cotui-chart  style="height: 240px" id="cx-availability" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Channel Useage</div>
+                        <div class="panel-body" >
+                          <cotui-chart style="height: 40vw; max-height: 40vh" id="js-channel-useage" chart-type="line" caption="1,731,792" chart-title-hide y-axislabel-hide  chart-title="Public Online Knowledge Base Views" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                        </div>
                     </div>
-                  </div>
+                    
+                </div>
+                <div class="col-md-4">
                   <div class="panel panel-default">
-                    <div class="panel-heading">Service Conversion for Online Services</div>
-                    <div class="panel-body">Goal: Increase the online Service Conversion Rate.</div>
+                    <div class="panel-heading">Wait Times</div>
                     <div class="panel-body">
-                      <cotui-chart  style="height: 240px" id="cx-availability" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                      <div class="row">
+                        <div class="col-xs-6">
+                            <cotui-chart  style="height: 240px" id="cx-availability" chart-type="card" caption="34,763" chart-title="Phone" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                        </div>
+                        <div class="col-xs-6">
+                            <cotui-chart  style="height: 240px" id="cx-availability" chart-type="card" caption="34,763" chart-title="In Person" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                        </div>
+                      </div>
                     </div>
+                    <div class="panel-footer">Goal: Decrease the rate at which customers abandon phone customer service interactions.</div>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Abandonment Rate</div>
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-xs-6">
+                            <cotui-chart  style="height: 240px" id="cx-availability" chart-type="card" caption="34,763" chart-title="Phone" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                        </div>
+                        <div class="col-xs-6">
+                            <cotui-chart  style="height: 240px" id="cx-availability" chart-type="card" caption="34,763" chart-title="In Person" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel-footer">Goal: Decrease the rate at which customers abandon phone customer service interactions.</div>
+                  </div>
+                </div>
+                <div class="col-md-4">
                   <div class="panel panel-default">
                     <div class="panel-heading">Integration of Service Hubs</div>
-                    <div class="panel-body">Goal: Increase the % completion of integrated Service Hubs.</div>
                     <div class="panel-body">
-                      <cotui-chart  style="height: 240px" id="cx-availability" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
+                      <cotui-chart  style="height: 400px" id="cx-availability" chart-type="card" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
                     </div>
-                  </div>
-                  <div class="panel panel-default">
-                    <div class="panel-heading">In-Person Wait Times</div>
-                    <div class="panel-body">Goal: Decrease the average amount of time a customer will have to wait to start an in-person customer service interaction.</div>
-                    <div class="panel-body">
-                      <cotui-chart  style="height: 240px" id="cx-availability" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
-                    </div>
+                    <div class="panel-footer">Goal: Decrease the rate at which customers abandon phone customer service interactions.</div>
                   </div>
                 </div>
+                
               </div>
             </div>
         </div>
@@ -158,7 +162,6 @@ See examples below in the boilerplate code
                 <h2>Build Trust and Confidence in City Serices</h2>
                 <div class="panel panel-default">
                   <div class="panel-heading">Customer Service Feedback</div>
-                  <div class="panel-body">Goal: Increase the % of positive customer feedback and decrease the % of dissatis-fied customers out of total customers served.</div>
                   <div class="panel-body">
                     <h3>Positive</h3>
                     <cotui-chart  style="height: 240px" id="cx-availability" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
@@ -167,6 +170,7 @@ See examples below in the boilerplate code
                     <h3>Negative</h3>
                     <cotui-chart  style="height: 240px" id="cx-availability" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
                   </div>
+                  <div class="panel-footer">Goal: Increase the % of positive customer feedback and decrease the % of dissatis-fied customers out of total customers served.</div>
                 </div>
             </div>
         </div>
@@ -175,7 +179,6 @@ See examples below in the boilerplate code
                 <h2>Optimize Customer Service Delivery in a Cost-Effective Manner</h2>
                 <div class="panel panel-default">
                   <div class="panel-heading">Cost per Transaction for 311 Service</div>
-                  <div class="panel-body">Goal: Decrease in the average cost per transaction for 311 Services across</div>
                   <div class="panel-body">
                     <h3>Phone</h3>
                     <cotui-chart  style="height: 240px" id="cx-availability" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
@@ -188,6 +191,8 @@ See examples below in the boilerplate code
                     <h3>Counter</h3>
                     <cotui-chart  style="height: 240px" id="cx-availability" chart-type="doughnut" caption="34,763" chart-title="Service Requests" x-axislabel="Quarter" y-axislabel="Total Contacts"></cotui-chart>
                   </div>
+                  <div class="panel-footer">Goal: Decrease in the average cost per transaction for 311 Services across</div>
+
                 </div>
             </div>
         </div>
