@@ -84,51 +84,37 @@ Remember to use unique element IDs and class names so that this app doesn't inte
     <div style="margin: 1em">
         <label>Filter Indicators: </label>
         <!-- Single button -->
-        <div id="theme-filter" class="btn-group">
-            <button type="button" style="width: 200px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div id="theme-filter" data-ref="category" class="btn-group filter-menu">
+            <button type="button" id="js-category-label" style="width: 200px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-active-decendent="" aria-haspopup="true" aria-controls="js-category" aria-expanded="false">
             Select Category <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" id="js-category">
-                <li><button class="btn btn-link"  data-category="all">All Categories</button></li>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="js-category-label" id="js-category">
+                <li><button class="btn btn-link"  role="menuitem" data-category="all">All Categories</button></li>
                 <li role="separator" class="divider"></li>
-                <li><button class="btn btn-link" data-category="affordability">Affordability</button></li>
-                <li><button class="btn btn-link" data-category="demographics">Demographics</button></li>
-                <li><button class="btn btn-link" data-category="employment">Employment</button></li>
-                <li><button class="btn btn-link" data-category="funding-supports">Funding-Supports</button></li>
-                <li><button class="btn btn-link" data-category="housing-homeless">Housing-Homeless</button></li>
-                <li><button class="btn btn-link" data-category="outcomes">Outcomes</button></li>
-                <li><button class="btn btn-link" data-category="supply">Supply</button></li>
             </ul>
         </div>
 
         <!-- Single button -->
-        <div id="status-filter" class="btn-group">
-            <button type="button" style="width: 200px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div id="status-filter" data-ref="status" class="btn-group filter-menu">
+            <button type="button" style="width: 200px;" id="js-status-label" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-active-decendent="" aria-haspopup="true" aria-expanded="false">
                 Select Direction <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" id="js-desired-direction">
-                <li><button type="button" class="btn btn-link" data-status="all"><i style="height: 10px; width:10px; display:inline-block; background: #f5f5f4;"></i> All</button></li>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="js-status-label" id="js-desired-direction">
+                <li><button type="button" class="btn btn-link" role="menuitem" data-status="all"><i style="height: 10px; width:10px; display:inline-block; background: #f5f5f4;"></i> All</button></li>
                 <li role="separator" class="divider"></li>
-                <li><button type="button" class="btn btn-link" data-status="positive"><i style="height: 10px; width:10px; display:inline-block; background: #208816;"></i> Positive Direction</button></li>
-                <li><button type="button" class="btn btn-link" data-status="negative"><i style="height: 10px; width:10px; display:inline-block; background: #88161f"></i> Negative Direction</button></li>
-                <li><button type="button" class="btn btn-link" data-status="stable"><i style="height: 10px; width:10px; display:inline-block; background: #F27435"></i> Stable</button></li>
-                <li><button type="button" class="btn btn-link" data-status="stable"><i style="height: 10px; width:10px; display:inline-block; background: #374047"></i> Stable</button></li>
+                
             </ul>
         </div>
 
 
         <!-- Single button -->
-        <div id="filter-population" class="btn-group">
+        <div id="filter-population" data-ref="population" class="btn-group filter-menu">
             <button type="button" style="width: 250px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Select Population Group <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" id="js-population-group">
-                <li><button type="button" class="btn btn-link" data-status="all"><i style="height: 10px; width:10px; display:inline-block; background: #f5f5f4;"></i> All</button></li>
+                <li><button type="button" class="btn btn-link" role="menuitem" data-status="all"><i style="height: 10px; width:10px; display:inline-block; background: #f5f5f4;"></i> All</button></li>
                 <li role="separator" class="divider"></li>
-                <li><button type="button" class="btn btn-link" data-status="positive"><i style="height: 10px; width:10px; display:inline-block; background: #208816;"></i> Positive Direction</button></li>
-                <li><button type="button" class="btn btn-link" data-status="negative"><i style="height: 10px; width:10px; display:inline-block; background: #88161f"></i> Negative Direction</button></li>
-                <li><button type="button" class="btn btn-link" data-status="stable"><i style="height: 10px; width:10px; display:inline-block; background: #F27435"></i> Stable</button></li>
-                <li><button type="button" class="btn btn-link" data-status="stable"><i style="height: 10px; width:10px; display:inline-block; background: #374047"></i> Stable</button></li>
             </ul>
         </div>
 

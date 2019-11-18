@@ -51,11 +51,20 @@ function debounce(func, wait, immediate) {
 
 
 let data = new HousingDashboard();
+let categories = [];
+let directions=[]
+let $filterIndicators = document.getElementById('js-category');
+let $filterDirection = document.getElementById('js-desired-direction');
+let $filterPopulation = document.getElementById('js-population-group');
 
 data.getHousingData().then(res=>{
-  console.log(res)
   localStorage.setItem('HousingDashboardData',JSON.stringify(res));
   let $dashboardBody = document.createElement('div');
+  let categoriesTemp = [];
+  let directionTemp = [];
+  let populationTemp = [];
+  let directionColor  = {};
+
   let $cards = res.forEach((result,ndx)=>{
     let icon;
     let colour;
@@ -74,12 +83,16 @@ data.getHousingData().then(res=>{
         break;
     }
 
+    directionColor[result.direction.toLowerCase()] = colour
 
+    directionTemp.push(result.direction);
+    //populationTemp.concat(result.population.flat());
+    categoriesTemp.push(...result.category.flat())
     let $card= `
     <div 
-      data-category="${result.category.toString()}" 
-      data-status="negative" 
-      data-keywords="${result.keywords.toString()}"
+      data-category="${result.category.toString().toLowerCase()}" 
+      data-status="${result.direction.toLowerCase()}" 
+      data-keywords="${result.keywords.toString().toLowerCase()}"
       id="panel-${ndx}" 
       class="card card-height">
         <cotui-chart 
@@ -99,6 +112,22 @@ data.getHousingData().then(res=>{
     $dashboardBody.innerHTML += $card;
   })
   
+  console.log(directionColor);
+
+  directions = [...new Set(directionTemp)].sort();
+  directions.forEach((status,ndx)=>{
+    let li = `<li id="${status.replace(/\s/gi,'_').toLowerCase()}-${ndx}"><button type="button" class="btn btn-link" role="menuitem" data-status="${status.toLowerCase()}"><i style="height: 10px; width:10px; display:inline-block; background: ${directionColor[status.toLowerCase()]};"></i> ${status}</button></li>`
+    $filterDirection.insertAdjacentHTML('beforeend', li);
+  })
+
+
+  categories = [...new Set(categoriesTemp)].sort();
+  categories.forEach((category,ndx)=>{
+    let li = `<li id="${category.replace(/\s/gi,'_').toLowerCase()}-${ndx}"><button class="btn btn-link" role="menuitem" data-category="${category.toLowerCase()}">${category}</button></li>`
+    $filterIndicators.insertAdjacentHTML('beforeend', li);
+  })
+
+  
   let $body = document.getElementById('master')
   while($dashboardBody.firstChild) {
     $body.appendChild($dashboardBody.firstChild);
@@ -106,7 +135,6 @@ data.getHousingData().then(res=>{
 
   return res;
 }).then(res=>{
-
   
   let list = [];
   res.forEach(result=>{
@@ -121,6 +149,7 @@ data.getHousingData().then(res=>{
 
   var options = {
     shouldSort: true,
+    includeScore: true,
     threshold: 0.5,
     location: 0,
     distance: 100,
@@ -177,52 +206,55 @@ $(document).ready(function(){
 
   dashboard.startRouter();
 
-  var themeBtn = document.querySelectorAll('#theme-filter [data-category]')
-  themeBtn.forEach(btn=>{
-    btn.addEventListener('click',evt=>{
-      var cat = evt.target.dataset.category;
-      var cards = document.querySelectorAll(`#master [data-category]`);
-        cards.forEach(card=>{ card.style.display = 'none';  })
-
-      if(cat !== 'all'){
-        var cards = document.querySelectorAll(`#master [data-category="${cat}"]`);
-        console.log(cat,cards)
-        cards.forEach(card=>{
-          card.style.display = null;
-        })
-      } else {
-        var cards = document.querySelectorAll(`#master [data-category]`);
-        cards.forEach(card=>{
-          card.style.display = null;
-        })
-      }
-      evt.preventDefault();      
-    })
-  });
-
-  var statusBtn = document.querySelectorAll('#status-filter [data-status]')
-  statusBtn.forEach(btn=>{
-    btn.addEventListener('click',evt=>{
-      var cat = evt.target.dataset.status;
-      var cards = document.querySelectorAll(`#master [data-status]`);
-        cards.forEach(card=>{ card.style.display = 'none';  })
+  // var themeBtn = document.querySelectorAll('#theme-filter [data-category]')
+  // themeBtn.forEach(btn=>{
+  //   btn.addEventListener('click',evt=>{
+  //     var cat = evt.target.dataset.category;
+  //     var cards = document.querySelectorAll(`#master [data-category]`);
+  //         cards.forEach(card=>{ card.style.display = 'none';  })
 
 
-      if(cat !== 'all'){
-        var cards = document.querySelectorAll(`#master [data-status="${cat}"]`);
-        console.log(cat,cards)
-        cards.forEach(card=>{
-          card.style.display = null;
-        })
-      } else {
-        var cards = document.querySelectorAll(`#master [data-status]`);
-        cards.forEach(card=>{
-          card.style.display = null;
-        })
-      }
-      evt.preventDefault();      
-    })
-  });
+  //     console.log(cat);
+      
+  //     if(cat !== 'all'){
+  //       var cards = document.querySelectorAll(`#master [data-category="${cat}"]`);
+  //       console.log(cat,cards)
+  //       cards.forEach(card=>{
+  //         card.style.display = null;
+  //       })
+  //     } else {
+  //       var cards = document.querySelectorAll(`#master [data-category]`);
+  //       cards.forEach(card=>{
+  //         card.style.display = null;
+  //       })
+  //     }
+  //     evt.preventDefault();      
+  //   })
+  // });
+
+  // var statusBtn = document.querySelectorAll('#status-filter [data-status]')
+  // statusBtn.forEach(btn=>{
+  //   btn.addEventListener('click',evt=>{
+  //     var cat = evt.target.dataset.status;
+  //     var cards = document.querySelectorAll(`#master [data-status]`);
+  //       cards.forEach(card=>{ card.style.display = 'none';  })
+
+
+  //     if(cat !== 'all'){
+  //       var cards = document.querySelectorAll(`#master [data-status="${cat}"]`);
+  //       console.log(cat,cards)
+  //       cards.forEach(card=>{
+  //         card.style.display = null;
+  //       })
+  //     } else {
+  //       var cards = document.querySelectorAll(`#master [data-status]`);
+  //       cards.forEach(card=>{
+  //         card.style.display = null;
+  //       })
+  //     }
+  //     evt.preventDefault();      
+  //   })
+  // });
 })
 
 

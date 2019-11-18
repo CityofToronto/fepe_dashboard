@@ -62,6 +62,105 @@ class Dashboard{
             document.getElementById('master').classList.remove('hide')
             document.getElementById('detail').classList.add('hide')
             document.querySelector('.dashboard__nav').classList.remove('hide')
+
+            let $filterMenu =  document.querySelectorAll('.filter-menu');
+            let filtered = {};
+            $filterMenu.forEach($menu=>{
+              let ref = $menu.dataset.ref;
+              let $menuBtn = $menu.firstElementChild;
+              let $menuOptions = $menu.querySelectorAll('[role=menuitem]');
+              $menuOptions.forEach($btn=>{
+                $btn.addEventListener('click',evt=>{
+                  let $li = evt.target.closest('li')
+                  $menuBtn.setAttribute('aria-active-decendent',$li.id);
+                  var cat = evt.target.dataset[ref];
+                  var cards = document.querySelectorAll(`#master [data-${ref}]`);
+                      cards.forEach(card=>{ card.hidden = null; })
+
+                  if(cat !== 'all'){
+                    let cards = document.querySelectorAll(`#master [data-${ref}]`);
+                    filtered[ref] = cat;
+                    cards.forEach(card=>{ 
+                      
+                      if(card.hidden == false){
+                        
+                        if(card.dataset[ref] !== cat) {
+                          card.hidden = true;
+                        } else{
+                          card.hidden = false;
+                        }
+                      }
+                      
+                      //card.hidden = card.getAttribute(`data-${ref}`) !== cat; 
+                    })
+                  } else {
+                    let cards = document.querySelectorAll(`#master [data-${ref}]`);
+                    filtered[ref] = null;
+                    cards.forEach(card=>{
+                      //card.hidden = null;
+                    })
+                  }
+
+
+                  evt.preventDefault();      
+                })
+              });
+
+            })
+
+
+
+            /*
+            var $themeFilterBtn = document.querySelector('#js-category-label');
+            var $themeBtns = document.querySelectorAll('#theme-filter [data-category]')
+                $themeBtns.forEach($btn=>{
+                  $btn.addEventListener('click',evt=>{
+                    let $li = evt.target.closest('li')
+                    $themeFilterBtn.setAttribute('aria-active-decendent',$li.id);
+                    var cat = evt.target.dataset.category;
+                    var cards = document.querySelectorAll(`#master [data-category]`);
+                        cards.forEach(card=>{ card.style.display = 'none';  })
+
+                    if(cat !== 'all'){
+                      var cards = document.querySelectorAll(`#master [data-category="${cat}"]`);
+                      console.log(cat,cards)
+                      cards.forEach(card=>{
+                        card.style.display = null;
+                      })
+                    } else {
+                      var cards = document.querySelectorAll(`#master [data-category]`);
+                      cards.forEach(card=>{
+                        card.style.display = null;
+                      })
+                    }
+                    evt.preventDefault();      
+                  })
+                });
+
+                var statusBtn = document.querySelectorAll('#status-filter [data-status]')
+                statusBtn.forEach(btn=>{
+                  btn.addEventListener('click',evt=>{
+                    var cat = evt.target.dataset.status;
+                    var cards = document.querySelectorAll(`#master [data-status]`);
+                      cards.forEach(card=>{ card.style.display = 'none';  })
+
+
+                    if(cat !== 'all'){
+                      var cards = document.querySelectorAll(`#master [data-status="${cat}"]`);
+                      console.log(cat,cards)
+                      cards.forEach(card=>{
+                        card.style.display = null;
+                      })
+                    } else {
+                      var cards = document.querySelectorAll(`#master [data-status]`);
+                      cards.forEach(card=>{
+                        card.style.display = null;
+                      })
+                    }
+                    evt.preventDefault();      
+                  })
+                });
+              */
           },
           "detail": (s) => {
             document.getElementById('master').classList.add('hide')

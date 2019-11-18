@@ -1,0 +1,108 @@
+//A sample main scss file. Use this as a starting point for your css.
+//Learn more about SASS here: http://sass-lang.com/guide
+@import "partial_styles"; //A sample usage of a SASS partials!
+
+$light-gray: #eee; //A sample usage of SASS variables!
+
+
+.map{
+  height: 500px;
+}
+
+.map-lg{
+  height: 600px;
+}
+
+ul.timeline {
+  list-style-type: none;
+  position: relative;
+}
+ul.timeline.list-group{
+    overflow: inherit
+}
+ul.timeline:before {
+  content: ' ';
+  background: #d4d9df;
+  display: inline-block;
+  position: absolute;
+  left: 0; /* 29px;*/
+  width: 2px;
+  height: 100%;
+  z-index: 400;
+}
+ul.timeline > li {
+  margin: 20px 0;
+  padding-left: 20px;
+}
+ul.timeline > li:before {
+  content: ' ';
+  background: white;
+  display: inline-block;
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid #22c0e8;
+  left: -10px; /*20px;*/
+  width: 20px;
+  height: 20px;
+  z-index: 400;
+}
+
+#fepe_housing_container {
+  ul.example-section-menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li {
+      padding: 0;
+      margin: 5px;
+      a {
+        display: block;
+        padding: 5px;
+        &.selected-section {
+          background-color: $light-gray;
+        }
+      }
+    }
+  }
+  .example-section {
+    display: none;
+    button {
+      margin-right: 5px;
+    }
+    &#fepe_housing_map > div {
+      height: 400px;
+      .example-map-info-box {
+        background: white;
+        margin: 10px;
+        padding: 10px;
+        div {
+          clear: both;
+        }
+      }
+    }
+  }
+}
+.custom-modal {
+  .modal-header {
+    background-color: $light-gray;
+  }
+}
+
+//Core uses https://www.npmjs.com/package/gulp-preprocess to allow for preprocessing.
+//You could include some styles based on build environment:
+/* @if ENV=='local' || ENV=='dev'*/
+.test-style {
+  color: red;
+  font-size: 36px;
+}
+/* @endif */
+
+//you could also generate selector names with preprocessar vars:
+.env-class-/* @echo ENV*/
+{
+}
+
+//IMPORTANT: you should generate all resource references with the SRC_PATH var:
+.test-background-image{
+  background-image: url(/* @echo SRC_PATH*//img/sample.jpg);
+}

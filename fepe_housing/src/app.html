@@ -1,0 +1,360 @@
+<!--
+IMPORTANT:
+Any resources from this project should be referenced using SRC_PATH preprocessor var.
+See examples below in the boilerplate code
+-->
+
+<!--
+1. HEADER
+Everything inside this cot-app:head tag will be loaded at the end of the page's HEAD tag.
+It should contain stylesheet references (and possibly other stuff) that this application requires.
+-->
+<!-- cot-app:head -->
+
+<!-- @if !IS_EMBEDDED -->
+<!-- standalone apps may want to set some meta tags in here -->
+<title>fepe_housing</title>
+<meta property="og:title" content="fepe_housing">
+<meta name="DC.title" content="fepe_housing">
+<meta name="WT.sp" content="fepe_housing">
+<meta property="og:description" content="Page Description">
+<meta name="DC.description" lang="en" content="Page Description">
+<meta name="description" content="Page Description">
+<meta name="keywords" content="Key Words">
+<meta name="Author" content="City of Toronto">
+<meta name="Owner" content="City of Toronto">
+<meta name="DC.language" content="en-CA">
+<meta name="DC.subject" content="fepe_housing">
+<meta charset="UTF-8">
+
+
+<!--@endif-->
+
+<!-- From here to the next endbuild tag, all the files will be concatenated into a single file called main.css: -->
+<!--@exec startBuildTagWithCacheBuster('styles/main.css')-->
+<!-- CoreJS uses the following core:css/endinject tag to inject bower_components stylesheet file references: -->
+<!-- core:css -->
+<!-- endinject -->
+
+<!-- place your application stylesheet references here: -->
+<link rel="stylesheet" type="text/css" href="<!-- @echo SRC_PATH -->/styles/main.css">
+
+<!-- endbuild -->
+<script>
+const COTUI  = function(){}
+</script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+
+<!-- From here to the next endbuild tag, all the files will be concatenated into a single print-only file called core_print.css: -->
+<!--@exec startBuildTagWithCacheBuster('styles/core_print.css', 'media="print"')-->
+<!-- CoreJS uses the following core_print:css/endinject tag to inject bower_components print-only stylesheet file references: -->
+<!-- core_print:css -->
+<!-- endinject -->
+
+<!-- place any application print-only stylesheet references here -->
+
+<!-- endbuild -->
+<!-- cot-app:head end-->
+
+<!--
+2. BODY
+Everything inside this cot-app:body tag will be loaded inside the webpage
+It should contain the HTML elements that make up the visual portion of this application.
+IMPORTANT:
+Remember to use unique element IDs and class names so that this app doesn't interfere with other parts of the cframe/website
+-->
+<!-- cot-app:body -->
+<div id="fepe_housing_container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div style="height: 320px; overflow: hidden; margin-bottom: 2em;">
+        <img style="width: 100%; margin-top:-200px;" src="https://images.unsplash.com/photo-1494034709105-72990d084ac5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80" />
+      </div>
+    </div>
+    <div class="col-sm-12">
+        <p>Housing Now is an initiative to activate 11 City-owned sites for the development of affordable housing within mixed-income, mixed-use, transit-oriented communities.</p>
+        <p>City Council launched the first phase of Housing Now in 2019. This phase is expected to deliver over 10,000 new residential homes, including approximately 3,700 affordable rental homes.</p>
+        <p>Housing Now is one component within the City of Toronto’s emerging HousingTO 2020-2030 Action Plan to address the full spectrum of housing issues in Toronto.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+        <p style="font-size: 200px; text-align: center;">10,377</p>
+        <p style="text-align: center;">The total number of estimated units created by 2026</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Affordable Homes by 2026</div>
+        <div class="panel-body">651</div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Est. Rental Units by 2026</div>
+        <div class="panel-body">3,708 Owned / 7,730 Rental Housing</div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Total Units by 2026</div>
+        <div class="panel-body">10,377</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>Affordable Housing Projects</h2>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="text-align: right;">
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-default active"><input type="radio" name="js-housing-map-view" id="js-view-map" checked>Map</label>
+            <label class="btn btn-default"><input type="radio" name="js-housing-map-view" id="js-view-list" >List</label>
+          </div>
+        </div>
+        <div class="panel-body map" id="js-allhousing-map" >
+          <div class="map"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">Planning / Business Case Status</div>
+        <div class="panel-body">30 Projects</div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">Projects Started</div>
+        <div class="panel-body">30 Projects</div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  
+
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>Housing Now Program</h2>
+      <p>Affordable housing within mixed-income, mixed-use and transit-oriented communities</p>
+    </div>
+    <div class="col-sm-7">
+      <div class="panel panel-default">
+        <div class="panel-heading" style="text-align: right;">
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-default active"><input type="radio" name="js-housing-map-view" id="js-view-map" checked>Map</label>
+            <label class="btn btn-default"><input type="radio" name="js-housing-map-view" id="js-view-list" >List</label>
+          </div>
+        </div>
+        <div class="panel-body" id="js-housing-map">
+          <div class="map"></div>
+        </div>
+
+        <div class="panel-body">
+          <table class="table">
+            <thead>
+              <th>Address</th>
+              <th>Estimated Number of Units</th>
+              <th>Estimated Affordable Units</th>
+              <th>Business Case</th>
+              <th>On Track</th>
+              <th>Construction Start</th>
+              <th>On Track</th>
+              <th>Estimated Move In</th>
+              <th>On Track</th>
+            </thead>
+          </table>
+        </div>
+
+        
+      </div>
+    </div>
+    <div class="col-sm-5">
+        
+
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">Property Information <button style="float:right; border:none; background: transparent;"><i class="glyphicon glyphicon-remove-circle"></i> <span class="sr-only">Close</span></button></div>
+            <div class="panel-body">
+              <h3>777 Victoria Park</h3>
+              <p>Average rents for the affordable rental units will not to exceed 80% annual CMHC Average Market Rent (AMR):</p>
+              <ul>
+                <li>At least 10% of units to be rented at 40% AMR</li>
+                <li>Deeper affordability achieved through housing allowances/rent subsidies</li>
+                <li>The sites will be offered with a priority toward long-term land leases for 99 years.</li>
+              </ul>
+            </div>
+            <ul class="list-group">
+              <li class="list-group-item"><h3>Estimated Units</h3>
+                  DOUGHNUT-CHART / 254/508
+              </li> 
+            </ul>
+
+            <div class="panel-heading">Development Timeline</div>
+            <ul class="timeline list-group">
+              <li>
+                <strong class="float-right">October 15, 2019</strong> - Business Case
+                <p>Completed</p>
+              </li>
+              <li>
+                <strong class="float-right">October 15, 2019</strong> - Market Offering/RFP
+                <p>Issued</p>
+              </li>
+              <li>
+                <strong class="float-right">2020</strong> - Construction Start
+                <p>On Track</p>
+              </li>
+              <li>
+                <strong class="float-right">2024</strong> - Estimated Move In
+                <p>Slight Delay</p>
+              </li>
+              <li><p>&nbsp;</p></li>
+            </ul>
+          </div>
+    </div>
+
+  </div>
+
+
+  <div class="row">
+      <div class="col-sm-12">
+        <h2>Affordable Rental Housing</h2>
+        <p>Active affordable rental housing devlopments</p>
+      </div>
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-4">
+              <div class="panel panel-default">
+                <div class="panel-heading"># of active affordable rental developments</div>
+                <div class="panel-body">3,708</div>
+              </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading"># of projects in pre-construction</div>
+              <div class="panel-body">10,377</div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading"># of active developments under construction in 2019</div>
+              <div class="panel-body">10,377</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+              <div class="panel panel-default">
+                <div class="panel-heading"># of affordable rental units in development</div>
+                <div class="panel-body">3,708</div>
+              </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading"># of affordable rental units in pre-construction</div>
+              <div class="panel-body">10,377</div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading"># of affordablerental units under construction in 2019</div>
+              <div class="panel-body">10,377</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-9">
+        <div class="panel panel-default">
+          <div class="panel-heading" style="text-align: right;">
+            <div class="btn-group">
+              <button type="menu" class="btn btn-primary">Map</button>
+              <button type="menu" class="btn btn-default">List</button>
+            </div>
+          </div>
+          <div id="js-rental-housing-map" class="panel-body">
+            <div class="map-lg"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">Rental Property Details</div>
+          <div class="panel-body"><h1>6<small>units</small></h1></div>
+          <div class="panel-body">
+            <p>Mynikker Holdings Inc.</p>
+            <p>Address: 30 Cosburn Ave</p>
+            <p>Incentives Approval: Oct 17</p>
+            <p>Planning Status: Completed</p>
+            <p>Construction Start: 2018-04-03</p>
+            <p>Project Completion: 2018-01-03</p>
+          </div>
+          
+          <ul class="list-group">
+            <li class="list-group-item">
+              <h3>City Open Door Incentive</h3>
+              DOUGHNUT-CHART / 210000/481046105.70
+            </li>
+            <li class="list-group-item">
+              <h3>City Capital Funding</h3>
+              DOUGHNUT-CHART / 0/109931150.90
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">New Affordable Rental Homes Approved and Completed</div>
+          <div class="panel-body">3,708</div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">New Affordable Rental Homes Approved and Completed</div>
+          <div class="panel-body">3,708</div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- cot-app:body end-->
+
+<!--
+3. FOOTER
+Everything inside the cot-app:footer tag will be loaded at the end of the page's BODY tag.
+It should contain script references that this application requires.
+-->
+<!-- cot-app:footer -->
+
+<!-- From here to the next endbuild tag, all the files will be concatenated into a single file called main.js: -->
+<!--@exec startBuildTagWithCacheBuster('scripts/main.js')-->
+<!-- CoreJS uses the following core:js/endinject tag to inject bower_components javascript file references: -->
+<!-- core:js -->
+<!-- endinject -->
+
+<!-- place your application script references here: -->
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/example_form.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/example_app.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/main.js"></script>
+
+<!-- endbuild -->
+
+<!--@if ENV!='prod'-->
+<!-- Here we log out some debug info for non-production builds-->
+
+<script type="text/javascript">
+  console.log('fepe_housing running on <!--@echo ENV--> environment');
+  console.log('fepe_housing qa release: <!--@echo QA_RELEASE-->');
+  console.log('fepe_housing build: <!--@echo BUILD_ID-->');
+</script>
+<!--@endif-->
+
+<!-- cot-app:footer end-->
