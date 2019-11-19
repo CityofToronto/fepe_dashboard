@@ -40,9 +40,6 @@ It should contain stylesheet references (and possibly other stuff) that this app
 <link rel="stylesheet" type="text/css" href="<!-- @echo SRC_PATH -->/styles/main.css">
 
 <!-- endbuild -->
-<script>
-const COTUI  = function(){}
-</script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 
@@ -73,42 +70,74 @@ Remember to use unique element IDs and class names so that this app doesn't inte
         <img style="width: 100%; margin-top:-200px;" src="https://images.unsplash.com/photo-1494034709105-72990d084ac5?ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80" />
       </div>
     </div>
-    <div class="col-sm-12">
-        <p>Housing Now is an initiative to activate 11 City-owned sites for the development of affordable housing within mixed-income, mixed-use, transit-oriented communities.</p>
-        <p>City Council launched the first phase of Housing Now in 2019. This phase is expected to deliver over 10,000 new residential homes, including approximately 3,700 affordable rental homes.</p>
-        <p>Housing Now is one component within the City of Toronto’s emerging HousingTO 2020-2030 Action Plan to address the full spectrum of housing issues in Toronto.</p>
-    </div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-12">
-        <p style="font-size: 200px; text-align: center;">10,377</p>
-        <p style="text-align: center;">The total number of estimated units created by 2026</p>
+
+  <div class="row" id="js-page-01">
+      <div class="col-sm-12">
+        <h2>Affordable Housing Initiatives</h2>
+      </div>
+      <div class="col-sm-12">
+        <div class="media" style="margin-bottom: 2em;">
+          <div style="float: left; margin-right: 1em; overflow: hidden; height: 240px;">
+            <a href="#">
+              <img class="media-object" style="width:320px;" src="https://images.unsplash.com/photo-1534714259038-764cb4cf1d58?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3150&q=80" alt="...">
+            </a>
+          </div>
+          <div class="media-body">
+            <h3>Housing Now Dashboard</h4>
+            <p>Housing Now is an initiative to activate 11 City-owned sites for the development of affordable housing within mixed-income, mixed-use, transit-oriented communities.</p>
+            <p>City Council launched the first phase of Housing Now in 2019. This phase is expected to deliver over 10,000 new residential homes, including approximately 3,700 affordable rental homes.</p>
+            <a href="#page/page-03" class="btn btn-default">View Housing Now Dashboard</a>
+          </div>
+        </div>
+        <div class="media" style="margin-bottom: 2em;">
+          <div style="float: left; margin-right: 1em; overflow: hidden; height: 240px;">
+            <a href="#">
+              <img class="media-object"  style="width:320px; margin-top: -50px;" src="https://images.unsplash.com/photo-1489418466200-66b3e49c9e5c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1300&q=80" alt="...">
+            </a>
+          </div>
+          <div class="media-body">
+            <h3>Affordable Rental Development Dashboard</h4>
+            <p>Toronto City Council approved the Open Door Affordable Housing Program in 2016 to accelerate affordable housing construction by providing City financial contributions including capital funding and fees and property tax relief, fast-tracking planning approvals, and activating surplus public land.</p>
+            <a href="#page/page-04" class="btn btn-default">View Affordable Rental Development Dashboard</a>
+          </div>
+        </div>
+      </div>
+ 
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+          <div class="panel-heading">Rental Units by 2026</div>
+          <div class="panel-body">
+            <cotui-chart  style="height: 240px" id="js-units--ownedrented" chart-type="doughnut" caption="34,763" chart-title="Total Estimated Units" x-axislabel="Units" y-axislabel="Total Units"></cotui-chart>   
+          </div>
+          <div class="panel-footer"><small>* Estimated</small></div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">Availability By Year</div>
+        <div class="panel-body">
+          <cotui-chart style="height: 240px" id="js-units-by-year" chart-type="bar" chart-stacked="true" chart-title-hide chart-title="Estimated Availability By Year" x-axislabel="Year" y-axislabel="Total Units/Homes"></cotui-chart>
+        </div>
+        <div class="panel-footer"><small>* Estimated</small></div>
+      </div>
+    </div>
+ 
+    <div class="col-sm-4">
+      <cotui-chart style="height: 240px" id="js-units-by-year" chart-colour="#E48B69" chart-type="card" chart-title="# of active affordable rental developments" x-axislabel="Year" y-axislabel="Total Units/Homes"></cotui-chart>
+    </div>
+    <div class="col-sm-4">
+      <cotui-chart style="height: 240px" id="js-units-by-year" chart-colour="#E48B69" chart-type="card" chart-title="# of projects in pre-construction" x-axislabel="Year" y-axislabel="Total Units/Homes"></cotui-chart>
+    </div>
+    <div class="col-sm-4">
+      <cotui-chart style="height: 240px" id="js-units-by-year" chart-colour="#E48B69" chart-type="card" chart-title="# of projects in pre-construction" x-axislabel="Year" y-axislabel="Total Units/Homes"></cotui-chart>
     </div>
   </div>
+  
 
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">Affordable Homes by 2026</div>
-        <div class="panel-body">651</div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">Est. Rental Units by 2026</div>
-        <div class="panel-body">3,708 Owned / 7,730 Rental Housing</div>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">Total Units by 2026</div>
-        <div class="panel-body">10,377</div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
+  <div class="row" id="js-page-02" hidden>
     <div class="col-sm-12">
       <h2>Affordable Housing Projects</h2>
     </div>
@@ -116,8 +145,8 @@ Remember to use unique element IDs and class names so that this app doesn't inte
       <div class="panel panel-default">
         <div class="panel-heading" style="text-align: right;">
           <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-default active"><input type="radio" name="js-housing-map-view" id="js-view-map" checked>Map</label>
-            <label class="btn btn-default"><input type="radio" name="js-housing-map-view" id="js-view-list" >List</label>
+            <label class="btn btn-default active"><input type="radio" name="js-view--a" id="js-view-map" checked>Map</label>
+            <label class="btn btn-default"><input type="radio" name="js-view--a" id="js-view-list" >List</label>
           </div>
         </div>
         <div class="panel-body map" id="js-allhousing-map" >
@@ -126,6 +155,9 @@ Remember to use unique element IDs and class names so that this app doesn't inte
       </div>
     </div>
     <div class="col-sm-6">
+      <div class="panel panel-default">
+          <cotui-chart  style="height: 240px" id="js-units" chart-type="pie" chart-stacked="true" chart-title="Units/Home By City Initiative" x-axislabel="Initiative" y-axislabel="Total Units/Homes"></cotui-chart>
+      </div>
       <div class="panel panel-default">
         <div class="panel-heading">Planning / Business Case Status</div>
         <div class="panel-body">30 Projects</div>
@@ -143,60 +175,59 @@ Remember to use unique element IDs and class names so that this app doesn't inte
   
 
 
-  <div class="row">
+  <div class="row" id="js-page-03" hidden>
     <div class="col-sm-12">
       <h2>Housing Now Program</h2>
       <p>Affordable housing within mixed-income, mixed-use and transit-oriented communities</p>
     </div>
-    <div class="col-sm-7">
+    <div class="col-sm-12" id="js-housing-property-master">
       <div class="panel panel-default">
         <div class="panel-heading" style="text-align: right;">
           <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-default active"><input type="radio" name="js-housing-map-view" id="js-view-map" checked>Map</label>
-            <label class="btn btn-default"><input type="radio" name="js-housing-map-view" id="js-view-list" >List</label>
+            <label class="btn btn-default active"><input type="radio" name="js-view--b" id="js-view-map" aria-controls="js-housing-map" checked>Map</label>
+            <label class="btn btn-default"><input type="radio" name="js-view--b" id="js-view-list" aria-controls="js-housing-list">List</label>
           </div>
         </div>
         <div class="panel-body" id="js-housing-map">
           <div class="map"></div>
         </div>
 
-        <div class="panel-body">
-          <table class="table">
-            <thead>
-              <th>Address</th>
-              <th>Estimated Number of Units</th>
-              <th>Estimated Affordable Units</th>
-              <th>Business Case</th>
-              <th>On Track</th>
-              <th>Construction Start</th>
-              <th>On Track</th>
-              <th>Estimated Move In</th>
-              <th>On Track</th>
-            </thead>
-          </table>
+        <table class="table" id="js-housing-list" hidden>
+          <thead>
+            <th>Address</th>
+            <th>Estimated Number of Units</th>
+            <th>Estimated Affordable Units</th>
+            <th>Business Case</th>
+            <th>On Track</th>
+            <th>Construction Start</th>
+            <th>On Track</th>
+            <th>Estimated Move In</th>
+            <th>On Track</th>
+          </thead>
+        </table>
+        
+        <div class="panel-footer">
+          <p>Average rents for the affordable rental units will not to exceed 80% annual CMHC Average Market Rent (AMR):</p>
+          <ul>
+            <li>At least 10% of units to be rented at 40% AMR</li>
+            <li>Deeper affordability achieved through housing allowances/rent subsidies</li>
+            <li>The sites will be offered with a priority toward long-term land leases for 99 years.</li>
+          </ul>
         </div>
-
-        
       </div>
+      
     </div>
-    <div class="col-sm-5">
-        
-
-        
+    <div class="col-sm-3" id="js-housing-property-detail" hidden>
+                
         <div class="panel panel-default">
-            <div class="panel-heading">Property Information <button style="float:right; border:none; background: transparent;"><i class="glyphicon glyphicon-remove-circle"></i> <span class="sr-only">Close</span></button></div>
+            <div class="panel-heading">Property Information <button class="btn btn-cancel" style="float:right; border:none; background: transparent;"><i class="glyphicon glyphicon-remove-circle"></i> <span class="sr-only">Close</span></button></div>
             <div class="panel-body">
-              <h3>777 Victoria Park</h3>
-              <p>Average rents for the affordable rental units will not to exceed 80% annual CMHC Average Market Rent (AMR):</p>
-              <ul>
-                <li>At least 10% of units to be rented at 40% AMR</li>
-                <li>Deeper affordability achieved through housing allowances/rent subsidies</li>
-                <li>The sites will be offered with a priority toward long-term land leases for 99 years.</li>
-              </ul>
+              <h2>777 Victoria Park</h2>
             </div>
             <ul class="list-group">
-              <li class="list-group-item"><h3>Estimated Units</h3>
-                  DOUGHNUT-CHART / 254/508
+              <li class="list-group-item">
+                <h3 class="sr-only">Estimated Units</h3>
+                <cotui-chart  style="height: 240px" id="js-housingnow-units" chart-type="doughnut" caption="34,763" chart-title="Total Estimated Units" x-axislabel="Units" y-axislabel="Total Units"></cotui-chart>
               </li> 
             </ul>
 
@@ -226,64 +257,48 @@ Remember to use unique element IDs and class names so that this app doesn't inte
   </div>
 
 
-  <div class="row">
+  <div class="row" id="js-page-04" hidden>
       <div class="col-sm-12">
         <h2>Affordable Rental Housing</h2>
         <p>Active affordable rental housing devlopments</p>
       </div>
-      <div class="col-sm-12">
-        <div class="row">
-          <div class="col-sm-4">
-              <div class="panel panel-default">
-                <div class="panel-heading"># of active affordable rental developments</div>
-                <div class="panel-body">3,708</div>
-              </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="panel panel-default">
-              <div class="panel-heading"># of projects in pre-construction</div>
-              <div class="panel-body">10,377</div>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="panel panel-default">
-              <div class="panel-heading"># of active developments under construction in 2019</div>
-              <div class="panel-body">10,377</div>
-            </div>
+      <div class="col-sm-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">New Affordable Rental Homes Approved and Completed</div>
+            <div class="panel-body">3,708</div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-sm-4">
-              <div class="panel panel-default">
-                <div class="panel-heading"># of affordable rental units in development</div>
-                <div class="panel-body">3,708</div>
-              </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="panel panel-default">
-              <div class="panel-heading"># of affordable rental units in pre-construction</div>
-              <div class="panel-body">10,377</div>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="panel panel-default">
-              <div class="panel-heading"># of affordablerental units under construction in 2019</div>
-              <div class="panel-body">10,377</div>
-            </div>
+        <div class="col-sm-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">New Affordable Rental Homes Approved and Completed</div>
+            <div class="panel-body">3,708</div>
           </div>
         </div>
-      </div>
+
       <div class="col-sm-9">
         <div class="panel panel-default">
           <div class="panel-heading" style="text-align: right;">
-            <div class="btn-group">
-              <button type="menu" class="btn btn-primary">Map</button>
-              <button type="menu" class="btn btn-default">List</button>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default active"><input type="radio" name="js-view--c" id="js-view-map" aria-controls="js-rental-housing-map" checked>Map</label>
+              <label class="btn btn-default"><input type="radio" name="js-view--c" id="js-view-list" aria-controls="js-rental-housing-list" >List</label>
             </div>
           </div>
           <div id="js-rental-housing-map" class="panel-body">
             <div class="map-lg"></div>
           </div>
+          <table class="table" id="js-rental-housing-list" hidden>
+            <thead>
+              <th>Address</th>
+              <th>Estimated Number of Units</th>
+              <th>Estimated Affordable Units</th>
+              <th>Business Case</th>
+              <th>On Track</th>
+              <th>Construction Start</th>
+              <th>On Track</th>
+              <th>Estimated Move In</th>
+              <th>On Track</th>
+            </thead>
+          </table>
         </div>
       </div>
       <div class="col-sm-3">
@@ -301,28 +316,13 @@ Remember to use unique element IDs and class names so that this app doesn't inte
           
           <ul class="list-group">
             <li class="list-group-item">
-              <h3>City Open Door Incentive</h3>
-              DOUGHNUT-CHART / 210000/481046105.70
-            </li>
-            <li class="list-group-item">
-              <h3>City Capital Funding</h3>
-              DOUGHNUT-CHART / 0/109931150.90
+              <h3>City Funding Contributions</h3>
+              <cotui-chart  style="height: 240px" id="js-rental-incentive" chart-type="pie" caption="34,763" chart-title="City Funding Contributions" x-axislabel="Type" y-axislabel="Total Contribution"></cotui-chart>              </li> 
             </li>
           </ul>
         </div>
       </div>
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">New Affordable Rental Homes Approved and Completed</div>
-          <div class="panel-body">3,708</div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="panel panel-default">
-          <div class="panel-heading">New Affordable Rental Homes Approved and Completed</div>
-          <div class="panel-body">3,708</div>
-        </div>
-      </div>
+    
     </div>
 </div>
 <!-- cot-app:body end-->
@@ -341,8 +341,7 @@ It should contain script references that this application requires.
 <!-- endinject -->
 
 <!-- place your application script references here: -->
-<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/example_form.js"></script>
-<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/example_app.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/AffordableHousingData.js"></script>
 <script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/main.js"></script>
 
 <!-- endbuild -->

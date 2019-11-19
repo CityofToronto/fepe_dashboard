@@ -4,6 +4,19 @@ String.prototype.formatNumber = function() {
   var decimal = arguments[0];
   var places = arguments[1]||2;
 
+  if (n==null) {return "";}
+  n = parseFloat(n).toFixed(places);
+  var parts = n.toString().split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return parts.join(".");
+
+
+
+
+
+
+
+
   var intNum = typeof n != 'number' ? parseFloat(n.replace(/\,/g, '')) : n;
 
   if(decimal > 0)  initNum = intNum.toFixed(places);
@@ -62,42 +75,39 @@ data.getHousingData().then(res=>{
   let $dashboardBody = document.createElement('div');
   let categoriesTemp = [];
   let directionTemp = [];
-  let populationTemp = [];
-  let directionColor  = {};
+  let colourTemp = [];
 
+  console.log('DATA', res)
   let $cards = res.forEach((result,ndx)=>{
     let icon;
     let colour;
-    switch (result.direction.toLowerCase()){
-      case 'down': 
-        icon = 'glyphicon glyphicon-arrow-down';
-        colour = '#88161f';
-        break;
-      case 'up': 
-        icon = 'glyphicon glyphicon-arrow-down';
-        colour = '#208816';
-        break;
-      default: 
-        icon = 'glyphicon glyphicon-minus';
-        colour = '#374047'; 
-        break;
+    let indicator = result.direction;
+    switch (indicator.direction){
+      case 'down': icon = 'glyphicon glyphicon-arrow-down'; break;
+      case 'up': icon = 'glyphicon glyphicon-arrow-up'; break;
+      default: icon = 'glyphicon glyphicon-minus'; break;
+    }
+    switch (indicator.isPositive){
+      case -1: colour = '#88161f'; break;
+      case 1: colour = '#208816'; break;
+      case 0: colour = '#374047'; break;
     }
 
-    directionColor[result.direction.toLowerCase()] = colour
-
-    directionTemp.push(result.direction);
+    colourTemp.push(colour);
+    directionTemp.push(indicator.direction);
     //populationTemp.concat(result.population.flat());
     categoriesTemp.push(...result.category.flat())
+    //console.log(indicator.direction, colour)
     let $card= `
     <div 
       data-category="${result.category.toString().toLowerCase()}" 
-      data-status="${result.direction.toLowerCase()}" 
+      data-status="${indicator.direction}" 
       data-keywords="${result.keywords.toString().toLowerCase()}"
       id="panel-${ndx}" 
       class="card card-height">
         <cotui-chart 
           id="card-1" 
-          chart-value="${Math.round(result.data.calculatedValue)}"
+          chart-value="${result.data.calculatedValue}"
           href="#detail/${result.id}" 
           chart-type="card" 
           caption="${result.caption}" 
@@ -112,11 +122,11 @@ data.getHousingData().then(res=>{
     $dashboardBody.innerHTML += $card;
   })
   
-  console.log(directionColor);
+
 
   directions = [...new Set(directionTemp)].sort();
   directions.forEach((status,ndx)=>{
-    let li = `<li id="${status.replace(/\s/gi,'_').toLowerCase()}-${ndx}"><button type="button" class="btn btn-link" role="menuitem" data-status="${status.toLowerCase()}"><i style="height: 10px; width:10px; display:inline-block; background: ${directionColor[status.toLowerCase()]};"></i> ${status}</button></li>`
+    let li = `<li id="${status.replace(/\s/gi,'_').toLowerCase()}-${ndx}"><button type="button" class="btn btn-link" role="menuitem" data-status="${status.toLowerCase()}"><i style="height: 10px; width:10px; display:inline-block; background: ${colourTemp[ndx]};"></i> ${status}</button></li>`
     $filterDirection.insertAdjacentHTML('beforeend', li);
   })
 
