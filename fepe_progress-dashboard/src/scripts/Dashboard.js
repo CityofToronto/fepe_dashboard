@@ -1,8 +1,35 @@
+Backbone.Router.prototype.before = function () {};
+  Backbone.Router.prototype.after = function () {};
+    Backbone.Router.prototype.route = function (route, name, callback) {
+    if (!_.isRegExp(route)) route = this._routeToRegExp(route);
+    if (_.isFunction(name)) {
+      callback = name;
+      name = '';
+    }
+    if (!callback) callback = this[name];
+  
+    var router = this;
+  
+    Backbone.history.route(route, function(fragment) {
+      var args = router._extractParameters(route, fragment);
+  
+      router.before.apply(router, arguments);
+      callback && callback.apply(router, args);
+      router.after.apply(router, arguments);
+  
+      router.trigger.apply(router, ['route:' + name].concat(args));
+      router.trigger('route', name, args);
+      Backbone.history.trigger('route', router, name, args);
+    });
+    return this;
+  };
+
 
 class Dashboard{
     constructor(){
       this.fuse = '';
       this.data = new this.Model();
+      //this.origtitle = '';
     }
 
     getDateRange(period){
@@ -54,14 +81,26 @@ class Dashboard{
         data:_dataset.data
       }];
     }
-
+    
     startRouter() {
       new (Backbone.Router.extend({
+        preinitialize() {this.origtitle = document.title},
+        after(){
+          const $body = document.querySelector('body');
+          const title = document.querySelector('.dashboard__chart--title').innerText;
+
+          document.title = `${title?`${title} -`:''} ${this.origtitle}`
+          $body.setAttribute('tabindex', '-1')
+          $body.focus();
+          setTimeout(()=>{$body.removeAttribute('tabindex');}, 500)
+        },
         routes: {
           "": () => {
             document.getElementById('master').classList.remove('hide')
             document.getElementById('detail').classList.add('hide')
             document.querySelector('.dashboard__nav').classList.remove('hide')
+
+            document.querySelector('.dashboard__chart--title').innerText = "";
 
             let $filterMenu =  document.querySelectorAll('.filter-menu');
             let filtered = {};
@@ -184,6 +223,9 @@ class Dashboard{
             let $chartTitle = document.querySelector('.dashboard__chart--title');
             let $description = document.querySelector('.dashboard__detail--description');
             let $mightBeInterestedIn = document.querySelector('.dashboard__content--navigation select');
+            let $trendAnalyis = document.getElementById('js-trend-analysis');
+            let $lastReported = document.getElementById('js-last-reported');
+            
 
             let data = {
               chartData:{
@@ -198,14 +240,58 @@ class Dashboard{
             $widget.chartTitle = panel.label;
             $widget.data = data;
 
-            $chartTitle.innerText = panel.label;
-            $description.innerHTML = panel.description;
+            $chartTitle.innerText = panel.label.replace(/\n|\r/gi,' ');
+            $description.innerHTML = `${panel.description} ${panel.description}`;
             $notes.innerHTML = panel.body;
+            $lastReported.innerHTML = ''
 
             $mightBeInterestedIn.innerHTML = ''
             similarPanels.forEach(panel=>{
-              $mightBeInterestedIn.innerHTML += `<option>${panel.label}</option>`
+              $mightBeInterestedIn.innerHTML += `<option value="${panel.id}">${panel.label} ${panel.id == id?' - selected':''}</option>`
             });
+
+            let $select = document.getElementById('js-select-panel')
+            let $go = document.getElementById('js-jump-panel')
+            $go.addEventListener('click',evt=>{
+              evt.preventDefault();
+              window.scrollTo(0,0)
+              Backbone.history.navigate(`detail/${$select.value}`, { trigger: true });
+              document.body.focus();
+            })
+
+
+            /*Trend Analysis Table*/
+            console.log('$trendAnalyis',$trendAnalyis,panel.rawData)
+            const $thead = $trendAnalyis.querySelector('thead'); 
+            const $tbody = $trendAnalyis.querySelector('tbody'); 
+            const headings = []            
+
+            $thead.innerHTML = '';
+            $tbody.innerHTML = '';
+           
+            for(thText in panel.rawData.trendAnalysis[0]){
+              const $th = document.createElement('th')
+                    $th.innerText = thText;
+                    $thead.appendChild($th);
+                headings.push(thText);
+            }
+            
+           
+            panel.rawData.trendAnalysis.forEach(row=>{
+              const $tr = document.createElement('tr')
+              headings.forEach(heading=>{
+                const analysis = row['Analysis'];
+                const $td = document.createElement('td')
+                if(heading != 'Analysis'){
+                  $td.innerText = row[heading]
+                } else {
+                  $td.innerText = analysis.direction
+                }
+                $tr.appendChild($td)
+              });
+              $tbody.appendChild($tr)
+            })
+                      
 
 
            document.querySelectorAll('[name=options]').forEach(radio=>{
@@ -219,9 +305,7 @@ class Dashboard{
                     datasets: results.data.datasets
                   }
                 }
-
                 if(data) $widget.data = data;
-                
               });
               
              });

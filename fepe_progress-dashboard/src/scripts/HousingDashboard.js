@@ -61,6 +61,41 @@ class HousingDashboard{
     }
 
 
+    analysis(compVal1,compVal2,variance, isPercent = true, dd){
+      let sCHANGE = isPercent?(compVal1 - compVal2) * 100:(compVal1/compVal2-1) * 100;
+          sCHANGE = Math.abs(sCHANGE.toFixed(2)) + "%";
+
+      let sPOSNEG;
+      if (Math.abs(compVal1 - compVal2) <= Math.abs(compVal2 * (1+parseFloat(variance)) - compVal2)) {
+        sPOSNEG = 0;
+        sDIRECTION = "none";
+        sMESSAGE = 'Stable from'
+      } else {
+
+        if ( compVal1 > compVal2 ) {
+          sDIRECTION = "up";
+          sMESSAGE = 'Increase of'
+        } else {
+          sDIRECTION = "down";
+          sMESSAGE = 'Decrease of'
+        }
+
+        if ( compVal1 > compVal2 && dd=="Up" ) {
+          sPOSNEG = 1;
+        } else if (compVal1 < compVal2 && dd=="Down") {
+          sPOSNEG = 1;
+        } else {
+          sPOSNEG = -1;
+        }
+      }
+
+      return {
+        direction:sDIRECTION,
+        isPositive:sPOSNEG,
+        text:`${sMESSAGE} ${sCHANGE} from previous Year`
+      }
+    }
+
     getHousingData(period='year'){
       let URI = 'https://www.toronto.ca/app_content/tpp_measures/'; //'/*@echo DATA_SRC*/';
 
@@ -72,6 +107,9 @@ class HousingDashboard{
       }
       getNarratives().then(res=>narratives=res) 
 
+
+
+      let analysis = this.analysis;
       return fetch(URI).then(res=>{return res.json()}).then(({measures}=res)=>{
         console.debug('getHousingData',measures,narratives);
         let dataTemp = {}
@@ -103,11 +141,13 @@ class HousingDashboard{
 
           data.sort((a,b)=>a.x.valueOf() - b.x.valueOf());
 
-          let ytdTotal = 0;
-          let caption;
+          let ytdTotal, ytdTotalPrevious = 0;
+          let mTotal, mTotalPrevious = 0;
+          let subTitle;
           let LastYear, ThisYear;
           let valueBegin,valueEnd;
           let isStable;
+          let timeRangeLabel,timeRangeFullLabel;
 
           switch(ytd){
             case 'True':
@@ -117,8 +157,15 @@ class HousingDashboard{
                 valueBegin = LastYear[LastYear.length-1].y;
                 valueEnd = ThisYear[ThisYear.length-1].y;
 
-                ytdTotal = ThisYear.reduce((a,b)=>({y: a.y + b.y})).y
-                caption = `${ThisYear[ThisYear.length-1].x.format('YYYY MMM')} Year-To-Date Result`
+                ytdTotal = ThisYear.reduce((a,b)=>({y: a.y + b.y})).y;
+                ytdTotalPrevious = LastYear.reduce((a,b)=>({y: a.y + b.y})).y;
+
+                mTotal = ThisYear[ThisYear.length-1].y;
+                mTotalPrevious = ThisYear[ThisYear.length-2].y;
+
+                subTitle = `${ThisYear[ThisYear.length-1].x.format('YYYY MMM')} Year-To-Date`;
+                timeRangeLabel = 'Year';
+                timeRangeFullLabel = ThisYear[ThisYear.length-1].x.format('YYYY MMMM');
               break;
               
             case 'False':
@@ -129,26 +176,36 @@ class HousingDashboard{
                     LastYear = data.filter(v=>v.x.format('YYYY') == moment().subtract(1,'year').format('YYYY')).slice(0,ThisYear.length);
                     
                     ytdTotal = ThisYear[ThisYear.length-1].y
+                    ytdTotalPrevious = LastYear[ThisYear.length-1].y
+
                     valueBegin = LastYear[LastYear.length-1].y
                     valueEnd =  ThisYear[ThisYear.length-1].y                 
-                    caption = `${ThisYear[ThisYear.length-1].x.format('YYYY MMM')} Result`
+                    subTitle = `${ThisYear[ThisYear.length-1].x.format('YYYY MMM')}`
                     
+                    timeRangeLabel = 'Month';
+                    timeRangeFullLabel = ThisYear[ThisYear.length-1].x.format('YYYY MMMM');
                   break;
                 case 'q':
                     ThisYear = data[data.length-1];
                     LastYear = data[data.length-2];
 
-                    ytdTotal = data[data.length-1].y
+                    ytdTotal = ThisYear.y
+                    ytdTotalPrevious = LastYear.y
+
                     valueBegin = LastYear.y
                     valueEnd = ThisYear.y
                     
-                    caption = `${ThisYear.x.format('YYYY [Q]Q')}`
+                    subTitle = `${ThisYear.x.format('YYYY [Q]Q')}`
+                    timeRangeLabel = 'Quarter';
+                    timeRangeFullLabel = ThisYear.x.format('YYYY [Q]Q');
                   break;
                 case 's':
                     ThisYear = data[data.length-1];
                     LastYear = data[data.length-2];
 
-                    ytdTotal = data[data.length-1].y
+                    ytdTotal = ThisYear.y
+                    ytdTotalPrevious = LastYear.y
+
                     valueBegin = LastYear.y
                     valueEnd = ThisYear.y
                     
@@ -159,64 +216,35 @@ class HousingDashboard{
                       }
                     }
 
-                    caption = `${season} Result`
+                    subTitle = `${season}`
+                    timeRangeLabel = 'Season';
+                    timeRangeFullLabel = season;
                   break;
                 case 'y':
-                    ytdTotal = data[data.length-1].y;
-                    valueBegin = data[data.length-1].y
-                    valueEnd = data[data.length-2].y
+                    ThisYear = data[data.length-1];
+                    LastYear = data[data.length-2];
 
-                    caption = `${data[data.length-1].x.format('YYYY')} Result`
+                    ytdTotal = ThisYear.y;
+                    ytdTotalPrevious = LastYear.y
+
+                    valueBegin = ThisYear.y
+                    valueEnd = LastYear.y
+
+                    subTitle = `${ThisYear.x.format('YYYY')}`
+                    timeRangeLabel = 'Year';
+                    timeRangeFullLabel = ThisYear.x.format('YYYY');
                   break;
               }
               break;
           }
-
-          isStable = Math.abs(valueBegin - valueEnd) <= Math.abs(valueEnd * (1+parseFloat(v)) - valueEnd);
-
-
-
-          let sCHANGE = (valueBegin/valueEnd-1) * 100;
-          sCHANGE = Math.abs(sCHANGE.toFixed(2)) + "%";
-          sCHANGE = (m.vt=="p") ? ((valueBegin - valueEnd) * 100).toFixed(2) + "%" : sCHANGE;
-
-
-
-          let indicators = {direction:'',isPositive:null};
-          let getDirection = valueBegin < valueEnd;
-
-          if (isStable) {
-            sPOSNEG = 0;
-            sDIRECTION = "none";
-            sMESSAGE = 'Stable from'
-          } else {
-            if ( getDirection ) {
-              sDIRECTION = "up";
-              sMESSAGE = 'Increase of'
-            } else {
-              sDIRECTION = "down";
-              sMESSAGE = 'Decrease of'
-            }
-        
-            if ( getDirection && dd=="Up" ) {
-              sPOSNEG = 1;
-            } else if (!getDirection && dd=="Down") {
-              sPOSNEG = -1;
-            } else {
-              sPOSNEG = -1;
-            }
-          }
-          indicators.direction = sDIRECTION;
-          indicators.isPositive = sPOSNEG;
-          indicators.text = `${sMESSAGE} ${sCHANGE} from previous Year`
-          
+             
 
           let calculatedValue;
           switch(vt){
             case 'c':
               if (ytdTotal > 1000000) {
                 ytdTotal = ytdTotal/1000000;
-                calculatedValue = `$${(ytdTotal).toString().formatNumber(2)}M`;
+                calculatedValue = `$${(ytdTotal).toString().formatNumber(2)} M`;
               } else {
                 calculatedValue = `$${(ytdTotal).toString().formatNumber(2)}`; 
               }
@@ -224,15 +252,62 @@ class HousingDashboard{
             case 'n':
               if (ytdTotal > 1000000) {
                 ytdTotal = ytdTotal/1000000;
-                calculatedValue = `${ytdTotal.toString().formatNumber(2)}M`; 
+                calculatedValue = `${ytdTotal.toString().formatNumber(2)} M`; 
               } else {
                 calculatedValue = `${(ytdTotal).toString().formatNumber()}`;
               }
               break;
-            case 'p': calculatedValue = `${(ytdTotal*100).toFixed(1)}%`; break;
+            case 'p': calculatedValue = `${(ytdTotal*100).toFixed(2)}%`; break;
           }
-          calculatedValue += ` <br /> <small>${caption}</small>`
+
+
+          let trendAnalyis;
+          if(ytd=='True'){
+            trendAnalyis = [{
+              'Trend': 'Current Year-to-Date vs. Previous Year',
+              'Current Value': `${timeRangeFullLabel} YTD: ${ytdTotal.toString().formatNumber()}`,
+              'Comparison Value': `Previous ${timeRangeLabel} : ${ytdTotalPrevious.toString().formatNumber()}`,
+              '% Changed':`${((ytdTotal/ytdTotalPrevious-1) * 100).toString().formatNumber(2)}%`,
+              'Analysis':analysis(ytdTotal,ytdTotalPrevious,v,vt=='p',dd)
+            },{
+              'Trend': 'Current Period vs. Last Year At This Time',
+              'Current Value': `${timeRangeFullLabel} : ${valueEnd.toString().formatNumber()}`,
+              'Comparison Value': `Previous ${timeRangeLabel} : ${valueBegin.toString().formatNumber()}`,
+              '% Changed':`${((valueEnd/valueBegin-1) * 100).toString().formatNumber(2)}%`,
+              'Analysis':analysis(valueEnd,valueBegin,v,vt=='p',dd)
+            },{
+              'Trend': 'Current Period vs. Last Period',
+              'Current Value': `${timeRangeFullLabel} : ${mTotal.toString().formatNumber()}`,
+              'Comparison Value': `Previous Month : ${mTotalPrevious.toString().formatNumber()} `,
+              '% Changed': `${((mTotal/mTotalPrevious-1) * 100).toString().formatNumber(2)}%`,
+              'Analysis':analysis(mTotal,mTotalPrevious,v,vt=='p',dd)
+            }]
+          }
+
+
+          /*TODO: FIX PREVIOUS MONTH*/
+
+          if(ytd=='False'){
+            let change = `${((valueEnd/valueBegin-1) * 100).toString().formatNumber(3)}%`;
+            trendAnalyis = [{
+              'Trend': 'Current Period vs. Last Year At This Time',
+              'Current Value': `${subTitle} : ${ytdTotal}`,
+              'Comparison Value': `Previous Year : ${ytdTotalPrevious} `,
+              '% Changed':change,
+              'Analysis':analysis(ytdTotal,ytdTotalPrevious,v,vt=='p',dd)
+            },{
+              'Trend': 'Current Period vs. Last Period',
+              'Current Value': `${subTitle} : ${ytdTotal}`,
+              'Comparison Value': `Previous Month : ${mTotal} `,
+              '% Changed':change,
+              'Analysis':analysis(mTotal,mTotalPrevious,v,vt=='p',dd)
+            }]
+          }
+
           
+          let caption = trendAnalyis[0].Analysis.direction=='none'?'':trendAnalyis[0].Analysis.text;
+          res['trendAnalysis'] = trendAnalyis;
+
           if(period == 'year'){
             labels = [...new Set(years)];
             target = Array(labels.length).fill(data[0].y*0.3+data[0].y,0,labels.length+1);
@@ -242,7 +317,7 @@ class HousingDashboard{
             return {
               id:`panel-${ndx}`,
               label: `${id} - ${m}`,
-              caption: indicators.text,
+              caption,
               description: ds,
               body:`<h2>Notes:</h2><p>${narratives[id]}</p>`,
               category: c,
@@ -252,10 +327,10 @@ class HousingDashboard{
                 xAxis:'Month',
                 yAxis:'Total Bankruptcies'
               },
-              direction: indicators,
+              direction: trendAnalyis[0].Analysis,
               rawData: res,
               data:{
-                 calculatedValue,
+                 calculatedValue: `${calculatedValue} <br /> <small>${subTitle} Result</small>`,
                  labels,
                  datasets
               }
@@ -278,7 +353,7 @@ class HousingDashboard{
             return {
               id:`panel-${ndx}`,
               label: `${m}`,
-              caption: indicators.text,
+              caption,
               description: ds,
               body:`<h2>Notes:</h2><p>${narratives[id]}</p>`,
               category: c,
@@ -288,10 +363,10 @@ class HousingDashboard{
                 xAxis:'Month',
                 yAxis:'Total Bankruptcies'
               },
-              direction: indicators,
+              direction: trendAnalyis[0].Analysis,
               rawData: res,
               data:{
-                 calculatedValue,
+                 calculatedValue: `${calculatedValue} <br /> <small>${subTitle} Result</small>`,
                  labels,
                  datasets
               }
@@ -324,7 +399,7 @@ class HousingDashboard{
             return {
               id:`panel-${ndx}`,
               label: `${m}`,
-              caption: indicators.text,
+              caption,
               description: ds,
               body:`<h2>Notes:</h2><p>${narratives[id]}</p>`,
               category: c,
@@ -334,10 +409,10 @@ class HousingDashboard{
                 xAxis:'Month',
                 yAxis:'Total Bankruptcies'
               },
-              direction: indicators,
+              direction: trendAnalyis[0].Analysis,
               rawData: res,
               data:{
-                 calculatedValue,
+                 calculatedValue: `${calculatedValue} <br /> <small>${subTitle} Result</small>`,
                  labels,
                  datasets
               }
@@ -376,7 +451,7 @@ class HousingDashboard{
             return {
               id:`panel-${ndx}`,
               label: `${id} - ${m}`,
-              caption: indicators.text,
+              caption,
               description: ds,
               body:`<h2>Notes:</h2><p>${narratives[id]}</p>`,
               category: c,
@@ -386,10 +461,10 @@ class HousingDashboard{
                 xAxis:'Month',
                 yAxis:'Total Bankruptcies'
               },
-              direction: indicators,
+              direction: trendAnalyis[0].Analysis,
               rawData: measure,
               data:{
-                 calculatedValue,
+                 calculatedValue: `${calculatedValue} <br /> <small>${subTitle} Result</small>`,
                  labels,
                  datasets
               }

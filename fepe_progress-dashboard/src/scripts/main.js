@@ -1,41 +1,11 @@
 // The main javascript file for fepe_dashboard.
-String.prototype.formatNumber = function() {
+String.prototype.formatNumber = function(decimal=0) {
   var n = this;
-  var decimal = arguments[0];
-  var places = arguments[1]||2;
-
   if (n==null) {return "";}
-  n = parseFloat(n).toFixed(places);
+  n = parseFloat(n).toFixed(decimal);
   var parts = n.toString().split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return parts.join(".");
-
-
-
-
-
-
-
-
-  var intNum = typeof n != 'number' ? parseFloat(n.replace(/\,/g, '')) : n;
-
-  if(decimal > 0)  initNum = intNum.toFixed(places);
-  return intNum.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-/*
-  if (Math.floor(intNum) > 0.99) intNum = intNum.toFixed(0);
-
-  if (!decimal) {
-
-    console.log( intNum.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') );
-
-    return intNum.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-  }
-  if (decimal) {
-    var per = intNum * 1;
-    if( Math.floor(per) != 0 ) return per.toFixed(0);
-    if( Math.floor(per) == 0 ) return per.toFixed(places);
-  }
-*/
 };
 
 function debounce(func, wait, immediate) {
@@ -51,11 +21,8 @@ function debounce(func, wait, immediate) {
     };
 
     var callNow = immediate && !timeout;
-	
     clearTimeout(timeout);
-
     timeout = setTimeout(later, wait);
-	
     if (callNow) func.apply(context, args);
   };
 };
@@ -77,10 +44,12 @@ data.getHousingData().then(res=>{
   let directionTemp = [];
   let colourTemp = [];
 
-  console.log('DATA', res)
   let $cards = res.forEach((result,ndx)=>{
     let icon;
     let colour;
+
+    //console.log(result.rawData.id, result.rawData)
+    
     let indicator = result.direction;
     switch (indicator.direction){
       case 'down': icon = 'glyphicon glyphicon-arrow-down'; break;
@@ -150,7 +119,7 @@ data.getHousingData().then(res=>{
   res.forEach(result=>{
     list.push({
       id: result.id ,
-      title: result.label,
+      title: result.label.replace(/\n|\r/gi,' ').toLowerCase(),
       keywords: result.keywords,
       direction: result.direction,
       category: result.category
@@ -159,16 +128,21 @@ data.getHousingData().then(res=>{
 
   var options = {
     shouldSort: true,
+    tokenize: true,
+    matchAllTokens: true,
     includeScore: true,
-    threshold: 0.5,
-    location: 0,
+    threshold: 0.2,
+    location: 1,
     distance: 100,
     maxPatternLength: 32,
-    minMatchCharLength: 1,
+    minMatchCharLength: 4,
     keys: [
       'title',
       'keywords',
-      'category'
+      'category',
+      // {name:'title',weight: 0.9},
+      // {name:'keywords',weight:0.1},
+      // {name:'category',weight:0.1}
     ]
   };
   var fused = new Fuse(list, options);
@@ -177,8 +151,9 @@ data.getHousingData().then(res=>{
   var cards = document.querySelectorAll('#master [data-category]');
 
   input.addEventListener('keyup',evt=>{
-    var val = evt.target.value;
+    var val = evt.target.value.trim();
     var searchResult = fused.search(val);
+    
     cards.forEach(card=>{
       if(val != ''){
         card.style.display = 'none';
@@ -187,12 +162,22 @@ data.getHousingData().then(res=>{
       }
     })
 
-    searchResult.forEach(res=>{
-      document.getElementById(res.id).style.display = null;
-    });
-  })
 
-})
+    const exactMatch = searchResult.filter(res=>res.score < 0.0001);
+    if(exactMatch)
+      exactMatch.forEach(res=>{
+        document.getElementById(res.item.id).style.display = null;
+      });
+
+    if(exactMatch.length == 0)
+      searchResult.forEach(res=>{
+          document.getElementById(res.item.id).style.display = null;
+          console.log(res.item.id,res.score, res.item.title);
+      });
+
+  });
+
+});
 
 
 
@@ -212,8 +197,6 @@ data.getHousingData().then(res=>{
 $(document).ready(function(){
   const dashboard = new Dashboard();
   console.log('DASHBOARD', dashboard);
-  console.log( dashboard.getDateRange('season'));
-
   dashboard.startRouter();
 
   // var themeBtn = document.querySelectorAll('#theme-filter [data-category]')
