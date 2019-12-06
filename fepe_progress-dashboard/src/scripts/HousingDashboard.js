@@ -96,21 +96,28 @@ class HousingDashboard{
       }
     }
 
+    
+
     getHousingData(period='year'){
       let URI = 'https://www.toronto.ca/app_content/tpp_measures/'; //'/*@echo DATA_SRC*/';
-
-      let narratives;
-      const getNarratives = async ()=>{
-        const narrativesJSON = await fetch(`https://www.toronto.ca/app_content/tpp_narratives/`);
-        let text = await narrativesJSON.json();
-        return text;
-      }
-      getNarratives().then(res=>narratives=res) 
-
+      let narratives
+      
+      
 
 
       let analysis = this.analysis;
-      return fetch(URI).then(res=>{return res.json()}).then(({measures}=res)=>{
+      return fetch(URI).then(res=>{return res.json()}).then(res=>{
+        const getNarratives = async ()=>{
+          const narrativesJSON = await fetch(`https://www.toronto.ca/app_content/tpp_narratives/`);
+          const text = await narrativesJSON.json();
+          narratives = text
+          return text;
+        };
+        res['narratives'] = getNarratives().then(res=>{ console.log(res)});
+        console.log('A', narratives)
+
+        return res;
+      }).then(({measures, narratives}=res)=>{
         console.debug('getHousingData',measures,narratives);
         let dataTemp = {}
 

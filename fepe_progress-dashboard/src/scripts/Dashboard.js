@@ -86,7 +86,7 @@ class Dashboard{
       new (Backbone.Router.extend({
         preinitialize() {this.origtitle = document.title},
         after(){
-          const $body = document.querySelector('body');
+          const $body = document.getElementById('fepe_dashboard_container');
           const title = document.querySelector('.dashboard__chart--title').innerText;
 
           document.title = `${title?`${title} -`:''} ${this.origtitle}`
@@ -285,13 +285,72 @@ class Dashboard{
                 if(heading != 'Analysis'){
                   $td.innerText = row[heading]
                 } else {
-                  $td.innerText = analysis.direction
+                  let message;
+                  let icon;
+                  switch (analysis.direction.toLowerCase()){
+                    case 'down': 
+                      icon = 'glyphicon glyphicon-arrow-down';
+                      message = 'Down'
+                      break;
+
+                    case 'up':
+                      icon = 'glyphicon glyphicon-arrow-up'; 
+                      message = 'Up'
+                      break;
+                    default: 
+                      icon = 'glyphicon glyphicon-minus'; 
+                      message = 'Stable'
+                      break;
+                  }
+
+                  let colour;
+                  let impact;
+                  switch (analysis.isPositive){
+                    case -1: 
+                      colour = '--impact-negative'//'#88161f'; 
+                      impact = 'Negative'
+                      break;
+                    case 1: 
+                      colour = '--impact-positive'//'#208816'; 
+                      impact = 'Positive'
+                      break;
+                    case 0: colour = '--impact'//'#374047'; 
+                      break;
+                  }
+                  $td.classList.add('text-center');
+                  $td.innerHTML = `<span class="${icon}" style="font-size: 0.75em; color: var(${colour})" aria-label="Direction: ${message} Direction: ${impact}"></span>`
                 }
                 $tr.appendChild($td)
               });
               $tbody.appendChild($tr)
             })
                       
+
+// calculateCumulativeData 
+/*
+
+          const switchID = 'ytd_toggle'
+          const $switchToggle = document.getElementById(switchID);
+          const $switchToggleLabel = $switchToggle.parentElement.parentElement.querySelector(`[for="${switchID}"]`);
+
+          const $switch = $switchToggle.parentElement.parentElement
+              $switch.setAttribute('tabindex','0');
+
+          const handleToggle = (evt)=>{
+              switchToggle.checked = !switchToggle.checked;
+          }
+
+          $switchToggleLabel.addEventListener('click',handleToggle)
+          $switch.addEventListener('keydown',evt=>{
+           if(evt.keyCode == 32) handleMonthChange();
+          })
+          $switch.parentElement.addEventListener('click',handleMonthChange)
+*/
+
+
+        
+
+
 
 
            document.querySelectorAll('[name=options]').forEach(radio=>{

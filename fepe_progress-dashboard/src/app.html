@@ -128,9 +128,10 @@ Remember to use unique element IDs and class names so that this app doesn't inte
     </div>
   </div>
   <div class="dashboard__main">
-        <div id="master" class="dashboard__grid--tile">
-            
-        </div>
+      <div id="master">
+        <cotui-tabs id="js-categories"></cotui-tabs>
+       </div>
+       
 
         <div id="detail">        
         <div class="dashboard__main--layout1" style="background-color: #ffffff;">
@@ -149,10 +150,12 @@ Remember to use unique element IDs and class names so that this app doesn't inte
                     <div class="row">
                         <div class="col-md-12">
                             <h2>Trend Analysis</h2>
-                            <table id="js-trend-analysis" class="table cot-table">
-                                <thead></thead>
-                                <tbody></tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table id="js-trend-analysis" class="table cot-table">
+                                    <thead></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                             <p id="js-CityPerspective"></p>
                         </div>
                     </div>
@@ -169,16 +172,16 @@ Remember to use unique element IDs and class names so that this app doesn't inte
                                     <div class="col-xs-6">
                                         <div id="js-chart-period" class="btn-group btn-group-toggle" data-toggle="buttons">
                                             <label class="btn btn-default active">
-                                                <input type="radio" name="options" id="option1" autocomplete="off" checked>Year
+                                                <input type="radio" name="options" id="js-chart-period-year" autocomplete="off" checked>Year
                                             </label>
                                             <label class="btn btn-default">
-                                                <input type="radio" name="options" id="option2" autocomplete="off"> Month
+                                                <input type="radio" name="options" id="js-chart-period-month" autocomplete="off"> Month
                                             </label>
                                             <label class="btn btn-default">
-                                                <input type="radio" name="options" id="option3" autocomplete="off"> Season
+                                                <input type="radio" name="options" id="js-chart-period-season" autocomplete="off"> Season
                                             </label>
                                             <label class="btn btn-default">
-                                                <input type="radio" name="options" id="option3" autocomplete="off"> Quarter
+                                                <input type="radio" name="options" id="js-chart-period-quarter" autocomplete="off"> Quarter
                                             </label>
                                         </div>
                                     </div>
@@ -287,7 +290,7 @@ Remember to use unique element IDs and class names so that this app doesn't inte
                         </table>
                     </div>
                 </div>
-                <div class="dashboard__content--navigation" style="grid-column: 1/-1; display:flex; justify-content: space-between;">
+                <div class="dashboard__content--navigation">
                     <div>
                     <label>Other Topics</label>
                     <select id="js-select-panel">

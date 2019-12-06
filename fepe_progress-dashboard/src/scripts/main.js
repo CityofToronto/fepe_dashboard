@@ -36,6 +36,8 @@ let directions=[]
 let $filterIndicators = document.getElementById('js-category');
 let $filterDirection = document.getElementById('js-desired-direction');
 let $filterPopulation = document.getElementById('js-population-group');
+let cardsTemp = {};
+
 
 data.getHousingData().then(res=>{
   localStorage.setItem('HousingDashboardData',JSON.stringify(res));
@@ -43,12 +45,13 @@ data.getHousingData().then(res=>{
   let categoriesTemp = [];
   let directionTemp = [];
   let colourTemp = [];
+  
 
   let $cards = res.forEach((result,ndx)=>{
     let icon;
     let colour;
 
-    //console.log(result.rawData.id, result.rawData)
+    console.log(result.rawData.id, result.rawData)
     
     let indicator = result.direction;
     switch (indicator.direction){
@@ -66,6 +69,8 @@ data.getHousingData().then(res=>{
     directionTemp.push(indicator.direction);
     //populationTemp.concat(result.population.flat());
     categoriesTemp.push(...result.category.flat())
+
+
     //console.log(indicator.direction, colour)
     let $card= `
     <div 
@@ -88,9 +93,19 @@ data.getHousingData().then(res=>{
         </cotui-chart>
     </div>`;
 
-    $dashboardBody.innerHTML += $card;
+    //$dashboardBody.innerHTML += $card;
+
+    var category = result.category.toString().toLowerCase();
+    if(!cardsTemp.hasOwnProperty(category)){
+      cardsTemp[category] = [$card];
+    } else {
+      cardsTemp[category].push($card);
+    }
+    
+
+    return  JSON.parse( `{"${result.category.toString().toLowerCase()}" : "$card"}` );
   })
-  
+
 
 
   directions = [...new Set(directionTemp)].sort();
@@ -99,14 +114,28 @@ data.getHousingData().then(res=>{
     $filterDirection.insertAdjacentHTML('beforeend', li);
   })
 
+  let $tabs = document.getElementById('js-categories');
+      //$tabs = document.createElement('cotui-tabs');
+      $tabs.setAttribute('selected','js-tab__category-0');
+      $tabs.setAttribute('label','Toronto Dashboard Themes');
 
   categories = [...new Set(categoriesTemp)].sort();
   categories.forEach((category,ndx)=>{
     let li = `<li id="${category.replace(/\s/gi,'_').toLowerCase()}-${ndx}"><button class="btn btn-link" role="menuitem" data-category="${category.toLowerCase()}">${category}</button></li>`
     $filterIndicators.insertAdjacentHTML('beforeend', li);
+    
+    let $tab = document.createElement('div');
+        $tab.setAttribute('data-label',category.replace(/\&amp\;/gi,'&'))
+        $tab.id = `js-tab__category-${ndx}`;
+        for(var cate in cardsTemp){
+          if(cate == category.toLowerCase()) $tab.innerHTML += `<div class="dashboard__grid--tile">${cardsTemp[cate].join('')}</div>`;
+        }       
+        $tabs.appendChild($tab);
   })
-
   
+  //document.getElementById('js-categories').appendChild($tabs)
+  
+ 
   let $body = document.getElementById('master')
   while($dashboardBody.firstChild) {
     $body.appendChild($dashboardBody.firstChild);

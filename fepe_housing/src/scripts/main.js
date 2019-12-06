@@ -27,9 +27,43 @@ const AffordableHousingProjects = [
   {type:'rental',label:'22 John Street',latlon:[43.701860897, -79.517659198],projectInfo:{completed:'2020-Q2'}}
 ]
 
+const $map = new cot_map('js-housing-map',{
+  mapHeight: '500px',
+  mapCenter: [43.66, -79.373903],
+  mapType: 'Gray',
+  isVectorBasemap: true,
+});
+
+const $mapRentaleHousing = new cot_map('js-rental-housing-map',{
+  mapHeight: '500px',
+  mapCenter: [43.66, -79.373903],
+  mapType: 'Gray',
+  isVectorBasemap: true,
+});
+
+const $allHousingMap = new cot_map('js-allhousing-map',{
+  mapHeight: '500px',
+  mapCenter: [43.66, -79.373903],
+  mapType: 'Gray',
+  isVectorBasemap: true,
+});
+
+const maps=[
+  $map,
+  $mapRentaleHousing,
+  $allHousingMap
+]
+
+maps.forEach(map=>{
+  let m = map.render();
+})
+/*
+
 const $map = L.map('js-housing-map',{scrollWheelZoom: false});
 const $mapRentaleHousing = L.map('js-rental-housing-map',{scrollWheelZoom: false})
 const $allHousingMap = L.map('js-allhousing-map',{scrollWheelZoom: false})
+*/
+
 
 new (Backbone.Router.extend({
   routes: {
@@ -48,6 +82,10 @@ new (Backbone.Router.extend({
     "page/:id": (id) => {
       document.getElementById(`js-page-01`).hidden = true;
       document.getElementById(`js-${id}`).hidden = false;
+
+      maps.forEach(map=>{
+        map.map.invalidateSize();
+      });
     }
   }
 }))();
@@ -62,19 +100,14 @@ $(function () {
 
 
 
-  const maps=[
-    $map,
-    $mapRentaleHousing,
-    $allHousingMap
-  ]
+ 
 
-  maps.forEach(map=>{
-    map.setView([43.694015799999995,-79.28951119999999], 13)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  })
+
+
+
+
+var m;
+ 
 
 
   let markers = [];
@@ -88,14 +121,16 @@ $(function () {
         .bindPopup(`<b>${addr.label}</b><br/>Est. move in date: ${addr.projectInfo.completed}`)
     )
   })
-  featureGroup = L.featureGroup(markers).addTo($allHousingMap);
-  $allHousingMap.fitBounds(featureGroup.getBounds());
+  featureGroup = L.featureGroup(markers).addTo($allHousingMap.map);
+  $allHousingMap.map.fitBounds(featureGroup.getBounds());
 
   
   
 
 
   markers = []
+  const $table = document.getElementById('js-housing-list');
+  const $tbody = document.createElement('tbody');
   AffordableHousingProjects.forEach(addr=>{
     if(addr.type == 'rental')
       markers.push(
@@ -103,8 +138,8 @@ $(function () {
           .bindPopup(`<b>${addr.label}</b><br/>Est. move in date: ${addr.projectInfo.completed}`)
       )
   })
-  featureGroup = L.featureGroup(markers).addTo($mapRentaleHousing);
-  $mapRentaleHousing.fitBounds(featureGroup.getBounds());
+  featureGroup = L.featureGroup(markers).addTo($mapRentaleHousing.map);
+  $mapRentaleHousing.map.fitBounds(featureGroup.getBounds());
   
 
   /*
@@ -119,7 +154,7 @@ $(function () {
                   let control = $option.getAttribute('aria-controls');
                   let $controlTarget = document.getElementById(control);
                   $controlTarget.hidden = true;
-                })
+                });
 
             let $target = evt.target.firstChild;
             let controls = $target.getAttribute('aria-controls');
@@ -181,7 +216,7 @@ $(function () {
           .bindPopup(`<b>${addr.label}</b><br/>Est. move in date: ${addr.projectInfo.completed}`)
       )
   })
-  featureGroup = L.featureGroup(markers).addTo($map);
+  featureGroup = L.featureGroup(markers).addTo($map.map);
   featureGroup.on('click',evt=>{
     $master.classList.remove('col-sm-12');
     $master.classList.add('col-sm-9'); 
@@ -195,7 +230,7 @@ $(function () {
           $detail.hidden = true;
         })
   })
-  $map.fitBounds(featureGroup.getBounds());
+  $map.map.fitBounds(featureGroup.getBounds());
 
 
 

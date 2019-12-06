@@ -1,0 +1,286 @@
+[{
+	"id": "1.01",
+	"label": "# of active affordable rental developments",
+	"caption": "",
+	"description": "This is the total number of new and ongoing affordable rental developments approved each year supported through federal, provincial and city investments.",
+	"body": "<h2>Notes:</h2><p>undefined</p>",
+	"category": ["Housing Affordability"],
+	"keywords": [],
+	"options": {
+		"title": "Monthly Values for Number of Active Affordable Rental Developments",
+		"xAxis": "Month",
+		"yAxis": "developments"	
+		},
+	"custom":{
+		"theme": ["General Population"], 
+		"desiredDirection":"Up",
+		"variance": "0.02",
+		"yearVariance": "0.02",
+		"indicatorType": "monthly",
+		"valueType": "number",
+		"divisor": "1000",
+		"decimalAccuracy": "0",
+		"yearToDate": "False",
+		"dataSource":"Master Rental Live/HDOs",
+		"hasTarget": "False",
+		"cityPerspective": "",
+		"contact": "Shelter, Support & Housing Administration, Michael Vasiliou<a href=\"mailto:michael.vasiliou@toronto.ca\">michael.vasiliou@toronto.ca</a>",
+		"narratives":""
+	},
+	"data": {
+		"labels": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+		"datasets": [{
+			"label": "2019",
+			"data": [{"x":"2019-01-01 00:00:00.000","y":50},{"x":"2017-02-01","y":49},{"x":"2019-03-01","y":50},{"x":"2019-04-01","y":50},{"x":"2019-05-01","y":51},{"x":"2019-06-01","y":51},{"x":"2019-07-01","y":51},{"x":"2019-08-01","y":53},{"x":"2019-09-01","y":54},{"x":"2017-10-01","y":59},{"x":"2017-11-01","y":59}],
+			"type":"bar"
+		}]
+	}
+},
+{
+	"id": "1.720",
+	"label": "Primary Rental Average Rent ($) - Row - Total",
+	"caption": "",
+	"description": "Canada Mortgage and Housing Corporation (CMHC), Rental Market Survey",
+	"body": "<h2>Notes:</h2><p>undefined</p>",
+	"category": ["Housing Supply"],
+	"keywords": [],
+	"options": {
+		"title": "Annual Values for Primary Rental Average Rent ($) - Row - Total",
+		"xAxis": "Year",
+		"yAxis": "Amount"	
+		},
+	"custom":{
+		"theme": ["General Population"], 
+		"desiredDirection":"Up",
+		"variance": "0.02",
+		"yearVariance": "0.02",
+		"indicatorType": "annual",
+		"valueType": "number",
+		"divisor": "1000",
+		"decimalAccuracy": "0",
+		"yearToDate": "False",
+		"dataSource":"Canada Mortgage and Housing Corporation (CMHC), Rental Market Survey",
+		"hasTarget": "False",
+		"cityPerspective": "Data Notes: 1. **Data unavailable; TBA = data will be custom ordered from CMHC in near future. 2. Primary rental data reflect rents for privately initiated, purpose-built rental structures of three units or more.",
+		"contact": "",
+		"narratives":""
+	},
+	"data": {
+		"labels": [],
+		"datasets": [{
+			"label": "2018",
+			"data": [1718],
+			"type":"bar"
+		},{
+			"label": "2017",
+			"data": [1640],
+			"type":"bar"
+		},{
+			"label": "2016",
+			"data": [1534],
+			"type":"bar"
+		},{
+			"label": "2015",
+			"data": [1514],
+			"type":"bar"
+		},{
+			"label": "2014",
+			"data": [1463],
+			"type":"bar"
+		},{
+			"label": "2013",
+			"data": [1467],
+			"type":"bar"
+		},{
+			"label": "2012",
+			"data": [1392],
+			"type":"bar"
+		},{
+			"label": "2011",
+			"data": [1377],
+			"type":"bar"
+		},{
+			"label": "2010",
+			"data": [1352],
+			"type":"bar"
+		},{
+			"label": "2009",
+			"data": [1313],
+			"type":"bar"
+		},{
+			"label": "2008",
+			"data": [1267],
+			"type":"bar"
+		},{
+			"label": "2007",
+			"data": [1278],
+			"type":"bar"
+		},{
+			"label": "2006",
+			"data": [1263],
+			"type":"bar"
+		},{
+			"label": "2005",
+			"data": [1231],
+			"type":"bar"
+		},{
+			"label": "2004",
+			"data": [1253],
+			"type":"bar"
+		},{
+			"label": "2003",
+			"data": [1250],
+			"type":"bar"
+		},{
+			"label": "2002",
+			"data": [1259],
+			"type":"bar"
+		},{
+			"label": "2001",
+			"data": [1174],
+			"type":"bar"
+		},{
+			"label": "2000",
+			"data": [1185],
+			"type":"bar"
+		},{
+			"label": "1999",
+			"data": [1097],
+			"type":"bar"
+		},{
+			"label": "1998",
+			"data": [1029],
+			"type":"bar"
+		}]
+	}
+},
+{
+	"id": "4.500",
+	"label": "Contribution Toward New Supportive Housing (City Capital Contribution)",
+	"caption": "",
+	"description": "",
+	"body": "<h2>Notes:</h2><p>undefined</p>",
+	"category": ["Housing Funding-Supports"],
+	"keywords": [],
+	"options": {
+		"title": "Annual Values for Contribution Toward New Supportive Housing (City Capital Contribution)",
+		"xAxis": "Year",
+		"yAxis": "Amount"	
+		},
+	"custom":{
+		"theme": ["General Population"], 
+		"desiredDirection":"Up",
+		"variance": "0.02",
+		"yearVariance": "0.02",
+		"indicatorType": "monthly",
+		"valueType": "currency",
+		"divisor": "1000",
+		"decimalAccuracy": "2",
+		"yearToDate": "False",
+		"dataSource":"",
+		"hasTarget": "True",
+		"cityPerspective": "",
+		"contact": "",
+		"narratives":""
+	},
+	"data": {
+		"labels": [],
+		"datasets": [{
+			"label": "2020 Target",
+			"data": [16738000.00],
+			"type": "line"
+		},{
+			"label": "2021 Target",
+			"data": [3350000.00],
+			"type": "line"
+		},{
+			"label": "2022 Target",
+			"data": [1600000.00],
+			"type": "line"
+		},{
+			"label": "2019",
+			"data": [9818000.00],
+			"type":"bar"
+		},{
+			"label": "2018",
+			"data": [2425914.00],
+			"type":"bar"
+		}]
+	}
+},
+{
+	"id": "4.900",
+	"label": "TCHC Vacancy Rate",
+	"caption": "",
+	"description": "",
+	"body": "<h2>Notes:</h2><p>undefined</p>",
+	"category": ["Housing Supply"],
+	"keywords": [],
+	"options": {
+		"title": "Quarterly Values for TCHC Vacancy Rate",
+		"xAxis": "Quarter",
+		"yAxis": "Rate"	
+		},
+	"custom":{
+		"theme": ["General Population"], 
+		"desiredDirection":"Down",
+		"variance": "0.02",
+		"yearVariance": "0.02",
+		"indicatorType": "quarter",
+		"valueType": "percent",
+		"divisor": "0.01",
+		"decimalAccuracy": "2",
+		"yearToDate": "False",
+		"dataSource":"",
+		"hasTarget": "False",
+		"cityPerspective": "",
+		"contact": "",
+		"narratives":""
+	},
+	"data": {
+		"labels": ["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"],
+		"datasets": [{
+			"label": "2019",
+			"data": [{"x":"2019-01-01 00:00:00.000","y":null},{"x":"2017-04-01","y":49}],
+			"type": "line"
+		}]
+	}
+},
+{
+	"id": "1.120",
+	"label": "New Affordable Rental Homes Approved (Annual)",
+	"caption": "",
+	"description": "This is the total number of homes approved in that year. There is a 3-5 year development timeline from approval to completion.",
+	"body": "<h2>Notes:</h2><p>undefined</p>",
+	"category": ["Housing Affordability"],
+	"keywords": [],
+	"options": {
+		"title": "Monthly Values for Number of Active Affordable Rental Developments",
+		"xAxis": "Month",
+		"yAxis": "developments"	
+		},
+	"custom":{
+		"theme": ["General Population"], 
+		"desiredDirection":"Up",
+		"variance": "0.02",
+		"yearVariance": "0.02",
+		"indicatorType": "monthly",
+		"valueType": "number",
+		"divisor": "1000",
+		"decimalAccuracy": "0",
+		"yearToDate": "False",
+		"dataSource":"Master Rental Live/HDOs",
+		"hasTarget": "False",
+		"cityPerspective": "",
+		"contact": "Shelter, Support & Housing Administration, Michael Vasiliou<a href=\"mailto:michael.vasiliou@toronto.ca\">michael.vasiliou@toronto.ca</a>",
+		"narratives":""
+	},
+	"data": {
+		"labels": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+		"datasets": [{
+			"label": "2019",
+			"data": [{"x":"2019-01-01 00:00:00.000","y":50},{"x":"2017-02-01","y":49},{"x":"2019-03-01","y":50},{"x":"2019-04-01","y":50},{"x":"2019-05-01","y":51},{"x":"2019-06-01","y":51},{"x":"2019-07-01","y":51},{"x":"2019-08-01","y":53},{"x":"2019-09-01","y":54},{"x":"2017-10-01","y":59},{"x":"2017-11-01","y":59}],
+			"type":"bar"
+		}]
+	}
+}]
