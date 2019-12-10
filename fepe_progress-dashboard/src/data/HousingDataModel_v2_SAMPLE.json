@@ -31,6 +31,7 @@
 		"labels": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 		"datasets": [{
 			"label": "2019",
+			"datasetType":"Actual",
 			"data": [{"x":"2019-01-01 00:00:00.000","y":50},{"x":"2017-02-01","y":49},{"x":"2019-03-01","y":50},{"x":"2019-04-01","y":50},{"x":"2019-05-01","y":51},{"x":"2019-06-01","y":51},{"x":"2019-07-01","y":51},{"x":"2019-08-01","y":53},{"x":"2019-09-01","y":54},{"x":"2017-10-01","y":59},{"x":"2017-11-01","y":59}],
 			"type":"bar"
 		}]
@@ -69,86 +70,107 @@
 		"labels": [],
 		"datasets": [{
 			"label": "2018",
+			"datasetType":"Actual",
 			"data": [1718],
 			"type":"bar"
 		},{
 			"label": "2017",
+			"datasetType":"Actual",
 			"data": [1640],
 			"type":"bar"
 		},{
 			"label": "2016",
+			"datasetType":"Actual",
 			"data": [1534],
 			"type":"bar"
 		},{
 			"label": "2015",
+			"datasetType":"Actual",
 			"data": [1514],
 			"type":"bar"
 		},{
 			"label": "2014",
+			"datasetType":"Actual",
 			"data": [1463],
 			"type":"bar"
 		},{
 			"label": "2013",
+			"datasetType":"Actual",
 			"data": [1467],
 			"type":"bar"
 		},{
 			"label": "2012",
+			"datasetType":"Actual",
 			"data": [1392],
 			"type":"bar"
 		},{
 			"label": "2011",
+			"datasetType":"Actual",
 			"data": [1377],
 			"type":"bar"
 		},{
 			"label": "2010",
+			"datasetType":"Actual",
 			"data": [1352],
 			"type":"bar"
 		},{
 			"label": "2009",
+			"datasetType":"Actual",
 			"data": [1313],
 			"type":"bar"
 		},{
 			"label": "2008",
+			"datasetType":"Actual",
 			"data": [1267],
 			"type":"bar"
 		},{
 			"label": "2007",
+			"datasetType":"Actual",
 			"data": [1278],
 			"type":"bar"
 		},{
 			"label": "2006",
+			"datasetType":"Actual",
 			"data": [1263],
 			"type":"bar"
 		},{
 			"label": "2005",
+			"datasetType":"Actual",
 			"data": [1231],
 			"type":"bar"
 		},{
 			"label": "2004",
+			"datasetType":"Actual",
 			"data": [1253],
 			"type":"bar"
 		},{
 			"label": "2003",
+			"datasetType":"Actual",
 			"data": [1250],
 			"type":"bar"
 		},{
 			"label": "2002",
+			"datasetType":"Actual",
 			"data": [1259],
 			"type":"bar"
 		},{
 			"label": "2001",
+			"datasetType":"Actual",
 			"data": [1174],
 			"type":"bar"
 		},{
 			"label": "2000",
+			"datasetType":"Actual",
 			"data": [1185],
 			"type":"bar"
 		},{
 			"label": "1999",
+			"datasetType":"Actual",
 			"data": [1097],
 			"type":"bar"
 		},{
 			"label": "1998",
+			"datasetType":"Actual",
 			"data": [1029],
 			"type":"bar"
 		}]
@@ -186,24 +208,29 @@
 	"data": {
 		"labels": [],
 		"datasets": [{
-			"label": "2020 Target",
+			"label": "2020",
+			"datasetType":"Target",
 			"data": [16738000.00],
 			"type": "line"
 		},{
-			"label": "2021 Target",
+			"label": "2021",
+			"datasetType":"Target",
 			"data": [3350000.00],
 			"type": "line"
 		},{
-			"label": "2022 Target",
+			"label": "2022",
+			"datasetType":"Target",
 			"data": [1600000.00],
 			"type": "line"
 		},{
 			"label": "2019",
+			"datasetType":"Actual",
 			"data": [9818000.00],
 			"type":"bar"
 		},{
 			"label": "2018",
 			"data": [2425914.00],
+			"datasetType":"Actual",
 			"type":"bar"
 		}]
 	}
@@ -241,6 +268,7 @@
 		"labels": ["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"],
 		"datasets": [{
 			"label": "2019",
+			"datasetType":"Actual",
 			"data": [{"x":"2019-01-01 00:00:00.000","y":null},{"x":"2017-04-01","y":49}],
 			"type": "line"
 		}]
@@ -279,6 +307,7 @@
 		"labels": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 		"datasets": [{
 			"label": "2019",
+			"datasetType":"Actual",
 			"data": [{"x":"2019-01-01 00:00:00.000","y":50},{"x":"2017-02-01","y":49},{"x":"2019-03-01","y":50},{"x":"2019-04-01","y":50},{"x":"2019-05-01","y":51},{"x":"2019-06-01","y":51},{"x":"2019-07-01","y":51},{"x":"2019-08-01","y":53},{"x":"2019-09-01","y":54},{"x":"2017-10-01","y":59},{"x":"2017-11-01","y":59}],
 			"type":"bar"
 		}]

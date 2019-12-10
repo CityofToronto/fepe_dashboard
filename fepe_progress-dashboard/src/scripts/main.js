@@ -50,8 +50,6 @@ data.getHousingData().then(res=>{
   let $cards = res.forEach((result,ndx)=>{
     let icon;
     let colour;
-
-    console.log(result.rawData.id, result.rawData)
     
     let indicator = result.direction;
     switch (indicator.direction){

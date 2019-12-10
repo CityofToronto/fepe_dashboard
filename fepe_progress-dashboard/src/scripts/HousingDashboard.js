@@ -97,8 +97,16 @@ class HousingDashboard{
     }
 
     
-
     getHousingData(period='year'){
+      let URI = '/data/HousingDataModel_v2_SAMPLE.json'; //'/*@echo DATA_SRC*/';
+      return fetch(URI).then(res=>{return res.json()}).then(res=>{
+
+        console.log(res)
+        return res;
+      })
+    }
+
+    progressPortal__getHousingData(period='year'){
       let URI = 'https://www.toronto.ca/app_content/tpp_measures/'; //'/*@echo DATA_SRC*/';
       let narratives
       
