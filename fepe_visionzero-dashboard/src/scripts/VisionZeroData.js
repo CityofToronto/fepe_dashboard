@@ -328,7 +328,7 @@ class VisionZero{
       const DATERANGE = {from,to}
       
       const processResults = function (res){
-        var data= new Array(12).fill(0,0,moment().month()+1);
+        var data = new Array(12).fill(0,0,moment().month()+1);
         var backgroundColor = [];
         var label = '';
         var categories = {}
@@ -380,9 +380,19 @@ class VisionZero{
           //   categories[categoryLabel]++;
           //   data[dt.getMonth()]++;
           // } else {
-            categories[categoryLabel] += 1;
+            if(categories.hasOwnProperty(categoryLabel)){
+              categories[categoryLabel] += 1;
+            } else {
+              categories[categoryLabel] = 1;
+            }
+            
             colours[categoryLabel] = color;
-            data[dt.getMonth()] += 1;
+            if(data[dt.getMonth()]){
+              data[dt.getMonth()] += 1;
+            } else {
+              data[dt.getMonth()] = 1;
+            }
+            
             if(properties.INJURY == 4)
             console.log( categoryLabel, properties,  dt, data)
           //}

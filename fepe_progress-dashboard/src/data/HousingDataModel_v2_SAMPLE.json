@@ -14,12 +14,12 @@
 	"custom":{
 		"theme": ["General Population"], 
 		"desiredDirection":"Up",
-		"variance": "0.02",
-		"yearVariance": "0.02",
+		"variance": 0.02,
+		"yearVariance": 0.02,
 		"indicatorType": "monthly",
 		"valueType": "number",
-		"divisor": "1000",
-		"decimalAccuracy": "0",
+		"divisor": 1000,
+		"decimalAccuracy": 0,
 		"yearToDate": "False",
 		"dataSource":"Master Rental Live/HDOs",
 		"hasTarget": "False",
@@ -32,7 +32,7 @@
 		"datasets": [{
 			"label": "2019",
 			"datasetType":"Actual",
-			"data": [{"x":"2019-01-01 00:00:00.000","y":50},{"x":"2017-02-01","y":49},{"x":"2019-03-01","y":50},{"x":"2019-04-01","y":50},{"x":"2019-05-01","y":51},{"x":"2019-06-01","y":51},{"x":"2019-07-01","y":51},{"x":"2019-08-01","y":53},{"x":"2019-09-01","y":54},{"x":"2017-10-01","y":59},{"x":"2017-11-01","y":59}],
+			"data": [{"x":"2019-01-01","y":50},{"x":"2019-02-01","y":49},{"x":"2019-03-01","y":50},{"x":"2019-04-01","y":50},{"x":"2019-05-01","y":51},{"x":"2019-06-01","y":51},{"x":"2019-07-01","y":51},{"x":"2019-08-01","y":53},{"x":"2019-09-01","y":54},{"x":"2019-10-01","y":59},{"x":"2019-11-01","y":59}],
 			"type":"bar"
 		}]
 	}
@@ -53,12 +53,12 @@
 	"custom":{
 		"theme": ["General Population"], 
 		"desiredDirection":"Up",
-		"variance": "0.02",
-		"yearVariance": "0.02",
+		"variance": 0.02,
+		"yearVariance": 0.02,
 		"indicatorType": "annual",
 		"valueType": "number",
-		"divisor": "1000",
-		"decimalAccuracy": "0",
+		"divisor": 1000,
+		"decimalAccuracy": 0,
 		"yearToDate": "False",
 		"dataSource":"Canada Mortgage and Housing Corporation (CMHC), Rental Market Survey",
 		"hasTarget": "False",
@@ -67,111 +67,111 @@
 		"narratives":""
 	},
 	"data": {
-		"labels": [],
+		"labels": [2018,2017,2016,2015,2014,2013,2012,2011,2010,2009,2008,2007,2006,2005,2004,2003,2002,2001,2000,1999,1998],
 		"datasets": [{
 			"label": "2018",
 			"datasetType":"Actual",
-			"data": [1718],
+			"data": [{"x":"2018-01-01","y":1718}],
 			"type":"bar"
 		},{
 			"label": "2017",
 			"datasetType":"Actual",
-			"data": [1640],
+			"data": [{"x":"2017-01-01","y":1640}],
 			"type":"bar"
 		},{
 			"label": "2016",
 			"datasetType":"Actual",
-			"data": [1534],
+			"data": [{"x":"2016-01-01","y":1534}],
 			"type":"bar"
 		},{
 			"label": "2015",
 			"datasetType":"Actual",
-			"data": [1514],
+			"data": [{"x":"2015-01-01","y":1514}],
 			"type":"bar"
 		},{
 			"label": "2014",
 			"datasetType":"Actual",
-			"data": [1463],
+			"data": [{"x":"2014-01-01","y":1463}],
 			"type":"bar"
 		},{
 			"label": "2013",
 			"datasetType":"Actual",
-			"data": [1467],
+			"data": [{"x":"2013-01-01","y":1467}],
 			"type":"bar"
 		},{
 			"label": "2012",
 			"datasetType":"Actual",
-			"data": [1392],
+			"data": [{"x":"2012-01-01","y":1392}],
 			"type":"bar"
 		},{
 			"label": "2011",
 			"datasetType":"Actual",
-			"data": [1377],
+			"data": [{"x":"2011-01-01","y":1377}],
 			"type":"bar"
 		},{
 			"label": "2010",
 			"datasetType":"Actual",
-			"data": [1352],
+			"data": [{"x":"2010-01-01","y":1352}],
 			"type":"bar"
 		},{
 			"label": "2009",
 			"datasetType":"Actual",
-			"data": [1313],
+			"data": [{"x":"2009-01-01","y":1313}],
 			"type":"bar"
 		},{
 			"label": "2008",
 			"datasetType":"Actual",
-			"data": [1267],
+			"data": [{"x":"2008-01-01","y":1267}],
 			"type":"bar"
 		},{
 			"label": "2007",
 			"datasetType":"Actual",
-			"data": [1278],
+			"data": [{"x":"2007-01-01","y":1278}],
 			"type":"bar"
 		},{
 			"label": "2006",
 			"datasetType":"Actual",
-			"data": [1263],
+			"data": [{"x":"2006-01-01","y":1263}],
 			"type":"bar"
 		},{
 			"label": "2005",
 			"datasetType":"Actual",
-			"data": [1231],
+			"data": [{"x":"2005-01-01","y":1231}],
 			"type":"bar"
 		},{
 			"label": "2004",
 			"datasetType":"Actual",
-			"data": [1253],
+			"data": [{"x":"2004-01-01","y":1253}],
 			"type":"bar"
 		},{
 			"label": "2003",
 			"datasetType":"Actual",
-			"data": [1250],
+			"data": [{"x":"2003-01-01","y":1250}],
 			"type":"bar"
 		},{
 			"label": "2002",
 			"datasetType":"Actual",
-			"data": [1259],
+			"data": [{"x":"2002-01-01","y":1259}],
 			"type":"bar"
 		},{
 			"label": "2001",
 			"datasetType":"Actual",
-			"data": [1174],
+			"data": [{"x":"2001-01-01","y":1174}],
 			"type":"bar"
 		},{
 			"label": "2000",
 			"datasetType":"Actual",
-			"data": [1185],
+			"data": [{"x":"2000-01-01","y":1185}],
 			"type":"bar"
 		},{
 			"label": "1999",
 			"datasetType":"Actual",
-			"data": [1097],
+			"data": [{"x":"1999-01-01","y":1097}],
 			"type":"bar"
 		},{
 			"label": "1998",
 			"datasetType":"Actual",
-			"data": [1029],
+			"data": [{"x":"1998-01-01","y":1029}],
 			"type":"bar"
 		}]
 	}
@@ -192,12 +192,12 @@
 	"custom":{
 		"theme": ["General Population"], 
 		"desiredDirection":"Up",
-		"variance": "0.02",
-		"yearVariance": "0.02",
+		"variance": 0.02,
+		"yearVariance": 0.02,
 		"indicatorType": "monthly",
 		"valueType": "currency",
-		"divisor": "1000",
-		"decimalAccuracy": "2",
+		"divisor": 1000,
+		"decimalAccuracy": 2,
 		"yearToDate": "False",
 		"dataSource":"",
 		"hasTarget": "True",
@@ -206,30 +206,30 @@
 		"narratives":""
 	},
 	"data": {
-		"labels": [],
+		"labels": [2020,2021,2022,2019,2018],
 		"datasets": [{
 			"label": "2020",
 			"datasetType":"Target",
-			"data": [16738000.00],
+			"data": [{"x":"2022-01-01","y":16738000.00}],
 			"type": "line"
 		},{
 			"label": "2021",
 			"datasetType":"Target",
-			"data": [3350000.00],
+			"data": [{"x":"2021-01-01","y":3350000.00}],
 			"type": "line"
 		},{
 			"label": "2022",
 			"datasetType":"Target",
-			"data": [1600000.00],
+			"data": [{"x":"2022-01-01","y":1600000.00}],
 			"type": "line"
 		},{
 			"label": "2019",
 			"datasetType":"Actual",
-			"data": [9818000.00],
+			"data": [{"x":"2019-01-01","y":9818000.00}],
 			"type":"bar"
 		},{
 			"label": "2018",
-			"data": [2425914.00],
+			"data": [{"x":"2018-01-01","y":2425914.00}],
 			"datasetType":"Actual",
 			"type":"bar"
 		}]
@@ -251,12 +251,12 @@
 	"custom":{
 		"theme": ["General Population"], 
 		"desiredDirection":"Down",
-		"variance": "0.02",
-		"yearVariance": "0.02",
+		"variance": 0.02,
+		"yearVariance": 0.02,
 		"indicatorType": "quarter",
 		"valueType": "percent",
-		"divisor": "0.01",
-		"decimalAccuracy": "2",
+		"divisor": 0.01,
+		"decimalAccuracy": 2,
 		"yearToDate": "False",
 		"dataSource":"",
 		"hasTarget": "False",
@@ -269,7 +269,7 @@
 		"datasets": [{
 			"label": "2019",
 			"datasetType":"Actual",
-			"data": [{"x":"2019-01-01 00:00:00.000","y":null},{"x":"2017-04-01","y":49}],
+			"data": [{"x":"2019-01-01","y":null},{"x":"2019-04-01","y":2}],
 			"type": "line"
 		}]
 	}
@@ -290,12 +290,12 @@
 	"custom":{
 		"theme": ["General Population"], 
 		"desiredDirection":"Up",
-		"variance": "0.02",
-		"yearVariance": "0.02",
+		"variance": 0.02,
+		"yearVariance": 0.02,
 		"indicatorType": "monthly",
 		"valueType": "number",
-		"divisor": "1000",
-		"decimalAccuracy": "0",
+		"divisor": 1000,
+		"decimalAccuracy": 0,
 		"yearToDate": "False",
 		"dataSource":"Master Rental Live/HDOs",
 		"hasTarget": "False",
@@ -308,8 +308,47 @@
 		"datasets": [{
 			"label": "2019",
 			"datasetType":"Actual",
-			"data": [{"x":"2019-01-01 00:00:00.000","y":50},{"x":"2017-02-01","y":49},{"x":"2019-03-01","y":50},{"x":"2019-04-01","y":50},{"x":"2019-05-01","y":51},{"x":"2019-06-01","y":51},{"x":"2019-07-01","y":51},{"x":"2019-08-01","y":53},{"x":"2019-09-01","y":54},{"x":"2017-10-01","y":59},{"x":"2017-11-01","y":59}],
+			"data": [{"x":"2019-01-01","y":50},{"x":"2019-02-01","y":49},{"x":"2019-03-01","y":50},{"x":"2019-04-01","y":50},{"x":"2019-05-01","y":51},{"x":"2019-06-01","y":51},{"x":"2019-07-01","y":51},{"x":"2019-08-01","y":53},{"x":"2019-09-01","y":54},{"x":"2019-10-01","y":59},{"x":"2019-11-01","y":59}],
 			"type":"bar"
+		}]
+	}
+},
+{
+	"id": "1.160",
+	"label": "24-hour Respite Sites Occupancy",
+	"caption": "",
+	"description": "",
+	"body": "<h2>Notes:</h2><p>undefined</p>",
+	"category": ["Emergency Housing-Shelters"],
+	"keywords": [],
+	"options": {
+		"title": "Daily Values for 24-hour Respite Sites Occupancy",
+		"xAxis": "Day",
+		"yAxis": "Occupancy"	
+		},
+	"custom":{
+		"theme": ["General Population"], 
+		"desiredDirection":"Up",
+		"variance": 0.02,
+		"yearVariance": 0.02,
+		"indicatorType": "daily",
+		"valueType": "number",
+		"divisor": 1000,
+		"decimalAccuracy": 0,
+		"yearToDate": "False",
+		"dataSource":"",
+		"hasTarget": "False",
+		"cityPerspective": "",
+		"contact": "",
+		"narratives":""
+	},
+	"data": {
+		"labels": ["Monday", "Tuesday","Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+		"datasets": [{
+			"label": "2019",
+			"datasetType":"Actual",
+			"data": [{"x":"2019-10-01","y":407},{"x":"2019-10-02","y":413},{"x":"2019-10-03","y":411},{"x":"2019-10-04","y":407},{"x":"2019-10-05","y":413},{"x":"2019-10-06","y":413},{"x":"2019-10-07","y":412},{"x":"2019-10-08","y":413},{"x":"2019-10-09","y":411},{"x":"2019-10-10","y":411},{"x":"2019-10-11","y":407},{"x":"2019-10-12","y":412},{"x":"2019-10-13","y":412},{"x":"2019-10-14","y":413},{"x":"2019-10-15","y":432},{"x":"2019-10-16","y":446},{"x":"2019-10-17","y":463},{"x":"2019-10-18","y":455},{"x":"2019-10-19","y":453},{"x":"2019-10-20","y":460},{"x":"2019-10-21","y":462},{"x":"2019-10-22","y":458},{"x":"2019-10-23","y":464},{"x":"2019-10-24","y":462},{"x":"2019-10-25","y":455},{"x":"2019-10-26","y":464},{"x":"2019-10-27","y":462},{"x":"2019-10-28","y":461},{"x":"2019-10-29","y":463},{"x":"2019-10-30","y":462},{"x":"2019-10-31","y":463}],
+			"type":"line"
 		}]
 	}
 }]

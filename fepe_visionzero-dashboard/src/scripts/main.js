@@ -3,6 +3,7 @@
 // Any resources from this project should be referenced using SRC_PATH preprocessor var
 // Ex: let myImage = '/*@echo SRC_PATH*//img/sample.jpg';
 
+const CURRENT_YEAR = parseInt(moment().format('YYYY'), 10);
 
 String.prototype.formatNumber = function() {
   var n = this;
@@ -87,7 +88,7 @@ const initApp = function(apiContent){
     var lastFiveYear = parseInt(moment().subtract(10, 'years').format('YYYY'));
     $ariaLive.innerText = 'Loading dashboard data';
     Promise.all(
-      [vs.getModeOfTravelByYear({from:lastFiveYear, to:2019, INJURY_TYPE:type}).then(res=>{
+      [vs.getModeOfTravelByYear({from:lastFiveYear, to:CURRENT_YEAR, INJURY_TYPE:type}).then(res=>{
         let content;
         let now = moment().format('YYYY');
         let widget = document.getElementById('card-detail--ksi');
@@ -153,7 +154,7 @@ const initApp = function(apiContent){
     $ariaLive.innerText = 'Loading dashboard data';
     Promise.all(
       [
-        vs[page]({from:2019, to:2019}).then(res=>{
+        vs[page]({from:CURRENT_YEAR, to:CURRENT_YEAR}).then(res=>{
           let widget = document.getElementById('card-detail--current');
           let total = 0;
           content = apiContent['single-data'][0];
@@ -165,7 +166,7 @@ const initApp = function(apiContent){
           //}
 
           if(page === 'getRedLightCameraData' || page === 'getLEDBlankoutSignData' || page === 'getAudiblePedestrianSignalData'){
-            widget.chartTitle = 'Intersection Installs in 2019';
+            widget.chartTitle = `Intersection Installs in ${CURRENT_YEAR}`;
           } else {
             widget.chartTitle = content.title;
           }
@@ -184,7 +185,7 @@ const initApp = function(apiContent){
           $ariaLive.innerText = `Error loading ${content.title} data`;
         }),
 
-        vs[page]({from:2016, to:2019}).then(res=>{
+        vs[page]({from:2016, to:CURRENT_YEAR}).then(res=>{
           let widgetA = document.getElementById('card-detail--target');
           let totalA = target||0;
           content = apiContent['single-data'][1];
@@ -240,11 +241,16 @@ const initApp = function(apiContent){
   /*
   LOAD MAIN PAGE
   */
+
+ document.querySelectorAll('.current-year').forEach(node=>{
+  node.innerText = `${CURRENT_YEAR}`;
+ })
+
   if( !$container.parent().data('page') && !$container.parent().data('page-ksi')  ){
     $ariaLive.innerText = 'Loading dashboard data';
   Promise.all(
     [
-      vs.getModeOfTravelByMonth({from:2019, to:2019, INJURY_TYPE:4}).then(res=>{
+      vs.getModeOfTravelByMonth({from:CURRENT_YEAR, to:CURRENT_YEAR, INJURY_TYPE:4}).then(res=>{
         var content = apiContent['general-data'][10];
         var widget = document.getElementById('TrendByModeFatalities');
         widget.chartTitle = content.title;
@@ -254,7 +260,7 @@ const initApp = function(apiContent){
         $('#TrendByModeFatalities').html(`<div class="well">Error loading ${content.title} data</div>`);
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
-      vs.getModeOfTravelByMonth({from:2019, to:2019, INJURY_TYPE:3}).then(res=>{
+      vs.getModeOfTravelByMonth({from:CURRENT_YEAR, to:CURRENT_YEAR, INJURY_TYPE:3}).then(res=>{
         var content = apiContent['general-data'][11];
         var widget = document.getElementById('TrendByModeSeriouslyInjured');
         widget.chartTitle = content.title;
@@ -267,7 +273,7 @@ const initApp = function(apiContent){
       
 
 
-      vs.getFatalitiesData({from:2019,to:2019}).then(res=>{
+      vs.getFatalitiesData({from:CURRENT_YEAR,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][8];
         var widget = document.getElementById('card-00');
         var total = 0;
@@ -277,14 +283,15 @@ const initApp = function(apiContent){
         widget.setAttribute('href', content.url );
         widget.setAttribute('chart-colour', content.colour);
         widget.setAttribute('chart-value', total.toString().formatNumber());
+        
       }).catch(err=>{
         var content = apiContent['general-data'][8];
         var widget = document.getElementById('card-00');
-        widget.setAttribute('chart-value', '&ndash;');
+        widget.setAttribute('chart-value', '0');
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
-      vs.getSeriouslyInjuredData({from:2019,to:2019}).then(res=>{
+      vs.getSeriouslyInjuredData({from:CURRENT_YEAR,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][9];
         var widget = document.getElementById('card-01');
         var total = 0;
@@ -297,13 +304,13 @@ const initApp = function(apiContent){
       }).catch(err=>{
         var content = apiContent['general-data'][9];
         var widget = document.getElementById('card-01');
-        widget.setAttribute('chart-value', '&ndash;');
+        widget.setAttribute('chart-value', '0');
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
 
 
-      vs.getCommunitySafetyZoneData({from:2016,to:2019}).then(res=>{
+      vs.getCommunitySafetyZoneData({from:2016,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][0];
         var widget = document.getElementById('card-1');
         var total = 0;
@@ -320,7 +327,7 @@ const initApp = function(apiContent){
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
-      vs.getSeniorSafetyZoneData({from:2016,to:2019}).then(res=>{
+      vs.getSeniorSafetyZoneData({from:2016,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][1];
         var widget = document.getElementById('card-2');
         var total = 0;
@@ -337,7 +344,7 @@ const initApp = function(apiContent){
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
-      vs.getSchoolSafetyZoneData({from:2016,to:2019}).then(res=>{
+      vs.getSchoolSafetyZoneData({from:2016,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][2];
         var widget = document.getElementById('card-3');
         var total = 0;
@@ -354,7 +361,7 @@ const initApp = function(apiContent){
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
-      vs.getTrafficSignalData({from:2016,to:2019}).then(res=>{
+      vs.getTrafficSignalData({from:2016,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][3];
         var widget = document.getElementById('card-4');
         var total = 0;
@@ -371,7 +378,7 @@ const initApp = function(apiContent){
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
-      vs.getLeadingPedestrianIntervalData({from:2016,to:2019}).then(res=>{
+      vs.getLeadingPedestrianIntervalData({from:2016,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][4];
         var widget = document.getElementById('card-5');
         var total = 0;
@@ -388,7 +395,7 @@ const initApp = function(apiContent){
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
-      vs.getRedLightCameraData({from:2016,to:2019}).then(res=>{
+      vs.getRedLightCameraData({from:2016,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][5];
         var widget = document.getElementById('card-6');
         var total = 0;
@@ -405,7 +412,7 @@ const initApp = function(apiContent){
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
-      vs.getAudiblePedestrianSignalData({from:2016,to:2019}).then(res=>{
+      vs.getAudiblePedestrianSignalData({from:2016,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][6];
         var widget = document.getElementById('card-7');
         var total = 0;
@@ -422,7 +429,7 @@ const initApp = function(apiContent){
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
-      vs.getLEDBlankoutSignData({from:2016,to:2019}).then(res=>{
+      vs.getLEDBlankoutSignData({from:2016,to:CURRENT_YEAR}).then(res=>{
         var content = apiContent['general-data'][7];
         var widget = document.getElementById('card-8');
         var total = 0;        

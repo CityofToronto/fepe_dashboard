@@ -100,9 +100,121 @@ class HousingDashboard{
     getHousingData(period='year'){
       let URI = '/data/HousingDataModel_v2_SAMPLE.json'; //'/*@echo DATA_SRC*/';
       return fetch(URI).then(res=>{return res.json()}).then(res=>{
-
-        console.log(res)
+        console.log(res);
         return res;
+
+      }).then(res=>{
+        /*
+         Set indicators & do anaylsis
+        */
+       return res.map(indicator=>{
+          let ytd = indicator.custom.yearToDate;
+          let ytdTotal, ytdTotalPrevious = 0;
+          let mTotal, mTotalPrevious = 0;
+          let subTitle;
+          let LastYear, ThisYear;
+          let valueBegin,valueEnd;
+          let isStable;
+          let timeRangeLabel,timeRangeFullLabel;
+          let data = indicator.data;
+
+          switch(ytd){
+            case 'True':
+                ThisYear = data.filter(v=>v.x.format('YYYY') == moment().format('YYYY'))
+                LastYear = data.filter(v=>v.x.format('YYYY') == moment().subtract(1,'year').format('YYYY')).slice(0,ThisYear.length)
+
+                valueBegin = LastYear[LastYear.length-1].y;
+                valueEnd = ThisYear[ThisYear.length-1].y;
+
+                ytdTotal = ThisYear.reduce((a,b)=>({y: a.y + b.y})).y;
+                ytdTotalPrevious = LastYear.reduce((a,b)=>({y: a.y + b.y})).y;
+
+                mTotal = ThisYear[ThisYear.length-1].y;
+                mTotalPrevious = ThisYear[ThisYear.length-2].y;
+
+                subTitle = `${ThisYear[ThisYear.length-1].x.format('YYYY MMM')} Year-To-Date`;
+                timeRangeLabel = 'Year';
+                timeRangeFullLabel = ThisYear[ThisYear.length-1].x.format('YYYY MMMM');
+              break;
+              
+            case 'False':
+              //ThisYear.forEach(val=>{ ytdTotal+= val.y });
+              switch(it){
+                case 'm':
+                    //Compare previous Year
+                    ThisYear = data.filter(v=>v.x.format('YYYY') == moment().format('YYYY'));
+                    LastYear = data.filter(v=>v.x.format('YYYY') == moment().subtract(1,'year').format('YYYY')).slice(0,ThisYear.length);
+                    
+                    ytdTotal = ThisYear[ThisYear.length-1].y
+                    ytdTotalPrevious = LastYear[ThisYear.length-1].y
+
+                    valueBegin = LastYear[LastYear.length-1].y
+                    valueEnd =  ThisYear[ThisYear.length-1].y                 
+                    subTitle = `${ThisYear[ThisYear.length-1].x.format('YYYY MMM')}`
+                    
+                    timeRangeLabel = 'Month';
+                    timeRangeFullLabel = ThisYear[ThisYear.length-1].x.format('YYYY MMMM');
+                  break;
+                case 'q':
+                    //Compare previous Quarter
+                    ThisYear = data[data.length-1]; 
+                    LastYear = data[data.length-2];
+
+                    ytdTotal = ThisYear.y
+                    ytdTotalPrevious = LastYear.y
+
+                    valueBegin = LastYear.y
+                    valueEnd = ThisYear.y
+                    
+                    subTitle = `${ThisYear.x.format('YYYY [Q]Q')}`
+                    timeRangeLabel = 'Quarter';
+                    timeRangeFullLabel = ThisYear.x.format('YYYY [Q]Q');
+                  break;
+                case 's':
+                    //Compare previous Season
+                    ThisYear = data[data.length-1];
+                    LastYear = data[data.length-2];
+
+                    ytdTotal = ThisYear.y
+                    ytdTotalPrevious = LastYear.y
+
+                    valueBegin = LastYear.y
+                    valueEnd = ThisYear.y
+                    
+                    let season;
+                    for(var s in this.getDateRange('season')){
+                      if(this.getDateRange('season')[s].includes( ThisYear.x.format('MMMM'))){
+                        season = `${s[0].toUpperCase()}${s.slice(1)} `
+                      }
+                    }
+
+                    subTitle = `${season}`
+                    timeRangeLabel = 'Season';
+                    timeRangeFullLabel = season;
+                  break;
+                case 'y':
+                    //Compare previous Year
+                    ThisYear = data[data.length-1];
+                    LastYear = data[data.length-2];
+
+                    ytdTotal = ThisYear.y;
+                    ytdTotalPrevious = LastYear.y
+
+                    valueBegin = ThisYear.y
+                    valueEnd = LastYear.y
+
+                    subTitle = `${ThisYear.x.format('YYYY')}`
+                    timeRangeLabel = 'Year';
+                    timeRangeFullLabel = ThisYear.x.format('YYYY');
+                  break;
+              }
+              break;
+          }
+
+
+
+       })
+          
       })
     }
 

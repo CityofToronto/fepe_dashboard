@@ -20,6 +20,8 @@ See examples below in the boilerplate code
 <!-- cot-app:head end-->
 
 <!-- cot-app:body -->
+
+
 <div id="fepe_visionzero-dashboard_container" >
   <div id="general-data" hidden>
     <h2>Installations (2016 - Year-to-Date)</h2>
@@ -143,14 +145,14 @@ See examples below in the boilerplate code
 
  
 
-    <h2>Fatalities & Seriously Injured (2019)</h2>
+    <h2>Fatalities & Seriously Injured (2020)</h2>
     <div class="row cards">
         <div class="col-md-6 col-print-12">
             <cotui-chart 
             id="card-00" 
             chart-type="card" 
             chart-colour="#d0d3d5"
-            chart-title="Fatalities 2019" 
+            chart-title="Fatalities 2020" 
             chart-value="00" 
             caption="Last updated: N/A"
             ></cotui-chart>
@@ -160,7 +162,7 @@ See examples below in the boilerplate code
             id="card-01" 
             chart-type="card" 
             chart-colour="#d0d3d5"
-            chart-title="Seriously Injured 2019" 
+            chart-title="Seriously Injured 2020" 
             chart-value="00"
             caption="Last updated: N/A"
             ></cotui-chart>
@@ -168,11 +170,11 @@ See examples below in the boilerplate code
     </div>
     <div class="row">
       <div class="col-md-6 col-print-12">
-        <h3 class="sr-only">2019 Fatalities by Road User</h3>
+        <h3 class="sr-only"><span class="current_year"></span> Fatalities by Road User</h3>
         <cotui-chart id="TrendByModeFatalities" chart-type="bar" legend-label="Road User" chart-stacked="true" chart-title="2019 Fatalities by Road User" x-axisLabel="Month" y-axisLabel="Fatalities"></cotui-chart>
       </div>
       <div class="col-md-6  col-print-12" >
-         <h3 class="sr-only">2019 Seriously Injured by Road User</h3>
+         <h3 class="sr-only"><span class="current_year"></span> Seriously Injured by Road User</h3>
         <cotui-chart id="TrendByModeSeriouslyInjured" chart-type="bar" legend-label="Road User" chart-stacked="true" chart-title="2019 Seriously Injured by Road User"  x-axisLabel="Month" y-axisLabel="Seriously Injured"></cotui-chart>
       </div>
     </div>
@@ -255,6 +257,7 @@ See examples below in the boilerplate code
       </div>
     </div>
   </div>
+
 
 
 
