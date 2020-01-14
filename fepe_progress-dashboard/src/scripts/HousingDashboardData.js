@@ -403,6 +403,7 @@ class HousingDashboardData{
           //delete indicator.data.labels
           indicator.options['scales'] = {
             xAxes : [{
+                offset: true,
                 type: 'time', 
                 distribution: 'series',
                 time:{
@@ -412,7 +413,6 @@ class HousingDashboardData{
               }] 
             }
           console.log('Indicator',it, indicator.config )
-          
           return indicator;
        })
           

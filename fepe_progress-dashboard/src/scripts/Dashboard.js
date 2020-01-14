@@ -65,10 +65,11 @@ class Dashboard{
       var b = [null];
       var sum = 0;
       _dataset.data.reduce((prev,curr,ndx,arr)=>{
-        sum += arr[ndx-1];
-        b.push(sum);
+        sum += arr[ndx-1].y;
+        b.y.push({x:arr[ndx-1].x, y:sum});
       });
   
+      console.log('calculateCumulativeData',b)
       return [{
         stack:`ytd-${_dataset.label}`,
         label:`Previous Total (${_dataset.label})`,
@@ -353,26 +354,64 @@ class Dashboard{
             
           
 
-// calculateCumulativeData 
+          // calculateCumulativeData 
 
-/*
+
           const switchID = 'ytd_toggle'
           const $switchToggle = document.getElementById(switchID);
-          const $switchToggleLabel = $switchToggle.parentElement.parentElement.querySelector(`[for="${switchID}"]`);
+          const $switchToggleLabel = document.querySelector(`[for="${switchID}"]`)
+
 
           const $switch = $switchToggle.parentElement.parentElement
               $switch.setAttribute('tabindex','0');
 
           const handleToggle = (evt)=>{
-              switchToggle.checked = !switchToggle.checked;
+            
+            $switchToggle.checked = !$switchToggle.checked;
+
+
+            const calculateCumulativeData = (_dataset,id)=>{
+              var b = [];
+              var sum = 0;
+              _dataset.data.forEach((d,ndx)=>{
+                sum += ndx==0?0:_dataset.data[ndx-1].y;
+                b.push({x:d.x, y:sum});               
+              });
+          
+              console.log('previous',panel,'added', _dataset)
+              return [{
+                stack:`ytd-${_dataset.label}`,
+                label:`Previous ${panel.config.unit}`,
+                backgroundColor:'#ddd' ,
+                data:b,
+              },{
+                stack:`ytd-${_dataset.label}`,
+                label:`Added this ${panel.config.unit}`,
+                backgroundColor: _dataset.backgroundColor,
+                data:_dataset.data
+              }];
+            }
+
+            const datasetTemp = panel.data.datasets.map(dataset=>{
+              return calculateCumulativeData(dataset)
+            })
+            $widget.data = {
+              chartOptions: panel.options,
+              chartData:{
+                labels: panel.data.labels,
+                datasets: $switchToggle.checked?datasetTemp[0]:panel.data.datasets
+              }
+            }
+            evt.preventDefault();
           }
 
-          $switchToggleLabel.addEventListener('click',handleToggle)
-          $switch.addEventListener('keydown',evt=>{
-           if(evt.keyCode == 32) handleMonthChange();
-          })
-          $switch.parentElement.addEventListener('click',handleMonthChange)
-*/
+          //$switchToggleLabel.addEventListener('click',handleToggle)
+          $switchToggle.setAttribute('tabindex','0');
+          $switch.addEventListener('keydown', evt=>{
+            if(evt.keyCode == 13 || evt.keyCode == 32) handleToggle(evt);
+          });
+          $switch.addEventListener('click',handleToggle)
+
 
 
         
