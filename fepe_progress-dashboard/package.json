@@ -39,6 +39,7 @@
   "dependencies": {
     "core": "git+https://github.com/CityofToronto/corejs.git#9.1.0",
     "cotui": "git+https://github.com/CityofToronto/COT_UI.git#develop",
+    "datatables": "git+https://github.com/CityofToronto/fepe_datatables.git",
     "fuse.js": "^3.4.5"
   },
   "coreConfig": {

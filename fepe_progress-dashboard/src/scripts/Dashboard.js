@@ -96,9 +96,9 @@ class Dashboard{
         },
         routes: {
           "": () => {
-            document.getElementById('master').classList.remove('hide')
-            document.getElementById('detail').classList.add('hide')
-            document.querySelector('.dashboard__nav').classList.remove('hide')
+            document.getElementById('master').removeAttribute('hidden')
+            document.getElementById('detail').setAttribute('hidden','')
+            document.querySelector('.dashboard__nav').removeAttribute('hidden')
 
             document.querySelector('.dashboard__chart--title').innerText = "";
 
@@ -202,9 +202,9 @@ class Dashboard{
               */
           },
           "detail": (s) => {
-            document.getElementById('master').classList.add('hide')
-            document.getElementById('detail').classList.remove('hide')    
-            document.querySelector('.dashboard__nav').classList.add('hide')
+            document.getElementById('master').setAttribute('hidden','')
+            document.getElementById('detail').removeAttribute('hidden') 
+            document.querySelector('.dashboard__nav').setAttribute('hidden','')
           },
           "detail/:id": (id) => {
             let cached = localStorage.getItem('HousingDashboardData');
@@ -228,6 +228,7 @@ class Dashboard{
             
 
             let data = {
+              chartOptions: panel.options,
               chartData:{
                 labels: panel.data.labels,
                 datasets: panel.data.datasets
@@ -261,7 +262,7 @@ class Dashboard{
 
 
             /*Trend Analysis Table*/
-            console.log('$trendAnalyis',$trendAnalyis,panel.rawData)
+            console.log('$trendAnalyis',$trendAnalyis,panel.custom)
             const $thead = $trendAnalyis.querySelector('thead'); 
             const $tbody = $trendAnalyis.querySelector('tbody'); 
             const headings = []            
@@ -269,7 +270,7 @@ class Dashboard{
             $thead.innerHTML = '';
             $tbody.innerHTML = '';
            
-            for(thText in panel.rawData.trendAnalysis[0]){
+            for(thText in panel.custom.trendAnalysis[0]){
               const $th = document.createElement('th')
                     $th.innerText = thText;
                     $thead.appendChild($th);
@@ -277,7 +278,7 @@ class Dashboard{
             }
             
            
-            panel.rawData.trendAnalysis.forEach(row=>{
+            panel.custom.trendAnalysis.forEach(row=>{
               const $tr = document.createElement('tr')
               headings.forEach(heading=>{
                 const analysis = row['Analysis'];
@@ -324,11 +325,37 @@ class Dashboard{
               });
               $tbody.appendChild($tr)
             })
-                      
+
+            /* DataTable */
+            const $datatable = {
+              h2: document.querySelector('.dashboard__datatable table caption'),
+              table: document.querySelector('.dashboard__datatable table'),
+              thead: document.querySelector('.dashboard__datatable thead'),
+              tbody: document.querySelector('.dashboard__datatable tbody'),
+            }
+            
+            $datatable.h2.innerHTML = '';
+            $datatable.thead.innerHTML = '';
+            $datatable.tbody.innerHTML = '';
+
+            $datatable.h2.innerText = `${panel.label} (${panel.custom.indicatorType})`;
+
+            $datatable.thead.innerHTML = `<tr><th>${panel.custom.indicatorType}</th><th>Value</th></tr>`;
+            
+            panel.data.datasets.forEach(dataset=>{
+              dataset.data.forEach(d=>{
+                $datatable.tbody.innerHTML += `<tr><td>${moment(d.x).format('YYYY-MM-DD')}</td><td>${d.y}</td></tr>`;
+              })
+            })
+                
+            $($datatable.table).DataTable();
+
+            
+          
 
 // calculateCumulativeData 
-/*
 
+/*
           const switchID = 'ytd_toggle'
           const $switchToggle = document.getElementById(switchID);
           const $switchToggleLabel = $switchToggle.parentElement.parentElement.querySelector(`[for="${switchID}"]`);
@@ -372,9 +399,9 @@ class Dashboard{
 
             
 
-            document.getElementById('master').classList.add('hide')
-            document.getElementById('detail').classList.remove('hide')
-            document.querySelector('.dashboard__nav').classList.add('hide')
+            document.getElementById('master').setAttribute('hidden','')
+            document.getElementById('detail').removeAttribute('hidden')
+            document.querySelector('.dashboard__nav').setAttribute('hidden','')
           }
         }
       }))();

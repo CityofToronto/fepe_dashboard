@@ -1,7 +1,8 @@
 
-class HousingDashboard{
+class HousingDashboardData{
     constructor(){
       this.fuse = '';
+      this.chartColours = ['#E6DA19'];
       this.Model ={
         id:'panel-0001',
         label: '# of active affordable rental developments',
@@ -62,6 +63,8 @@ class HousingDashboard{
 
 
     analysis(compVal1,compVal2,variance, isPercent = true, dd){
+
+      console.log( compVal1,compVal2,variance, isPercent, dd )
       let sCHANGE = isPercent?(compVal1 - compVal2) * 100:(compVal1/compVal2-1) * 100;
           sCHANGE = Math.abs(sCHANGE.toFixed(2)) + "%";
 
@@ -98,17 +101,37 @@ class HousingDashboard{
 
     
     getHousingData(period='year'){
-      let URI = '/data/HousingDataModel_v2_SAMPLE.json'; //'/*@echo DATA_SRC*/';
+      let URI = '/*@echo DATA_SRC*/';
       return fetch(URI).then(res=>{return res.json()}).then(res=>{
-        console.log(res);
+
+        
+        res.map(results=>{
+          results.data.datasets.forEach(dataset=>{
+            let dataTemp = [];
+
+            dataset.data.forEach(d=>{
+              dataTemp.push({
+                x: moment(d.x),
+                y: d.y
+              })
+            })
+
+            return dataset.data = dataTemp;
+          })
+        })
+        
+
+        console.log('getHousingData',res)
         return res;
 
       }).then(res=>{
         /*
          Set indicators & do anaylsis
         */
-       return res.map(indicator=>{
+       return res.map((indicator,ndx)=>{
           let ytd = indicator.custom.yearToDate;
+          let it = indicator.custom.indicatorType;
+          let indicatorConfig = {};
           let ytdTotal, ytdTotalPrevious = 0;
           let mTotal, mTotalPrevious = 0;
           let subTitle;
@@ -118,6 +141,10 @@ class HousingDashboard{
           let timeRangeLabel,timeRangeFullLabel;
           let data = indicator.data;
 
+          indicator.data.datasets.forEach(dataset=>{
+            dataset.backgroundColor = this.chartColours[0];
+          });
+         
           switch(ytd){
             case 'True':
                 ThisYear = data.filter(v=>v.x.format('YYYY') == moment().format('YYYY'))
@@ -135,84 +162,258 @@ class HousingDashboard{
                 subTitle = `${ThisYear[ThisYear.length-1].x.format('YYYY MMM')} Year-To-Date`;
                 timeRangeLabel = 'Year';
                 timeRangeFullLabel = ThisYear[ThisYear.length-1].x.format('YYYY MMMM');
+
+
+                indicator.custom['trendAnalysis'] = [{
+                  'Trend': 'Current Year-to-Date vs. Previous Year',
+                  'Current Value': `${timeRangeFullLabel} YTD: ${ytdTotal.toString().formatNumber()}`,
+                  'Comparison Value': `Previous ${timeRangeLabel} : ${ytdTotalPrevious.toString().formatNumber()}`,
+                  '% Changed':`${((ytdTotal/ytdTotalPrevious-1) * 100).toString().formatNumber(2)}%`,
+                  'Analysis':this.analysis(ytdTotal,ytdTotalPrevious,indicator.custom.variance,indicator.custom.valueType=='percent',dd)
+                },{
+                  'Trend': 'Current Period vs. Last Year At This Time',
+                  'Current Value': `${timeRangeFullLabel} : ${valueEnd.toString().formatNumber()}`,
+                  'Comparison Value': `Previous ${timeRangeLabel} : ${valueBegin.toString().formatNumber()}`,
+                  '% Changed':`${((valueEnd/valueBegin-1) * 100).toString().formatNumber(2)}%`,
+                  'Analysis':this.analysis(valueEnd,valueBegin,indicator.custom.variance,indicator.custom.valueType=='percent',dd)
+                },{
+                  'Trend': 'Current Period vs. Last Period',
+                  'Current Value': `${timeRangeFullLabel} : ${mTotal.toString().formatNumber()}`,
+                  'Comparison Value': `Previous Month : ${mTotalPrevious.toString().formatNumber()} `,
+                  '% Changed': `${((mTotal/mTotalPrevious-1) * 100).toString().formatNumber(2)}%`,
+                  'Analysis':this.analysis(mTotal,mTotalPrevious,indicator.custom.variance,indicator.custom.valueType=='percent',indicator.custom.desiredDirection)
+                }]
               break;
               
             case 'False':
               //ThisYear.forEach(val=>{ ytdTotal+= val.y });
               switch(it){
-                case 'm':
+                case 'monthly':
                     //Compare previous Year
-                    ThisYear = data.filter(v=>v.x.format('YYYY') == moment().format('YYYY'));
-                    LastYear = data.filter(v=>v.x.format('YYYY') == moment().subtract(1,'year').format('YYYY')).slice(0,ThisYear.length);
+                    ThisYear = data.datasets[0].data.filter(v=>moment(v.x).format('YYYY') == moment().format('YYYY'));
+                    //LastYear = data.datasets[0].data.filter(v=>moment(v.x).format('YYYY') == moment().subtract(1,'year').format('YYYY')).slice(0,ThisYear.length);
+                    LastYear = data.datasets[0].data.filter(v=>moment(v.x).format('YYYY') == moment().format('YYYY')).slice(0,ThisYear.length);
                     
-                    ytdTotal = ThisYear[ThisYear.length-1].y
-                    ytdTotalPrevious = LastYear[ThisYear.length-1].y
+                  if( ThisYear.length && LastYear.length){
+                    
+                    ytdTotal = ThisYear[ThisYear.length-1].y;
+                    ytdTotalPrevious = LastYear[ThisYear.length-1].y;
 
-                    valueBegin = LastYear[LastYear.length-1].y
-                    valueEnd =  ThisYear[ThisYear.length-1].y                 
-                    subTitle = `${ThisYear[ThisYear.length-1].x.format('YYYY MMM')}`
+                    valueBegin = LastYear[LastYear.length-1].y;
+                    valueEnd =  ThisYear[ThisYear.length-1].y;                
+                    subTitle = `${moment(ThisYear[ThisYear.length-1].x).format('YYYY MMM')}`;
                     
                     timeRangeLabel = 'Month';
-                    timeRangeFullLabel = ThisYear[ThisYear.length-1].x.format('YYYY MMMM');
+                    timeRangeFullLabel = moment(ThisYear[ThisYear.length-1].x).format('YYYY MMMM');
+                  }
+
+                  indicator.config = { 
+                    unit: 'month',
+                    format: 'MMM YYYY'
+                  };
+                  indicator.data.labels = indicator.data.labels.map(label=>{
+                    return parseInt(moment().month(label).format('X'));
+                  })
+
                   break;
-                case 'q':
+                case 'quarter':
                     //Compare previous Quarter
-                    ThisYear = data[data.length-1]; 
-                    LastYear = data[data.length-2];
+                    // ThisYear = data[data.length-1]; 
+                    // LastYear = data[data.length-2];
 
-                    ytdTotal = ThisYear.y
-                    ytdTotalPrevious = LastYear.y
+                    // ytdTotal = ThisYear.y
+                    // ytdTotalPrevious = LastYear.y
 
-                    valueBegin = LastYear.y
-                    valueEnd = ThisYear.y
+                    // valueBegin = LastYear.y
+                    // valueEnd = ThisYear.y
                     
-                    subTitle = `${ThisYear.x.format('YYYY [Q]Q')}`
-                    timeRangeLabel = 'Quarter';
-                    timeRangeFullLabel = ThisYear.x.format('YYYY [Q]Q');
+                    // subTitle = `${ThisYear.x.format('YYYY [Q]Q')}`
+                    // timeRangeLabel = 'Quarter';
+                    // timeRangeFullLabel = ThisYear.x.format('YYYY [Q]Q');
+
+                    indicator.config = { 
+                      unit: 'quarter',
+                      format: '[Q]Q - YYYY'
+                    };
+                    indicator.data.labels = indicator.data.labels.map(label=>{
+                      return parseInt( moment().quarter( parseInt(label.replace(/(Quarter\s)/gi, '')) ).format('x') );
+                    })
                   break;
-                case 's':
-                    //Compare previous Season
-                    ThisYear = data[data.length-1];
-                    LastYear = data[data.length-2];
+                // case 'seasonaly':
+                //     //Compare previous Season
+                //     ThisYear = data[data.length-1];
+                //     LastYear = data[data.length-2];
 
-                    ytdTotal = ThisYear.y
-                    ytdTotalPrevious = LastYear.y
+                //     ytdTotal = ThisYear.y
+                //     ytdTotalPrevious = LastYear.y
 
-                    valueBegin = LastYear.y
-                    valueEnd = ThisYear.y
+                //     valueBegin = LastYear.y
+                //     valueEnd = ThisYear.y
                     
-                    let season;
-                    for(var s in this.getDateRange('season')){
-                      if(this.getDateRange('season')[s].includes( ThisYear.x.format('MMMM'))){
-                        season = `${s[0].toUpperCase()}${s.slice(1)} `
-                      }
-                    }
+                //     let seasonly;
+                //     for(var s in this.getDateRange('season')){
+                //       if(this.getDateRange('season')[s].includes( ThisYear.x.format('MMMM'))){
+                //         seasonly = `${s[0].toUpperCase()}${s.slice(1)} `
+                //       }
+                //     }
 
-                    subTitle = `${season}`
-                    timeRangeLabel = 'Season';
-                    timeRangeFullLabel = season;
-                  break;
-                case 'y':
+                //     subTitle = `${seasonly}`
+                //     timeRangeLabel = 'Season';
+                //     timeRangeFullLabel = seasonly;
+                //   break;
+                // case 'semi-annually':
+                //     //Compare previous Season
+                //     ThisYear = data[data.length-1];
+                //     LastYear = data[data.length-2];
+
+                //     ytdTotal = ThisYear.y
+                //     ytdTotalPrevious = LastYear.y
+
+                //     valueBegin = LastYear.y
+                //     valueEnd = ThisYear.y
+                    
+                //     let season;
+                //     for(var s in this.getDateRange('semi-annually')){
+                //       if(this.getDateRange('semi-annually')[s].includes( ThisYear.x.format('MMMM'))){
+                //         season = `${s[0].toUpperCase()}${s.slice(1)} `
+                //       }
+                //     }
+
+                //     subTitle = `${season}`
+                //     timeRangeLabel = 'Season';
+                //     timeRangeFullLabel = season;
+                //   break;
+                case 'annual':
                     //Compare previous Year
-                    ThisYear = data[data.length-1];
-                    LastYear = data[data.length-2];
+                    // ThisYear = data[data.length-1];
+                    // LastYear = data[data.length-2];
 
-                    ytdTotal = ThisYear.y;
-                    ytdTotalPrevious = LastYear.y
+                    // ytdTotal = ThisYear.y;
+                    // ytdTotalPrevious = LastYear.y
 
-                    valueBegin = ThisYear.y
-                    valueEnd = LastYear.y
+                    // valueBegin = ThisYear.y
+                    // valueEnd = LastYear.y
 
-                    subTitle = `${ThisYear.x.format('YYYY')}`
-                    timeRangeLabel = 'Year';
-                    timeRangeFullLabel = ThisYear.x.format('YYYY');
+                    // subTitle = `${ThisYear.x.format('YYYY')}`
+                    // timeRangeLabel = 'Year';
+                    // timeRangeFullLabel = ThisYear.x.format('YYYY');
+
+                    indicator.config = { 
+                      unit: 'year',
+                      format: 'YYYY'
+                    };
+                    indicator.data.labels = indicator.data.labels.map(label=>{
+                      return parseInt( moment().year( label ).format('x'));
+                    })
                   break;
+                case 'daily':
+                    //Compare previous Year
+                    // ThisYear = data[data.length-1];
+                    // LastYear = data[data.length-2];
+
+                    // ytdTotal = ThisYear.y;
+                    // ytdTotalPrevious = LastYear.y
+
+                    // valueBegin = ThisYear.y
+                    // valueEnd = LastYear.y
+
+                    // subTitle = `${ThisYear.x.format('YYYY')}`
+                    // timeRangeLabel = 'Year';
+                    // timeRangeFullLabel = ThisYear.x.format('YYYY');
+
+                    indicator.config = { 
+                      unit: 'day',
+                      format: 'MM-DD'
+                    };
+                    indicator.data.labels = indicator.data.labels.map(label=>{
+                      return parseInt( moment().day( label ).format('x') );
+                    })
+                  break;
+                // case 'weekly':
+                //     //Compare previous Year
+                //     ThisYear = data[data.length-1];
+                //     LastYear = data[data.length-2];
+
+                //     ytdTotal = ThisYear.y;
+                //     ytdTotalPrevious = LastYear.y
+
+                //     valueBegin = ThisYear.y
+                //     valueEnd = LastYear.y
+
+                //     subTitle = `${ThisYear.x.format('YYYY')}`
+                //     timeRangeLabel = 'Year';
+                //     timeRangeFullLabel = ThisYear.x.format('YYYY');
+                //   break;
+
+                indicator.config = { 
+                  unit: 'week',
+                  format: 'DD'
+                };
+                indicator.data.labels = indicator.data.labels.map(label=>{
+                  return parseInt( moment().day( label ).format('x') );
+                })
               }
+
+              let calculatedValue;
+              
+              if(!ytdTotal){
+                ytdTotal = 0;
+              }
+              switch(indicator.custom.valueType){
+                case 'count':
+                  if (ytdTotal > 1000000) {
+                    ytdTotal = ytdTotal/1000000;
+                    calculatedValue = `$${(ytdTotal).toString().formatNumber(2)} M`;
+                  } else {
+                    calculatedValue = `$${(ytdTotal).toString().formatNumber(2)}`; 
+                  }
+                  break;
+                case 'number':
+                  if (ytdTotal > 1000000) {
+                    ytdTotal = ytdTotal/1000000;
+                    calculatedValue = `${ytdTotal.toString().formatNumber(2)} M`; 
+                  } else {
+                    calculatedValue = `${(ytdTotal).toString().formatNumber()}`;
+                  }
+                  break;
+                case 'percent': calculatedValue = `${(ytdTotal*100).toFixed(2)}%`; break;
+              }
+              indicator.custom['calculatedValue'] = calculatedValue
+              console.log('ytdTotal',calculatedValue )
+
+              
+              let change = `${((valueEnd/valueBegin-1) * 100).toString().formatNumber(3)}%`;
+              indicator.custom['trendAnalysis'] = [{
+                'Trend': 'Current Period vs. Last Year At This Time',
+                'Current Value': `${subTitle} : ${ytdTotal}`,
+                'Comparison Value': `Previous Year : ${ytdTotalPrevious} `,
+                '% Changed':change,
+                'Analysis':this.analysis(ytdTotal,ytdTotalPrevious,indicator.custom.variance,indicator.custom.valueType==='percent',indicator.custom.desiredDirection)
+              },{
+                'Trend': 'Current Period vs. Last Period',
+                'Current Value': `${subTitle} : ${ytdTotal}`,
+                'Comparison Value': `Previous Month : ${mTotal} `,
+                '% Changed':change,
+                'Analysis':this.analysis(mTotal,mTotalPrevious,indicator.custom.variance,indicator.custom.valueType==='percent',indicator.custom.desiredDirection)
+              }]
+
               break;
           }
 
-
-
+          //delete indicator.data.labels
+          indicator.options['scales'] = {
+            xAxes : [{
+                type: 'time', 
+                distribution: 'series',
+                time:{
+                  unit: indicator.config.unit,
+                  tooltipFormat: indicator.config.format
+                }
+              }] 
+            }
+          console.log('Indicator',it, indicator.config )
+          
+          return indicator;
        })
           
       })
@@ -388,9 +589,9 @@ class HousingDashboard{
           }
 
 
-          let trendAnalyis;
+          let trendAnalysis;
           if(ytd=='True'){
-            trendAnalyis = [{
+            trendAnalysis = [{
               'Trend': 'Current Year-to-Date vs. Previous Year',
               'Current Value': `${timeRangeFullLabel} YTD: ${ytdTotal.toString().formatNumber()}`,
               'Comparison Value': `Previous ${timeRangeLabel} : ${ytdTotalPrevious.toString().formatNumber()}`,
@@ -416,7 +617,7 @@ class HousingDashboard{
 
           if(ytd=='False'){
             let change = `${((valueEnd/valueBegin-1) * 100).toString().formatNumber(3)}%`;
-            trendAnalyis = [{
+            trendAnalysis = [{
               'Trend': 'Current Period vs. Last Year At This Time',
               'Current Value': `${subTitle} : ${ytdTotal}`,
               'Comparison Value': `Previous Year : ${ytdTotalPrevious} `,
@@ -432,8 +633,8 @@ class HousingDashboard{
           }
 
           
-          let caption = trendAnalyis[0].Analysis.direction=='none'?'':trendAnalyis[0].Analysis.text;
-          res['trendAnalysis'] = trendAnalyis;
+          let caption = trendAnalysis[0].Analysis.direction=='none'?'':trendAnalysis[0].Analysis.text;
+          res['trendAnalysis'] = trendAnalysis;
 
           if(period == 'year'){
             labels = [...new Set(years)];
@@ -454,7 +655,7 @@ class HousingDashboard{
                 xAxis:'Month',
                 yAxis:'Total Bankruptcies'
               },
-              direction: trendAnalyis[0].Analysis,
+              direction: trendAnalysis[0].Analysis,
               rawData: res,
               data:{
                  calculatedValue: `${calculatedValue} <br /> <small>${subTitle} Result</small>`,
@@ -490,7 +691,7 @@ class HousingDashboard{
                 xAxis:'Month',
                 yAxis:'Total Bankruptcies'
               },
-              direction: trendAnalyis[0].Analysis,
+              direction: trendAnalysis[0].Analysis,
               rawData: res,
               data:{
                  calculatedValue: `${calculatedValue} <br /> <small>${subTitle} Result</small>`,
@@ -536,7 +737,7 @@ class HousingDashboard{
                 xAxis:'Month',
                 yAxis:'Total Bankruptcies'
               },
-              direction: trendAnalyis[0].Analysis,
+              direction: trendAnalysis[0].Analysis,
               rawData: res,
               data:{
                  calculatedValue: `${calculatedValue} <br /> <small>${subTitle} Result</small>`,
@@ -588,7 +789,7 @@ class HousingDashboard{
                 xAxis:'Month',
                 yAxis:'Total Bankruptcies'
               },
-              direction: trendAnalyis[0].Analysis,
+              direction: trendAnalysis[0].Analysis,
               rawData: measure,
               data:{
                  calculatedValue: `${calculatedValue} <br /> <small>${subTitle} Result</small>`,

@@ -45,7 +45,6 @@ document.body.appendChild($ariaLive);
 $(document).ready(function(){
   
   $.ajax('/*@echo APP_CONFIG*/').then(res=>{
-    console.log('/*@echo APP_CONFIG*/',res[0])
     initApp(res[0])
   })
   .fail(res=>{
@@ -154,19 +153,18 @@ const initApp = function(apiContent){
     $ariaLive.innerText = 'Loading dashboard data';
     Promise.all(
       [
-        vs[page]({from:CURRENT_YEAR, to:CURRENT_YEAR}).then(res=>{
+        vs[page]({from:2019, to:2019}).then(res=>{
           let widget = document.getElementById('card-detail--current');
           let total = 0;
           content = apiContent['single-data'][0];
           //if(res.chartData.datasets.length > 0) {
             res.chartData.datasets.forEach(d=>{
-              console.log(d)
               d.data.map(val=>{ total += val.y; });
             })
           //}
 
           if(page === 'getRedLightCameraData' || page === 'getLEDBlankoutSignData' || page === 'getAudiblePedestrianSignalData'){
-            widget.chartTitle = `Intersection Installs in ${CURRENT_YEAR}`;
+            widget.chartTitle = `Intersection Installs in 2019`;
           } else {
             widget.chartTitle = content.title;
           }
@@ -221,7 +219,7 @@ const initApp = function(apiContent){
         }),
       ]
     ).then(data=>{
-      console.log('All Data Loaded',data,lastUpdated, data[1].chartOptions.caption);
+      console.log('All Data Loaded',data,lastUpdated);
       let widget = document.getElementById('card-detail--current');
           //widget.setAttribute('caption', lastUpdated );
           widget.querySelector('.chart--caption').innerText = data[1].chartOptions.caption;
@@ -242,7 +240,7 @@ const initApp = function(apiContent){
   LOAD MAIN PAGE
   */
 
- document.querySelectorAll('.current-year').forEach(node=>{
+ document.querySelectorAll('.current_year').forEach(node=>{
   node.innerText = `${CURRENT_YEAR}`;
  })
 
@@ -287,7 +285,7 @@ const initApp = function(apiContent){
       }).catch(err=>{
         var content = apiContent['general-data'][8];
         var widget = document.getElementById('card-00');
-        widget.setAttribute('chart-value', '0');
+        widget.setAttribute('chart-value', '&ndash;');
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),
@@ -304,7 +302,7 @@ const initApp = function(apiContent){
       }).catch(err=>{
         var content = apiContent['general-data'][9];
         var widget = document.getElementById('card-01');
-        widget.setAttribute('chart-value', '0');
+        widget.setAttribute('chart-value', '&ndash;');
         widget.removeAttribute('href');
         $ariaLive.innerText = `Error loading ${content.title} data`;
       }),

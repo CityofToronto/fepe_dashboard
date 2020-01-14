@@ -22,10 +22,10 @@ let options = {
   //You can add environment-specific vars or general vars
   preprocessorContext: {
     local: {
-      DATA_SRC: '/data/some_data.json'
+      DATA_SRC: '/data/HousingDataModel_v2_SAMPLE.json',
     },
     dev: {
-      DATA_SRC: '/app_content/tpp_measures/'
+      DATA_SRC: '/app_content/dashboard_sample/'
     },
     qa: {
       DATA_SRC: '/app_content/tpp_measures/'

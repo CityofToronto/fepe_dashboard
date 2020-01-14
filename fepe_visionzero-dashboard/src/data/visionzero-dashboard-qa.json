@@ -34,12 +34,12 @@
         "id": "card - detail--current",
         "type": "card",
         "colour": "#598816",
-        "title": "Installed in 2019"
+        "title": "Installed in 2020"
     }, {
         "id": "card-detail--target",
         "type": "card",
         "colour": "#d0d3d5",
-        "title": "2019 Target"
+        "title": "2020 Target"
     }, {
         "id": "card-detail--chart",
         "type": "bar",
@@ -106,23 +106,23 @@
             "id": "card-00",
             "type": "card",
             "colour": "#d0d3d5",
-            "title": "Fatalities 2019",
+            "title": "Fatalities 2020",
             "url": "?page_id=17769"
         },
         {
             "id": "card-01",
             "type": "card",
             "colour": "#d0d3d5",
-            "title": "Seriously Injured 2019",
+            "title": "Seriously Injured 2020",
             "url": "?page_id=17770"
         }, {
             "id": "TrendByModeFatalities",
             "type": "bar",
-            "title": "2019 Fatalities by Road User"
+            "title": "2020 Fatalities by Road User"
         }, {
             "id": "TrendByModeSeriouslyInjured",
             "type": "bar",
-            "title": "2019 Seriously Injured by Road User"
+            "title": "2020 Seriously Injured by Road User"
         }
     ]
 }]

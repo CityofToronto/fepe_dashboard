@@ -144,7 +144,7 @@ class VisionZero{
 
         datasets.push({ label, data ,backgroundColor:"#165788"})
         
-        console.log('KSI', dtK, dtSI)
+        //console.log('KSI', dtK, dtSI)
         return Promise.resolve({
           chartData:{
             labels,
@@ -269,10 +269,10 @@ class VisionZero{
             }
               
             const results = processResults(res);
-            console.debug('getModeOfTravelByYear')
-            console.log('getModeOfTravelByYear:ResultsURI', URI)
-            console.log('getModeOfTravelByYear:ResultsRaw', res)
-            console.log('getModeOfTravelByYear:ResultsProcessed', results, lastModified)
+            console.debug('getModeOfTravelByYear', results)
+            // console.log('getModeOfTravelByYear:ResultsURI', URI)
+            // console.log('getModeOfTravelByYear:ResultsRaw', res)
+            // console.log('getModeOfTravelByYear:ResultsProcessed', results, lastModified)
             return Promise.resolve(results);
             })
           )
@@ -281,7 +281,7 @@ class VisionZero{
 
       const datasets = []
       return Promise.all(requests).then(data=>{
-        console.log('getModeOfTravelByYear:Data', data)
+        //console.log('getModeOfTravelByYear:Data', data)
         const mode = {}
         data.map((d)=>{
           if(d.label)
@@ -394,7 +394,7 @@ class VisionZero{
             }
             
             if(properties.INJURY == 4)
-            console.log( categoryLabel, properties,  dt, data)
+            //console.log( categoryLabel, properties,  dt, data)
           //}
           
           
@@ -409,7 +409,7 @@ class VisionZero{
           type = properties.INJURY;
 
 
-          console.log(categoryLabel, categories[categoryLabel], type );
+          //console.log(categoryLabel, categories[categoryLabel], type );
         })
 
         for(var category in categories){          
@@ -465,7 +465,7 @@ class VisionZero{
 
           requests.push(fetch(URI).then(res=>{return res.json()}).then(res=>{           
             const totalResults = res.features.length||0;
-            console.debug('getModeOfTravelByMonth:Results',res, totalResults, INJURY_STR, INVOLVEMENT_TYPE_STR)
+            console.debug('getModeOfTravelByMonth',res)
             if(totalResults>0) lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE)||''
               const results = processResults(res);
               return Promise.resolve(results);
@@ -476,7 +476,7 @@ class VisionZero{
 
       const datasets = []
       return Promise.all(requests).then(data=>{
-        console.log('getModeOfTravelByMonth:Data',data)
+        //console.log('getModeOfTravelByMonth:Data',data)
         const mode = {}
         data.map((d)=>{
           if(d.label != ''){
@@ -689,7 +689,11 @@ class VisionZero{
         var dtObj = {};
 
         const totalResults = res.features.length;
-        lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE);
+        if(totalResults > 0){
+          lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE);
+        }
+        //console.log('getSeriouslyInjuredData', res.hasOwnProperty('features') )
+        //lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE);
         console.debug('getSeriouslyInjuredData', URI,res)
         if(res.features.length == 0) return Promise.resolve({
           chartOptions:{
@@ -799,7 +803,7 @@ class VisionZero{
         }
         
         labels.sort(function(a,b){
-          console.log(a,b)
+          //console.log(a,b)
           // var at = a.split('-');
           // var bt = b.split('-');
           // var dateA = new Date(at[0],at[1],at[2]);
@@ -1374,7 +1378,7 @@ TODO: SPLIT into TWO DATASETS
             })
           }
 
-          console.log(pos)
+          //console.log(pos)
           var backgroundColor = datasets.length<1?"#165788":"#CC883A";
           datasets.push({ label: tLabel, data:tData ,backgroundColor})
           ndx++;
