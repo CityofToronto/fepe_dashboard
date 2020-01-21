@@ -462,10 +462,10 @@ class VisionZero{
           var INJURY_STR = INJURY(INJURY_TYPE)[injuryType];
           var INVOLVEMENT_TYPE_STR = INVOLVEMENT_TYPE[type].map(t=>{return t}).join(',')
           URI = `https://services3.arcgis.com/b9WvedVPoizGfvfD/arcgis/rest/services/COTGEO_TMC_KSI/FeatureServer/0/query?where=ACCIDENT_DATE BETWEEN date'${moment(new Date(from,0,1)).format('YYYY-MM-DD')}' AND CURRENT_DATE AND%20INJURY%20IN%20(${INJURY_STR})%20AND%20INVOLVEMENT_TYPE%20IN%20(${INVOLVEMENT_TYPE_STR})&outSr=4326&outFields=*&orderByFields=ACCIDENT_DATE&inSr=4326&f=geojson`;
-
+console.log( URI )
           requests.push(fetch(URI).then(res=>{return res.json()}).then(res=>{           
             const totalResults = res.features.length||0;
-            console.debug('getModeOfTravelByMonth',res)
+            console.debug('getModeOfTravelByMonth',URI,res)
             if(totalResults>0) lastModified = new Date(res.features[totalResults-1].properties.ACCIDENT_DATE)||''
               const results = processResults(res);
               return Promise.resolve(results);
