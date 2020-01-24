@@ -153,24 +153,20 @@ const initApp = function(apiContent){
     $ariaLive.innerText = 'Loading dashboard data';
     Promise.all(
       [
-        vs[page]({from:2019, to:2019}).then(res=>{
+        vs[page]({from:CURRENT_YEAR, to:CURRENT_YEAR}).then(res=>{
           let widget = document.getElementById('card-detail--current');
           let total = 0;
           content = apiContent['single-data'][0];
-          //if(res.chartData.datasets.length > 0) {
-            res.chartData.datasets.forEach(d=>{
-              d.data.map(val=>{ total += val.y; });
-            })
-          //}
+          res.chartData.datasets.forEach(d=>{
+            d.data.map(val=>{ total += val.y; });
+          })
 
           if(page === 'getRedLightCameraData' || page === 'getLEDBlankoutSignData' || page === 'getAudiblePedestrianSignalData'){
-            widget.chartTitle = `Intersection Installs in 2019`;
+            widget.chartTitle = `Intersection Installs in ${CURRENT_YEAR}`;
           } else {
             widget.chartTitle = content.title;
           }
           lastUpdated = res.chartOptions.caption;
-
-        
 
           widget.setAttribute('chart-value', total.toString().formatNumber());
           widget.setAttribute('caption', lastUpdated );
@@ -184,20 +180,23 @@ const initApp = function(apiContent){
         }),
 
         vs[page]({from:2016, to:CURRENT_YEAR}).then(res=>{
-          let widgetA = document.getElementById('card-detail--target');
-          let totalA = target||0;
-          content = apiContent['single-data'][1];
-          //res.chartData.datasets[0].data.map(val=>{ totalA += val.y; });
-          widgetA.setAttribute('caption', '' );
-          widgetA.setAttribute('chart-value', totalA.toString().formatNumber());
+          // let widgetA = document.getElementById('card-detail--target');
+          // let totalA = target||0;
+          // content = apiContent['single-data'][1];
+          // //res.chartData.datasets[0].data.map(val=>{ totalA += val.y; });
+          // widgetA.setAttribute('caption', '' );
+          // widgetA.setAttribute('chart-value', totalA.toString().formatNumber());
     
+
+          /* Set last reported for "Current Installs" */
           let widgetB = document.getElementById('card-detail--current');
-          // var totalB = 0;
-          // content = apiContent['single-data'][0];
-          // res.chartData.datasets[0].data.map(val=>{ totalB += val.y; });
           widgetB.setAttribute('caption', res.chartOptions.caption );
-          // widgetB.setAttribute('chart-value', totalB.toString().formatNumber());
-          lastUpdated = res.chartOptions.caption;
+          // // var totalB = 0;
+          // // content = apiContent['single-data'][0];
+          // // res.chartData.datasets[0].data.map(val=>{ totalB += val.y; });
+          
+          // // widgetB.setAttribute('chart-value', totalB.toString().formatNumber());
+          // lastUpdated = res.chartOptions.caption;
     
           let widgetC = document.getElementById('card-detail--chart');
           let totalC = 0;
@@ -221,11 +220,11 @@ const initApp = function(apiContent){
     ).then(data=>{
       console.log('All Data Loaded',data,lastUpdated);
       let widget = document.getElementById('card-detail--current');
-          //widget.setAttribute('caption', lastUpdated );
-          widget.querySelector('.chart--caption').innerText = data[1].chartOptions.caption;
-
+      if(widget.querySelector('.chart--caption'))  widget.querySelector('.chart--caption').innerText = data[1].chartOptions.caption;
+      
       $ariaLive.innerText = 'Finished loading dashboard data';
     }).catch(err=>{
+      console.debug('Error loading dashboard', err);
       $('#fepe_visionzero-dashboard_container').html(`<div class="well">Error</div>`);
       $ariaLive.innerText = 'Error loading dashboard data';
     });
@@ -242,7 +241,7 @@ const initApp = function(apiContent){
 
  document.querySelectorAll('.current_year').forEach(node=>{
   node.innerText = `${CURRENT_YEAR}`;
- })
+ });
 
   if( !$container.parent().data('page') && !$container.parent().data('page-ksi')  ){
     $ariaLive.innerText = 'Loading dashboard data';

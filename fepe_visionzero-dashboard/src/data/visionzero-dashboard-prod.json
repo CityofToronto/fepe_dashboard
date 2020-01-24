@@ -34,12 +34,12 @@
         "id": "card - detail--current",
         "type": "card",
         "colour": "#598816",
-        "title": "Installed in 2019"
+        "title": "Installed in 2020"
     }, {
         "id": "card-detail--target",
         "type": "card",
         "colour": "#d0d3d5",
-        "title": "2019 Target"
+        "title": "2020 Target"
     }, {
         "id": "card-detail--chart",
         "type": "bar",
