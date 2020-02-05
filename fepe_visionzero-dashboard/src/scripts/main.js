@@ -180,12 +180,12 @@ const initApp = function(apiContent){
         }),
 
         vs[page]({from:2016, to:CURRENT_YEAR}).then(res=>{
-          // let widgetA = document.getElementById('card-detail--target');
-          // let totalA = target||0;
+           let widgetA = document.getElementById('card-detail--target');
+           let totalA = target||0;
           // content = apiContent['single-data'][1];
           // //res.chartData.datasets[0].data.map(val=>{ totalA += val.y; });
-          // widgetA.setAttribute('caption', '' );
-          // widgetA.setAttribute('chart-value', totalA.toString().formatNumber());
+          widgetA.setAttribute('caption', '' );
+          widgetA.setAttribute('chart-value', totalA.toString().formatNumber());
     
 
           /* Set last reported for "Current Installs" */

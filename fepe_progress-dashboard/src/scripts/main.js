@@ -46,8 +46,11 @@ data.getHousingData().then(res=>{
   let directionTemp = [];
   let colourTemp = [];
 
-
   let $cards = res.forEach((result,ndx)=>{
+    if(!result)return {}
+    
+
+
     let icon;
     let colour;    
     let trend = result.custom.trendAnalysis[0];
@@ -78,7 +81,7 @@ data.getHousingData().then(res=>{
         <cotui-chart 
           id="card-1" 
           chart-value="${result.custom.calculatedValue}"
-          href="#detail/${result.id}" 
+          href="#detail/${result.id||'test'}" 
           chart-type="card" 
           caption="${result.caption}" 
           chart-colour="${colour}" 
@@ -145,8 +148,9 @@ data.getHousingData().then(res=>{
   
   let list = [];
   res.forEach(result=>{
+    if(result)
     list.push({
-      id: result.id ,
+      id: result.id,
       title: result.label.replace(/\n|\r/gi,' ').toLowerCase(),
       keywords: result.keywords,
       direction: result.direction,

@@ -144,9 +144,16 @@ class HousingDashboardData{
           indicator.data.datasets.forEach(dataset=>{
             dataset.backgroundColor = this.chartColours[0];
           });
-         
-          switch(ytd){
-            case 'True':
+
+
+          /* Unknown USECASE */
+          if(indicator.id === 4.71) return
+          if(indicator.id === 4.7) return
+          if(indicator.id === 4.8) return
+
+          switch(ytd.toLowerCase()){
+            case 'true':
+
                 ThisYear = data.filter(v=>v.x.format('YYYY') == moment().format('YYYY'))
                 LastYear = data.filter(v=>v.x.format('YYYY') == moment().subtract(1,'year').format('YYYY')).slice(0,ThisYear.length)
 
@@ -185,9 +192,10 @@ class HousingDashboardData{
                 }]
               break;
               
-            case 'False':
+            case 'false':
               //ThisYear.forEach(val=>{ ytdTotal+= val.y });
-              switch(it){
+
+              switch(it.toLowerCase()){
                 case 'monthly':
                     //Compare previous Year
                     ThisYear = data.datasets[0].data.filter(v=>moment(v.x).format('YYYY') == moment().format('YYYY'));
@@ -216,7 +224,7 @@ class HousingDashboardData{
                   })
 
                   break;
-                case 'quarter':
+                case 'quarterly':
                     //Compare previous Quarter
                     // ThisYear = data[data.length-1]; 
                     // LastYear = data[data.length-2];

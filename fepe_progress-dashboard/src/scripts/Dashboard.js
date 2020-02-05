@@ -213,7 +213,8 @@ class Dashboard{
             let similarPanels = [];
             
             JSON.parse(cached).forEach(d=>{
-              if(d.category.includes(panel.category[0])){
+
+              if(d && d.category.includes(panel.category[0])){
                 similarPanels.push(d)
               }
             });
@@ -348,8 +349,9 @@ class Dashboard{
                 $datatable.tbody.innerHTML += `<tr><td>${moment(d.x).format('YYYY-MM-DD')}</td><td>${d.y}</td></tr>`;
               })
             })
+
                 
-            $($datatable.table).DataTable();
+            //$($datatable.table).DataTable();
 
             
           
