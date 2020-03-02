@@ -1,4 +1,17 @@
 // The main javascript file for fepe_dashboard.
+String.prototype.hashCode = function() {
+  var hash = 0;
+  if (this.length == 0) {
+      return hash;
+  }
+  for (var i = 0; i < this.length; i++) {
+      var char = this.charCodeAt(i);
+      hash = ((hash<<5)-hash)+char;
+      hash = hash & hash; // Convert to 32bit integer
+  }
+  return hash;
+}
+
 String.prototype.formatNumber = function(decimal=0) {
   var n = this;
   if (n==null) {return "";}
@@ -37,6 +50,7 @@ let $filterIndicators = document.getElementById('js-category');
 let $filterDirection = document.getElementById('js-desired-direction');
 let $filterPopulation = document.getElementById('js-population-group');
 let cardsTemp = {};
+let tabLabels = [];
 
 
 data.getHousingData().then(res=>{
@@ -71,17 +85,21 @@ data.getHousingData().then(res=>{
     //populationTemp.concat(result.population);
     categoriesTemp.push(...result.category )
 
+
+    
+
+
     let $card= `
     <div 
       data-category="${result.category.toString().toLowerCase()}" 
       data-status="${trend.Analysis.direction}" 
       data-keywords="${result.keywords.toString().toLowerCase()}"
-      id="panel-${ndx}" 
+      id="panel-${result.id.toString().replace(/\./gi,'_')}" 
       class="card card-height">
         <cotui-chart 
-          id="card-1" 
+          id="card-${result.id.toString().replace(/\./gi,'_')}"
           chart-value="${result.custom.calculatedValue}"
-          href="#detail/${result.id||'test'}" 
+          href="#detail/${result.id}" 
           chart-type="card" 
           caption="${result.caption}" 
           chart-colour="${colour}" 
@@ -125,6 +143,7 @@ data.getHousingData().then(res=>{
     
     let $tab = document.createElement('div');
         $tab.setAttribute('data-label',category.replace(/\&amp\;/gi,'&'))
+        $tab.label = category.replace(/\&amp\;/gi,'&');
         $tab.id = `js-tab__category-${ndx}`;  
         $tabs.appendChild($tab);
 
@@ -193,20 +212,39 @@ data.getHousingData().then(res=>{
         card.style.display = null;
       }
     })
-
+    
 
     const exactMatch = searchResult.filter(res=>res.score < 0.0001);
+    let $tab;
     if(exactMatch)
       exactMatch.forEach(res=>{
-        document.getElementById(res.item.id).style.display = null;
+        const tabId = res.item.category[0];
+        const id = `panel-${res.item.id.toString().replace(/\./gi,'_')}`
+        const $card = document.getElementById(id);
+        $tab = document.querySelector(`[data-label*="${tabId}"]`);
+        if($card){
+          $card.style.display = null;
+          //console.log($hiddenCards.length, $tab.getAttribute('data-label'), $tab.label)
+        }
       });
 
     if(exactMatch.length == 0)
       searchResult.forEach(res=>{
-          document.getElementById(res.item.id).style.display = null;
-          console.log(res.item.id,res.score, res.item.title);
+        const tabId = res.item.category[0];
+        const id = `panel-${res.item.id.toString().replace(/\./gi,'_')}`
+        const $card = document.getElementById(id)
+        $tab = document.querySelector(`[data-label*="${tabId}"]`);
+        if($card){
+          $card.style.display = null;
+          var $hiddenCards = document.querySelectorAll(`[data-label*="${tabId}"] [style^="display: none;"]`);
+          var totalCards = Array.from($tab.firstChild.children).filter($child=>{
+            return $child.getAttribute('style').indexOf('display:none;') == -1;
+          }).length
+          $tab.setAttribute('data-label',`${$tab.label} (${totalCards - $hiddenCards.length})`);
+        }
       });
-
+      
+    
   });
 
 });

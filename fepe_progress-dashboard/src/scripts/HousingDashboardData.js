@@ -194,13 +194,12 @@ class HousingDashboardData{
               
             case 'false':
               //ThisYear.forEach(val=>{ ytdTotal+= val.y });
-
               switch(it.toLowerCase()){
                 case 'monthly':
                     //Compare previous Year
-                    ThisYear = data.datasets[0].data.filter(v=>moment(v.x).format('YYYY') == moment().format('YYYY'));
+                    ThisYear = data.datasets[data.datasets.length-1].data.filter(v=>moment(v.x).format('YYYY') == moment().format('YYYY'));
                     //LastYear = data.datasets[0].data.filter(v=>moment(v.x).format('YYYY') == moment().subtract(1,'year').format('YYYY')).slice(0,ThisYear.length);
-                    LastYear = data.datasets[0].data.filter(v=>moment(v.x).format('YYYY') == moment().format('YYYY')).slice(0,ThisYear.length);
+                    LastYear = data.datasets[data.datasets.length-2].data.filter(v=>moment(v.x).format('YYYY') == moment().format('YYYY')).slice(0,ThisYear.length);
                     
                   if( ThisYear.length && LastYear.length){
                     
@@ -225,20 +224,22 @@ class HousingDashboardData{
 
                   break;
                 case 'quarterly':
-                    //Compare previous Quarter
-                    // ThisYear = data[data.length-1]; 
-                    // LastYear = data[data.length-2];
 
-                    // ytdTotal = ThisYear.y
-                    // ytdTotalPrevious = LastYear.y
+                    /* Do we compare previous quarter to next quarter */
+                    ThisYear = data.datasets[0].data[data.length-1];
+                    LastYear = data.datasets[0].data[0];
+                    if( ThisYear && LastYear){
+                      
+                      ytdTotal = ThisYear.y||0;
+                      ytdTotalPrevious = LastYear.y||0;
 
-                    // valueBegin = LastYear.y
-                    // valueEnd = ThisYear.y
-                    
-                    // subTitle = `${ThisYear.x.format('YYYY [Q]Q')}`
-                    // timeRangeLabel = 'Quarter';
-                    // timeRangeFullLabel = ThisYear.x.format('YYYY [Q]Q');
-
+                      valueBegin = LastYear.y;
+                      valueEnd =  ThisYear.y;                
+                      subTitle = `${moment(ThisYear.x).format('YYYY MMM')}`;
+                      
+                      timeRangeLabel = 'Year';
+                      timeRangeFullLabel = moment(ThisYear.x).format('YYYY MMMM');
+                    }
                     indicator.config = { 
                       unit: 'quarter',
                       format: '[Q]Q - YYYY'
@@ -292,19 +293,27 @@ class HousingDashboardData{
                 //     timeRangeFullLabel = season;
                 //   break;
                 case 'annual':
-                    //Compare previous Year
-                    // ThisYear = data[data.length-1];
-                    // LastYear = data[data.length-2];
+                    
+                    if(data.datasets.length > 1){
+                      //Compare previous Year
+                      ThisYear = data.datasets[data.datasets.length-1].data;
+                      LastYear = data.datasets[data.datasets.length-2].data;
 
-                    // ytdTotal = ThisYear.y;
-                    // ytdTotalPrevious = LastYear.y
+                      console.log('annual', ThisYear, LastYear)
 
-                    // valueBegin = ThisYear.y
-                    // valueEnd = LastYear.y
+                      if( ThisYear.length && LastYear.length){
+                        
+                        ytdTotal = ThisYear[ThisYear.length-1].y;
+                        ytdTotalPrevious = LastYear[ThisYear.length-1].y;
 
-                    // subTitle = `${ThisYear.x.format('YYYY')}`
-                    // timeRangeLabel = 'Year';
-                    // timeRangeFullLabel = ThisYear.x.format('YYYY');
+                        valueBegin = LastYear[LastYear.length-1].y;
+                        valueEnd =  ThisYear[ThisYear.length-1].y;                
+                        subTitle = `${moment(ThisYear[ThisYear.length-1].x).format('YYYY MMM')}`;
+                        
+                        timeRangeLabel = 'Year';
+                        timeRangeFullLabel = moment(ThisYear[ThisYear.length-1].x).format('YYYY MMMM');
+                      }
+                    }
 
                     indicator.config = { 
                       unit: 'year',
@@ -315,20 +324,21 @@ class HousingDashboardData{
                     })
                   break;
                 case 'daily':
-                    //Compare previous Year
-                    // ThisYear = data[data.length-1];
-                    // LastYear = data[data.length-2];
+                    
+                    if(data.datasets.length > 1){
+                      //Compare previous Year
+                      ThisYear = data.datasets[data.datasets.length-1];
+                      LastYear = data.datasets[data.datasets.length-2];
 
-                    // ytdTotal = ThisYear.y;
-                    // ytdTotalPrevious = LastYear.y
+                      ytdTotal = ThisYear.data.map(values=>values.y).reduce((acc,curr)=>{ return acc + curr});
+                      ytdTotalPrevious = LastYear.data.reduce((p,c,ndx)=>{return p.y+c.y})
 
-                    // valueBegin = ThisYear.y
-                    // valueEnd = LastYear.y
+                      valueBegin = ytdTotal
+                      valueEnd = ytdTotalPrevious
 
-                    // subTitle = `${ThisYear.x.format('YYYY')}`
-                    // timeRangeLabel = 'Year';
-                    // timeRangeFullLabel = ThisYear.x.format('YYYY');
-
+                      timeRangeLabel = 'Daily';
+                      timeRangeFullLabel = ThisYear.data[0].x.format('YYYY');
+                    }
                     indicator.config = { 
                       unit: 'day',
                       format: 'MM-DD'
@@ -420,7 +430,7 @@ class HousingDashboardData{
                 }
               }] 
             }
-          console.log('Indicator',it, indicator.config )
+          
           return indicator;
        })
           
