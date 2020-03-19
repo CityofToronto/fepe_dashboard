@@ -1,0 +1,399 @@
+<!--
+IMPORTANT:
+Any resources from this project should be referenced using SRC_PATH preprocessor var.
+See examples below in the boilerplate code
+-->
+
+<!--
+1. HEADER
+Everything inside this cot-app:head tag will be loaded at the end of the page's HEAD tag.
+It should contain stylesheet references (and possibly other stuff) that this application requires.
+-->
+<!-- cot-app:head -->
+
+<!-- @if !IS_EMBEDDED -->
+<!-- standalone apps may want to set some meta tags in here -->
+<title>fei_teleworking</title>
+<meta property="og:title" content="fei_teleworking">
+<meta name="DC.title" content="fei_teleworking">
+<meta name="WT.sp" content="fei_teleworking">
+<meta property="og:description" content="Page Description">
+<meta name="DC.description" lang="en" content="Page Description">
+<meta name="description" content="Page Description">
+<meta name="keywords" content="Key Words">
+<meta name="Author" content="City of Toronto">
+<meta name="Owner" content="City of Toronto">
+<meta name="DC.language" content="en-CA">
+<meta name="DC.subject" content="fei_teleworking">
+<meta charset="UTF-8">
+<script>
+window.COTUI= function(){
+  
+}
+</script>
+<!--@endif-->
+
+<!--@if ENV=='local'-->
+<script type="text/javascript" src="/resources/cdn/cotui/cotui.js"></script>
+<link rel="stylesheet" type="text/css" href="/resources/cdn/cotui/cotui.css">
+<!--@endif-->
+
+<!-- From here to the next endbuild tag, all the files will be concatenated into a single file called main.css: -->
+<!--@exec startBuildTagWithCacheBuster('styles/main.css')-->
+<!-- CoreJS uses the following core:css/endinject tag to inject bower_components stylesheet file references: -->
+<!-- core:css -->
+<!-- endinject -->
+
+<!-- place your application stylesheet references here: -->
+<script type="text/javascript" src="../node_modules/datatables/src/styles/datatables.min.css"></script>
+<link rel="stylesheet" type="text/css" href="<!-- @echo SRC_PATH -->/styles/main.css">
+
+<!-- endbuild -->
+
+
+
+<!-- From here to the next endbuild tag, all the files will be concatenated into a single print-only file called core_print.css: -->
+<!--@exec startBuildTagWithCacheBuster('styles/core_print.css', 'media="print"')-->
+<!-- CoreJS uses the following core_print:css/endinject tag to inject bower_components print-only stylesheet file references: -->
+<!-- core_print:css -->
+<!-- endinject -->
+
+<!-- place any application print-only stylesheet references here -->
+
+<!-- endbuild -->
+<!-- cot-app:head end-->
+
+<!--
+2. BODY
+Everything inside this cot-app:body tag will be loaded inside the webpage
+It should contain the HTML elements that make up the visual portion of this application.
+IMPORTANT:
+Remember to use unique element IDs and class names so that this app doesn't interfere with other parts of the cframe/website
+-->
+<!-- cot-app:body -->
+<div id="fei_teleworking_container" class="dashboard__container">
+  <div class="dashboard__header"></div>
+  <div class="dashboard__nav">
+        <div class="col-md-12" style="margin-bottom: 1em;">
+            <h2>Telework Dashboard</h2>
+            <div class="row">
+            <div class="input-group input-group-lg text-center">
+                <input id="js-datatable__input" type="text" class="form-control datatable__input" placeholder="Lookup..."><span class="input-group-btn"><button class="goButton btn btn-primary" type="button">Find Indicator</button></span>
+            </div>
+            </div>
+        </div>
+
+    <div id="js-filter" style="margin: 1em;">
+        <label>Filter Indicators: </label>
+        <!-- Single button -->
+        <div id="theme-filter" data-ref="category" class="btn-group filter-menu">
+            <button type="button" id="js-category-label" style="width: 200px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-active-decendent="" aria-haspopup="true" aria-controls="js-category" aria-expanded="false">
+            Select Category <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="js-category-label" id="js-category">
+                <li><button class="btn btn-link"  role="menuitem" data-category="all">All Categories</button></li>
+                <li role="separator" class="divider"></li>
+            </ul>
+        </div>
+
+        <!-- Single button -->
+        <div id="status-filter" data-ref="status" class="btn-group filter-menu">
+            <button type="button" style="width: 200px;" id="js-status-label" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-active-decendent="" aria-haspopup="true" aria-expanded="false">
+                Select Direction <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="js-status-label" id="js-desired-direction">
+                <li><button type="button" class="btn btn-link" role="menuitem" data-status="all"><i style="height: 10px; width:10px; display:inline-block; background: #f5f5f4;"></i> All</button></li>
+                <li role="separator" class="divider"></li>
+                
+            </ul>
+        </div>
+
+
+        <!-- Single button -->
+        <div id="filter-population" data-ref="population" class="btn-group filter-menu">
+            <button type="button" style="width: 250px;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Population Group <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="js-population-group">
+                <li><button type="button" class="btn btn-link" role="menuitem" data-status="all"><i style="height: 10px; width:10px; display:inline-block; background: #f5f5f4;"></i> All</button></li>
+                <li role="separator" class="divider"></li>
+            </ul>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-cancel">Reset Filters</button>
+        </div>
+        
+    </div>
+    <div class="" style="text-align: right;"></div>
+
+  </div>
+  <div class="dashboard__main">
+      <div id="master">
+        <div id="js-categories"></div>
+      </div>
+       
+
+        <div id="detail">        
+        <div class="dashboard__main--layout1" style="background-color: #ffffff;">
+                <p style="text-align: right; width: 100%"><a href="#">Back to Telework Dashboard Main</a></p>
+                <div class="dashboard__content--navigation">
+                    <div>
+                        <h1>
+                            <small>Theme: <span class="dashboard__detail--title">Affordability</span></small>
+                            <span class="dashboard__chart--title">Active Affordable Rental Developments</span>
+                        </h1>
+                        <p class="dashboard__detail--description"></p>
+                    </div>
+                </div>
+                <div class="dashboard__content">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Trend Analysis</h2>
+                            <div class="table-responsive">
+                                <table id="js-trend-analysis" class="table cot-table">
+                                    <thead></thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <p id="js-CityPerspective"></p>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-md-12">
+                        <h2><small id="js-last-reported">Last Reported: 2019-10-11</small></h2>
+                        <div style="row">
+                            <div class="col-md-12 dashboard__chart">
+                                <!--
+                                <button><i style="height: 10px; width:10px; display:inline-block; background: #E64A19;"></i> 2019</button><button><i style="height: 10px; width:10px; display:inline-block; background: #FF5722;"></i> 2018</button><button><i style="height: 10px; width:10px; display:inline-block; background: #FF8A65;"></i> 2017</button><button><i style="height: 10px; width:10px; display:inline-block; background: #FFCCBC;"></i> 2016</button><button><i style="height: 10px; width:10px; display:inline-block; background: #FBE9E7;"></i> 2015</button>
+                                -->
+                                <div class="row">
+                                <cotui-tabs id="tabs" selected="0_tab" label="Types of birds in toronto">
+                                    <div data-label="Chart" id="0_tab">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                            
+                                            </div>
+        
+                                            <div class="col-xs-6" style="text-align: right;">
+                                                <div id="js-cumulativeTotalSwitch" class="btn-group" data-toggle="buttons">
+                                                    <div>
+                                                    <div class="switch">
+                                                        <input id="ytd_toggle" type="checkbox"> 
+                                                        <span class="slider round"></span>
+                                                    </div>
+                                                    <label for="ytd_toggle" aria-controls="ytd_toggle">Show Cumulative Totals</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card" style="height: 90%">
+                                            <cotui-chart id="pothole-bar1" chart-type="bar"  chart-title="Active Affordable Rental Developments compared to previous years" x-axisLabel="Month" y-axisLabel="Total Units" chart-colour="#E64A19" chart-title-hide></cotui-chart>
+                                        </div>
+                                        
+                                    </div>
+                                    <div data-label="Data Table" id="1_tab">
+                                        <div class="dashboard__datatable">
+                                
+                                            <div class="row">
+                                                <div class="col-xs-9"></div>
+                                                <div class="col-xs-3"  style="text-align: right;">
+                                                    <div id="js-chart-period" class="btn-group btn-group-toggle" data-toggle="buttons">
+                                                        <button type="button" class="btn btn-default">Export Data (CSV)</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table cot-table">
+                                                <caption></caption>
+                                                <thead></thead>	 	 	
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </cotui-tabs>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                        </div>
+                        <div class="col-md-12 dashboard__notes">
+                            <h3>Notes</h3>
+                            <p>The Affordable and Seniors' Housing&nbsp;Task Force identified several strategies and actions to address the need for more affordable rental housing for low- and moderate-income households, and the need for more housing choices for seniors.</p>
+                            <ul type="disc">
+                            <li><strong>Lead by example </strong>by ensuring that the Region is strategic, proactive and anticipatory, and is ready to champion affordable rental and seniors' housing.</li>
+                            <li><strong>Overcome the barriers</strong> that are preventing affordable rental and seniors' housing by reducing risks, increasing certainty and offsetting costs.</li>
+                            <li><strong>Partner and build support</strong> for affordable housing through improved education, communication, outreach and awareness, and by supporting partners who are in the business of creating and maintaining affordable rental and/or seniors' housing in Durham Region.</li>
+                            <li><strong>Showcase best practices</strong> and share information to build Durham Region's reputation as an affordable housing and seniors' housing exemplar, fit for imitation by others.</li>
+                            <li><strong>Advocate responsibly</strong> to senior levels of government for affordable and suitable housing that meets the needs of all.</li>
+                            <li><strong>Monitor progress and report on results </strong>to ensure that objectives are being met and that success is being realized through on-the-ground action.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard__content--navigation">
+                    <div class="col-sm-12 col-md-8">
+                        <label>Other Topics</label>
+                        <select id="js-select-panel">
+                            <option># of active affordable rental developments</option>
+                            <option># of affordable rental units in  pre-development</option>
+                            <option># of affordable rental units under development</option>
+                            <option>New Affordable Ownership Homes Completed</option>
+                            <option>Average and Asking Prices and Rents (annual)</option>
+                            <option># of affordable rental units under construction</option>
+                            <option>New Affordable Ownership Homes Approved</option>
+                            <option>New Affordable Rental Homes Approved</option>
+                            <option>New Affordable Rental Homes Completed</option>                     
+                        </select>
+                        <button type="button" class="btn btn-default" id="js-jump-panel">Go</button>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <div class="btn-group" role="group" aria-label="Affordability theme navigation">
+                            <button type="button" class="btn btn-default">Previous</button>&nbsp;<button  type="button" class="btn btn-default">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+  <div class="dashboard__footer">Footer</div>
+</div>
+<!-- cot-app:body end-->
+
+<!--
+3. FOOTER
+Everything inside the cot-app:footer tag will be loaded at the end of the page's BODY tag.
+It should contain script references that this application requires.
+-->
+<!-- cot-app:footer -->
+
+
+<!-- From here to the next endbuild tag, all the files will be concatenated into a single file called main.js: -->
+<!--@exec startBuildTagWithCacheBuster('scripts/main.js')-->
+<!-- CoreJS uses the following core:js/endinject tag to inject bower_components javascript file references: -->
+<!-- core:js -->
+<!-- endinject -->
+
+<!-- place your application script references here: -->
+<script type="text/javascript" src="../node_modules/datatables/src/scripts/datatables.min.js"></script>
+<script type="text/javascript" src="../node_modules/fuse.js/dist/fuse.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/TeleworkingData.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/Dashboard.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/main.js"></script>
+
+<!-- endbuild -->
+
+<!--@if ENV!='prod'-->
+<!-- Here we log out some debug info for non-production builds-->
+<script type="text/javascript">
+  console.log('fei_teleworking running on <!--@echo ENV--> environment');
+  console.log('fei_teleworking qa release: <!--@echo QA_RELEASE-->');
+  console.log('fei_teleworking build: <!--@echo BUILD_ID-->');
+</script>
+<script>
+    /*
+    <div data-category="affordability" data-status="negative" data-keywords="a,b,c" class="card card-height"><cotui-chart id="card-1" chart-value="1,066" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of active affordable rental developments" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            <div data-category="affordability" data-status="positive" data-keywords="a,b,c" class="card card-height"><cotui-chart id="card-2" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of affordable rental units in  pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="affordability" data-status="stable" data-keywords="a,b,c" class="card card-height"><cotui-chart id="card-3" chart-value="374" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="# of affordable rental units under development" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
+            </cotui-chart></div>
+            <div data-category="affordability" data-status="positive" data-keywords="d,e,f" class="card card-height"><cotui-chart id="card-4" chart-value="1,656" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="New Affordable Ownership Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="affordability" data-status="negative" class="card card-height"><cotui-chart id="card-5" chart-value="4,139" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Average and Asking Prices and Rents (annual) " x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            <div data-category="affordability" data-status="negative" class="card card-height"><cotui-chart id="card-1" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of affordable rental units under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            <div data-category="affordability" data-status="stable" class="card card-height"><cotui-chart id="card-2" chart-value="7,664" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="New Affordable Ownership Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
+            </cotui-chart></div>
+            <div data-category="affordability" data-status="stable" class="card card-height"><cotui-chart id="card-3" chart-value="5,288" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="New Affordable Rental Homes Approved" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                    <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
+            </cotui-chart></div>
+            <div data-category="affordability" data-status="negative" class="card card-height"><cotui-chart id="card-4" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="New Affordable Rental Homes Completed" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+    
+    
+            <div data-category="demographics" data-status="positive" class="card card-height"><cotui-chart id="card-2" chart-value="7,993" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816"  chart-title="Misc Census variables (e.g., HH Spending 30% on Core Housing, Strucure Type etc)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            
+    
+            <div data-category="employment" data-status="negative" class="card card-height"><cotui-chart id="card-2" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f"  chart-title="# of jobs to be created from active rental projects" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+    
+    
+            <div data-category="funding-supports" data-status="stable" class="card card-height"><cotui-chart id="card-3" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="Total City funding for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
+            </cotui-chart></div>
+            <div data-category="funding-supports" data-status="positive" class="card card-height"><cotui-chart id="card-4" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="Total estimated City incentives for active projects (in $M)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="funding-supports" data-status="negative" class="card card-height"><cotui-chart id="card-5" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Total Provincial/Federal funding for active rental projects (in $M) " x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+    
+    
+            <div data-category="housing-homeless" data-status="positive" class="card card-height"><cotui-chart id="card-4" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# New Refugees Entering Shelters" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="housing-homeless" data-status="positive" class="card card-height"><cotui-chart id="card-5" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# Refugee Households on Family Palcement List" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="housing-homeless" data-status="negative" class="card card-height"><cotui-chart id="card-5" chart-value="7,993" href="#detail" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="Refugee Claiments Average Nightly Stays" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+    
+    
+            <div data-category="outcomes" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="7,993" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of people to be housed by 2024 from active rentals" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            <div data-category="outcomes" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="7,993" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# Refugee Discharges to permanent Housing" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+    
+    
+            <div data-category="supply" data-status="stable" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="7,993" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#374047" chart-title="# of active developments under construction" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-minus" style="font-size: 0.75em"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="positive" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="925" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of projects in pre-development" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="positive" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="328" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="Vacancy rates (annual)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="positive" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="045" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#208816" chart-title="# of condo rental units/secondary market rental units vs primary rental units in the rental universe " x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-up" style="font-size: 0.75em; color: #208816;"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="601" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of total proposed residential units by Project Status of Built, Active and Under Review" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="451" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="# of second unit and laneway housing building permits (annual) (Toronto Building)" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            <div data-category="supply" data-status="negative" class="card card-height"><cotui-chart id="card-5" href="#detail" chart-value="117" chart-type="card" caption="Decrease of 3.39% from previous year" chart-colour="#88161f" chart-title="24hr Respite Sites - Occupancy and Capacity" x-axisLabel="Fill Date" y-axisLabel="Total Fills">
+                <span class="glyphicon glyphicon-arrow-down" style="font-size: 0.75em; color: #88161f"></span>
+            </cotui-chart></div>
+            */
+</script>
+<!--@endif-->
+
+<!-- cot-app:footer end-->
+

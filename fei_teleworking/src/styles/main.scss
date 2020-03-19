@@ -1,0 +1,166 @@
+.dashboard__container{
+  .btn-link{
+    font-size: 1.1em;
+    font-weight: normal;
+  }
+}
+
+.dashboard__header{}
+.dashboard__nav{}
+
+
+.dashboard__main{}
+
+.dashboard__grid--tile{
+  display: grid;
+  grid-template-columns: repeat(auto-fill ,minmax(300px, 1fr));
+  grid-auto-rows: minmax(150px, auto);
+  grid-auto-flow: dense;
+  grid-gap: 1.5em;
+  grid-row-gap: 3em;
+}
+
+.dashboard__main--layout1{
+  --chart-height: 20vh;
+
+  .dashboard__content--navigation{
+    grid-column: 1/-1;
+    background: #f4f4f4;
+    padding: 1em;
+    border-radius: var(--border-radius-large);
+
+
+    display:flex; 
+    justify-content: space-between;
+  }
+
+  .dashboard__content{
+    grid-column: 1/-1;
+    // display: grid;
+    // grid-template-columns: repeat(12, 1fr);
+    // grid-auto-rows: minmax(min-content, auto);
+    // grid-gap: 1em;
+
+    // @media (min-width: 320px) and (max-width: 480px) {
+    //   height: auto;
+    //   grid-template-columns: repeat(1, 1fr);
+    // }
+  }
+}
+
+/*
+.dashboard__chart{
+  padding: 1em;
+  grid-column: 1/-1;
+  width: 100%;
+  height:100%;
+}
+.dashboard__notes{
+  grid-column: span 4;
+  overflow: auto;
+}
+*/
+
+
+
+.card{ height: 100%; }
+
+
+.dashboard__footer{}
+
+/*
+.card--full{ grid-column: 1 / -1; }
+
+.card-col-2{ grid-column-end: span 2}
+.card-row-2{ grid-row-end: span 2}
+
+.card-col-3{ grid-column-end: span 3}
+.card-row-3{ grid-row-end: span 3}
+
+.card-col-5{ grid-column-end: span 5}
+.card-row-5{ grid-row-end: span 5}
+*/
+/*https://stackoverflow.com/questions/29773850/set-leaflet-map-to-height-100-of-container/29800139*/
+
+
+
+:root{
+  --impact-negative: #88161f;
+  --impact: #374047;
+  --impact-positive: #208816;
+}
+
+@media screen and (max-width:767px) {
+  .table-responsive { border: none; }
+}
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+
+
+
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 54px;
+  height: 28px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--color-background-dark);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--color-background-dark);;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
