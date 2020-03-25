@@ -100,7 +100,7 @@ class Dashboard{
             document.getElementById('master').removeAttribute('hidden')
             document.getElementById('detail').setAttribute('hidden','')
             document.querySelector('.dashboard__nav').removeAttribute('hidden')
-
+            
             document.querySelector('.dashboard__chart--title').innerText = "";
 
             let $filterMenu =  document.querySelectorAll('.filter-menu');
@@ -152,6 +152,7 @@ class Dashboard{
             document.getElementById('master').setAttribute('hidden','')
             document.getElementById('detail').removeAttribute('hidden') 
             document.querySelector('.dashboard__nav').setAttribute('hidden','')
+            
           },
           "detail/:id": (id) => {
             let cached = localStorage.getItem('DashboardData');
@@ -159,13 +160,10 @@ class Dashboard{
             let similarPanels = [];
             
             JSON.parse(cached).forEach(d=>{
-
               if(d && d.category.includes(panel.category[0])){
                 similarPanels.push(d)
               }
             });
-
-            console.log(panel)
 
             let $widget = document.getElementById('pothole-bar1');
             let $notes = document.querySelector('.dashboard__notes');
@@ -185,7 +183,6 @@ class Dashboard{
               }
             }
             
-
             /*
             if(panel.options.hasOwnProperty('scales') ){
               if(panel.options.scales.xAxes.filter(opts=>opts.stacked) || panel.options.scales.yAxes.filter(opts=>opts.stacked))
@@ -194,8 +191,8 @@ class Dashboard{
             */
 
             $title.innerText =  panel.category.toString();
-            $widget.yAxisLabel = "Average Sessions";
-            $widget.xAxisLabel = "Date";
+            $widget.yAxisLabel = panel.options.yAxis;
+            $widget.xAxisLabel = panel.options.xAxis;
             $widget.chartTitle = panel.label;
             $widget.data = data;
 
@@ -205,20 +202,37 @@ class Dashboard{
             $lastReported.innerHTML = ''
 
             $mightBeInterestedIn.innerHTML = ''
-            similarPanels.forEach(panel=>{
-              $mightBeInterestedIn.innerHTML += `<option value="${panel.id}">${panel.label} ${panel.id == id?' - selected':''}</option>`
+            similarPanels.forEach(panel=>{     
+              if(panel.data.hasOwnProperty('datasets'))
+                $mightBeInterestedIn.innerHTML += `<option value="${panel.id}">${panel.label} ${panel.id.toString() == id?' - selected':''}</option>`
             });
 
+            
+
             let $select = document.getElementById('js-select-panel')
+            $select.addEventListener('change',evt=>{
+              //$select.value = evt.target.value;
+              Backbone.history.navigate(`detail/${evt.target.value}`, { trigger: true });
+            })
+
+            let $nextButton = document.getElementById('js-next')
+            $nextButton.addEventListener('click',evt=>{
+              evt.preventDefault()
+              similarPanels.indexOf(id)
+              Backbone.history.navigate(`detail/5`, { trigger: true });
+            })
+
             let $go = document.getElementById('js-jump-panel')
-            $go.addEventListener('click',evt=>{
+            $go.addEventListener('click',evt=>{  
               evt.preventDefault();
-              window.scrollTo(0,0)
+              window.scrollTo(0,0);
+              //console.log('detail',`detail/${$select.value}`)
               Backbone.history.navigate(`detail/${$select.value}`, { trigger: true });
-              document.body.focus();
+              //document.body.focus();
             })
 
 
+            $('#js-trend').hide();
             /*Trend Analysis Table
             console.log('$trendAnalyis',$trendAnalyis,panel.custom)
             const $thead = $trendAnalyis.querySelector('thead'); 
@@ -285,6 +299,56 @@ class Dashboard{
             })
             */
 
+            /* ExportCSV */
+            function download_csv(csv, filename) {
+              var csvFile;
+              var downloadLink;
+          
+              // CSV FILE
+              csvFile = new Blob([csv], {type: "text/csv"});
+          
+              // Download link
+              downloadLink = document.createElement("a");
+          
+              // File name
+              downloadLink.download = filename;
+          
+              // We have to create a link to the file
+              downloadLink.href = window.URL.createObjectURL(csvFile);
+          
+              // Make sure that the link is not displayed
+              downloadLink.style.display = "none";
+          
+              // Add the link to your DOM
+              document.body.appendChild(downloadLink);
+          
+              // Lanzamos
+              downloadLink.click();
+          }
+          
+          function export_table_to_csv(html, filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("table tr");
+            
+              for (var i = 0; i < rows.length; i++) {
+              var row = [], cols = rows[i].querySelectorAll("td, th");
+              
+                  for (var j = 0; j < cols.length; j++) 
+                      row.push(cols[j].innerText);
+                  
+              csv.push(row.join(","));		
+            }
+          
+              // Download CSV
+              download_csv(csv.join("\n"), filename);
+          }
+          
+          document.querySelector("#js-export-csv").addEventListener("click", function () {
+              var html = document.querySelector(".dashboard__datatable table").outerHTML;
+              export_table_to_csv(html, `${panel.label.replace(/[^\w\s]/gi,'')}.csv`);
+          });
+          
+          
             /* DataTable */
             const $datatable = {
               h2: document.querySelector('.dashboard__datatable table caption'),
@@ -298,17 +362,27 @@ class Dashboard{
             $datatable.tbody.innerHTML = '';
 
             $datatable.h2.innerText = `${panel.label}`;
-
-            $datatable.thead.innerHTML = `<tr><th>User Session </th><th>Value</th></tr>`;
+            $datatable.thead.innerHTML = `<tr><th>Dataset</th><th>${panel.options.xAxis}</th><th>${panel.options.yAxis}</th></tr>`;
             
             panel.data.datasets.forEach(dataset=>{
-              dataset.data.forEach(d=>{
-                $datatable.tbody.innerHTML += `<tr><td>${moment(d.x).format('YYYY-MM-DD')}</td><td>${d.y||d}</td></tr>`;
+              $datatable.tbody.innerHTML += `<tr><th rowspan="${dataset.data.length+1}" >${dataset.label}${dataset.datasetType.toLowerCase()==="target"?' (Target)':''}</th></tr>`
+              dataset.data.forEach((d,index)=>{
+                let value;
+                if(typeof(d) =='object'){
+                  value  = (d.y==null?'No Data':d.y);
+                  $datatable.tbody.innerHTML += `<tr><td><span aria-label="${moment(d.x).format('MMMM DD, YYYY')}">${moment(d.x).format('YYYY-MM-DD')}</span></td><td>${value}</td></tr>`;
+                } 
+                if(typeof(d) !='object') {
+                  value  = (d==null?'No Data':d);
+                  $datatable.tbody.innerHTML += `<tr><td>${panel.data.labels[index]}</span></td><td>${value}</td></tr>`;
+                }
+
+                
               })
             })
 
-                
-            //$($datatable.table).DataTable();
+            //console.log( 'dataTable',$('.dashboard__datatable table') )
+            //$('.dashboard__datatable table').DataTable();
 
             
           

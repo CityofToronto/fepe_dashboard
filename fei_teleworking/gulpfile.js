@@ -8,6 +8,7 @@ core.embeddedApp.createTasks(gulp, {
   environmentOverride: null,
   deploymentPath: '',
   preprocessorContext: {
+    DEBUG: true,
     local: {
       DATA_SRC: '/data/DashboardData.json',
     },
@@ -28,5 +29,6 @@ gulp.task('_data', () => {
   let cotuiDEVPath = '/resources/cdn/cotui';
   let dataSrc = '/data';
   gulp.src(['node_modules/cotui/dist/cotui/**/*']).pipe(gulp.dest('dist' + cotuiDEVPath));
+  //gulp.src(['/Users/dmatthe/Documents/Development/COT_UI/dist/cotui/**/*']).pipe(gulp.dest('dist' + cotuiDEVPath));
   gulp.src(['src/data/**/*']).pipe(gulp.dest('dist' + dataSrc));
 })

@@ -37,10 +37,13 @@
     "run-sequence": "^1.2.2"
   },
   "dependencies": {
+    "color": "^3.1.2",
+    "color-bundle": "^0.1.2",
     "core": "git+https://github.com/CityofToronto/corejs.git#9.1.0",
     "cotui": "git+https://github.com/CityofToronto/COT_UI.git#develop",
     "datatables": "git+https://github.com/CityofToronto/fepe_datatables.git",
-    "fuse.js": "^3.6.1"
+    "fuse.js": "^3.6.1",
+    "xlsx": "^0.15.6"
   },
   "coreConfig": {
     "isEmbedded": true,

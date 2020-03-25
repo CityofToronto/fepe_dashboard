@@ -1,16 +1,20 @@
 [
     {
         "id": 1.000,
-        "label": "VPN sessions",
-        "caption": "Current VPN capacity of concurrent sessions",
-        "description": "<ul><li>While the capacity is 3000 concurrent users, we have not reached the capacity as bandwidth is an issues. People establishing new connections are experiencing a time lapse. Examples of slow performance are that downloads are slow and email clicks are taking a long time to open.</li><li>Some users are unable to connect, they are getting the message that anti-virus is not updated. This is not the real issue. The actual reason is that while establishing a use session, the connection needs to go to Symantec for anti-virus signature update and it is unable to do so.</li><li>Active scan needs to run once a week, ISD team updates patches every month.</li><li>Service Desk is getting a large no of requests on having issues logging in and configuration of notebooks.</li></ul>",
+        "label": "Teleworking Connections",
+        "caption": "Current Useage",
+        "description": "<h2>Data has been updated as of March 25 @ 12:30pm</h2><ul><li>Vportal bandwidth:        Out of its 500 total Mb/s bandwidth throughput capacity, 280Mb/s is currently being used.</li><li>Eportal bandwidth: Out of its 325 total Mb/s bandwidth throughput capacity, 17.2Mb/s is currently being used.</li><li>Maximum number of teleworking connections: 6000</li><li>Total number of active connections at 3497</li></ul>",
         "body": "",
         "category": ["TeleWork"],
         "keywords": [],
         "options": {
             "title": "# of active affordable rental developments",
-            "xAxis": "Month",
-            "yAxis": ""
+            "xAxis": "Date",
+            "yAxis": "Total Connections",
+            "scales":{
+                "xAxes":[{"stacked":true}],
+                "yAxes":[{"stacked":true}]
+            }
         },
         "custom": {
             "theme": [
@@ -30,28 +34,56 @@
             "contact": ""
         },
         "data": {
-            "calculatedValue": 2510,
-            "labels": [],
+            "calculatedValue": 3497,
+            "labels": ["Useage"],
             "datasets": [
                 {
-                    "label": "Useage",
-                    "datasetType": "Actual",
+                    "color":"#341f97",
+                    "borderColor":"#341f97",
+                    "label": "Max Sessions",
+                    "datasetType": "Target",
+                    "stack":"A",
                     "data": [
-                        {
-                            "x": "2020-03-16",
-                            "y": 1170,
-                            "notes": ""
-                        },
-                        {
-                            "x": "2020-03-17",
-                            "y": 1644,
-                            "notes": ""
-                        },
-                        {
-                            "x": "2020-03-18",
-                            "y": 2051,
-                            "notes": ""
-                        }
+                        {"x":"2020-03-16","y":6000},
+                        {"x":"2020-03-17","y":6000},
+                        {"x":"2020-03-18","y":6000},
+                        {"x":"2020-03-19","y":6000},
+                        {"x":"2020-03-20","y":6000},
+                        {"x":"2020-03-23","y":6000},
+                        {"x":"2020-03-24","y":6000},
+                        {"x":"2020-03-25","y":6000}
+                    ],
+                    "type": "line"
+                },{
+                    "backgroundColor":"#165788",
+                    "label": "ePortal Usage",
+                    "datasetType": "Actual",
+                    "stack":"A",
+                    "data": [
+                        {"x":"2020-03-16","y":610},
+                        {"x":"2020-03-17","y":null},
+                        {"x":"2020-03-18","y":null},
+                        {"x":"2020-03-19","y":600},
+                        {"x":"2020-03-20","y":361},
+                        {"x":"2020-03-23","y":535},
+                        {"x":"2020-03-24","y":454},
+                        {"x":"2020-03-25","y":447}
+                    ],
+                    "type": "bar"
+                },{
+                    "backgroundColor":"#59abe3",
+                    "label": "vPortal Usage",
+                    "datasetType": "Target",
+                    "stack":"A",
+                    "data": [
+                        {"x":"2020-03-16","y":1170},
+                        {"x":"2020-03-17","y":1644},
+                        {"x":"2020-03-18","y":2510},
+                        {"x":"2020-03-19","y":1950},
+                        {"x":"2020-03-20","y":2669},
+                        {"x":"2020-03-23","y":3234},
+                        {"x":"2020-03-24","y":2808},
+                        {"x":"2020-03-25","y":3050}
                     ],
                     "type": "bar"
                 }
@@ -59,22 +91,22 @@
         }
     },{
         "id": 2.000,
-        "label": "RSA hard tokens and soft tokens (for non-city issued devices",
-        "caption": "Total available devices + tokens to enable telework",
-        "description": "<p>Sole source procurement executed today for 1600 Licenses and 2300 RSA tokens. Delivery date: April 10</p><p><strong>Existing Laptops</strong><ul><li>770 have arrived and are with the Vendor (200 are being held for TPH),leaving 579 available</li><li>275 more are scheduled to arrive this week.</li><li>An order for 1000 more laptops have been placed. Delivery date: TBD</li></ul><p><strong>Purchase of iPads: 100</strong></p><ul><li>The vendor does not have any available at this time</li><li>No capacity issues connecting through the cellular network. AirWatch is able to add another 3000 devices to current infrastructure</li></ul>",
+        "label": "City Issued Devices / RSA Tokens",
+        "caption": "Current Useage",
+        "description": "<h2>Device Update</h2><ul><li>Data has been updated as of March 19th 1:30pm</li><li>Currently there are 8600 Window Mobile devices with VPN access</li><li>1000 Notebooks are on order, but there is no confirmed delivery date</li><li>Tentatively 275 are expected to arrive on March 24th</li><li>53 iPads are on order, but there is no confirmed delivery date</li></ul>",
         "body": "",
         "category": ["TeleWork"],
         "keywords": [],
         "options": {
             "title": "# of active affordable rental developments",
-            "xAxis": "Month",
-            "yAxis": ""
+            "xAxis": "Device",
+            "yAxis": "Total Devices"
         },
         "custom": {
             "theme": [
                 "General Population"
             ],
-            "desiredDirection": "UP",
+            "desiredDirection": "DOWN",
             "variance": 0,
             "yearVariance": 0,
             "indicatorType": "daily",
@@ -88,70 +120,137 @@
             "contact": ""
         },
         "data": {
-            "calculatedValue": 11833,
-            "labels": ["Availability"],
+            "calculatedValue": 12414,
+            "labels": ["Issued Devices"],
             "datasets": [
                 {
-                    "label": "City issued devices",
-                    "backgroundColor":"#40407a",
+                    "backgroundColor":"#f368e0",
+                    "label": "Smartphone",
                     "datasetType": "Actual",
-                    "data": [{
-                        "x": "2020-03-18",
-                        "y": 205,
-                        "notes": ""
-                    },{
-                        "x": "2020-03-19",
-                        "y": 251,
-                        "notes": ""
-                    },{
-                        "x": "2020-03-20",
-                        "y": 20,
-                        "notes": ""
-                    }],
+                    "stack":"smartphone",
+                    "data": [
+                        {"x":"2020-03-17","y":null},
+                        {"x":"2020-03-18","y":9462},
+                        {"x":"2020-03-19","y":9462},
+                        {"x":"2020-03-20","y":9462},
+                        {"x":"2020-03-21","y":9462},
+                        {"x":"2020-03-22","y":9462},
+                        {"x":"2020-03-23","y":9462}
+                    ],
                     "type": "bar"
                 },{
-                    "label": "hard tokens",
-                    "backgroundColor":"#474787",
+                    "backgroundColor":"#ff9f43",
+                    "label": "Modems",
                     "datasetType": "Actual",
-                    "data": [{
-                        "x": "2020-03-18",
-                        "y": 2051,
-                        "notes": ""
-                    },{
-                        "x": "2020-03-19",
-                        "y": 2051,
-                        "notes": ""
-                    },{
-                        "x": "2020-03-20",
-                        "y": 2051,
-                        "notes": ""
-                    }],
+                    "stack":"modem",
+                    "data": [
+                        {"x":"2020-03-17","y":null},
+                        {"x":"2020-03-18","y":1732},
+                        {"x":"2020-03-19","y":1732},
+                        {"x":"2020-03-20","y":1732},
+                        {"x":"2020-03-21","y":1732},
+                        {"x":"2020-03-22","y":1732},
+                        {"x":"2020-03-23","y":1732}
+                    ],
                     "type": "bar"
                 },{
-                    "label": "soft tokens",
-                    "backgroundColor":"#cc8e35",
+                    "backgroundColor":"#ee5253",
+                    "label": "Hotspot",
                     "datasetType": "Actual",
-                    "data": [{
-                        "x": "2020-03-18",
-                        "y": 2051,
-                        "notes": ""
-                    },{
-                        "x": "2020-03-19",
-                        "y": 2051,
-                        "notes": ""
-                    },{
-                        "x": "2020-03-20",
-                        "y": 2051,
-                        "notes": ""
-                    }],
+                    "stack":"hotspot",
+                    "data": [
+                        {"x":"2020-03-17","y":null},
+                        {"x":"2020-03-18","y":489},
+                        {"x":"2020-03-19","y":489},
+                        {"x":"2020-03-20","y":489},
+                        {"x":"2020-03-21","y":489},
+                        {"x":"2020-03-22","y":489},
+                        {"x":"2020-03-23","y":489}
+                    ],
+                    "type": "bar"
+                },{
+                    "backgroundColor":"#0abde3",
+                    "label": "Plain Cellphone",
+                    "datasetType": "Actual",
+                    "stack":"cellphone",
+                    "data": [
+                        {"x":"2020-03-17","y":null},
+                        {"x":"2020-03-18","y":2384},
+                        {"x":"2020-03-19","y":2384},
+                        {"x":"2020-03-20","y":2384},
+                        {"x":"2020-03-21","y":2384},
+                        {"x":"2020-03-22","y":2384},
+                        {"x":"2020-03-23","y":2384}
+                    ],
+                    "type": "bar"
+                },{
+                    "backgroundColor":"#8e44ad",
+                    "label": "iPads",
+                    "datasetType": "Actual",
+                    "stack":"ipad",
+                    "data": [
+                        {"x":"2020-03-17","y":null},
+                        {"x":"2020-03-18","y":2117},
+                        {"x":"2020-03-18","y":2117},
+                        {"x":"2020-03-19","y":2117},
+                        {"x":"2020-03-20","y":2117},
+                        {"x":"2020-03-21","y":2117},
+                        {"x":"2020-03-22","y":2117},
+                        {"x":"2020-03-23","y":2117}
+                    ],
+                    "type": "bar"
+                },{
+                    "backgroundColor":"#00d2d3",
+                    "label": "Laptops",
+                    "datasetType": "Actual",
+                    "stack":"laptop",
+                    "data": [
+                        {"x":"2020-03-17","y":8600},
+                        {"x":"2020-03-18","y":8600},
+                        {"x":"2020-03-19","y":8600},
+                        {"x":"2020-03-20","y":8600},
+                        {"x":"2020-03-21","y":8600},
+                        {"x":"2020-03-22","y":8600},
+                        {"x":"2020-03-23","y":8600}
+                    ],
+                    "type": "bar"
+                },{
+                    "backgroundColor":"#54a0ff",
+                    "label": "Soft Tokens",
+                    "datasetType": "Actual",
+                    "stack":"softtokens",
+                    "data": [
+                        {"x":"2020-03-17","y":1775},
+                        {"x":"2020-03-18","y":1775},
+                        {"x":"2020-03-19","y":1775},
+                        {"x":"2020-03-20","y":1775},
+                        {"x":"2020-03-21","y":1775},
+                        {"x":"2020-03-22","y":1775},
+                        {"x":"2020-03-23","y":1775}
+                    ],
+                    "type": "bar"
+                },{
+                    "backgroundColor":"#5f27cd",
+                    "label": "Hard Tokens",
+                    "datasetType": "Actual",
+                    "stack":"hardtokens",
+                    "data": [
+                        {"x":"2020-03-17","y":2039},
+                        {"x":"2020-03-18","y":2039},
+                        {"x":"2020-03-19","y":2039},
+                        {"x":"2020-03-20","y":2039},
+                        {"x":"2020-03-21","y":2039},
+                        {"x":"2020-03-22","y":2039},
+                        {"x":"2020-03-23","y":2039}
+                    ],
                     "type": "bar"
                 }
             ]
         }
     },{
-        "id": 3.000,
+        "id": 5.000,
         "label": "Cisco WebEx",
-        "caption": "Current Useage",
+        "caption": "Current Useage as of 2020-03-18",
         "description": "<ul><li>Current Usage: 500 hosts (calls)</li><li>Capacity available: 6000* Cisco has given us unlimited surplus usage waiver till May 31</li><li>Global system is seeing busy signals</li><li>Cisco has done solution capacity increase for us</li></ul>",
         "body": "",
         "category": ["TeleWork"],
@@ -183,7 +282,7 @@
             "contact": ""
         },
         "data": {
-            "calculatedValue": 500,
+            "calculatedValue": 2771,
             "labels": ["Useage"],
             "datasets": [
                 {
@@ -192,25 +291,117 @@
                     "datasetType": "Actual",
                     "stack":"A",
                     "data": [
-                        {"x":"2020-03-16","y":550},
-                        {"x":"2020-03-17","y":650},
-                        {"x":"2020-03-18","y":750},
-                        {"x":"2020-03-19","y":850}
+                        {"x":"2020-03-16","y":3013},
+                        {"x":"2020-03-17","y":1089},
+                        {"x":"2020-03-18","y":2771}
                     ],
                     "type": "bar"
                 },{
-                    "backgroundColor":"#ccc",
+                    "backgroundColor":"#59abe3",
                     "label": "Availability",
                     "datasetType": "Target",
                     "stack":"A",
                     "data": [
-                        {"x":"2020-03-16","y":5500},
-                        {"x":"2020-03-17","y":5400},
-                        {"x":"2020-03-18","y":5300}
+                        {"x":"2020-03-16","y":2987},
+                        {"x":"2020-03-17","y":4911},
+                        {"x":"2020-03-18","y":3229}
                     ],
                     "type": "bar"
                 }
             ]
+        }
+    },{
+        "id": 6.000,
+        "label": "Overall Telework Connection Status",
+        "caption": "As of 2020-03-23",
+        "description": "<ul><li>Current Usage: 500 hosts (calls)</li><li>Capacity available: 6000* Cisco has given us unlimited surplus usage waiver till May 31</li><li>Global system is seeing busy signals</li><li>Cisco has done solution capacity increase for us</li></ul>",
+        "body": "",
+        "category": ["TeleWork"],
+        "keywords": [],
+        "options": {},
+        "custom": {
+            "theme": [
+                "General Population"
+            ],
+            "desiredDirection": "DOWN",
+            "variance": 0,
+            "yearVariance": 0,
+            "indicatorType": "daily",
+            "valueType": "number",
+            "divisor": 1000,
+            "decimalAccuracy": null,
+            "yearToDate": "False",
+            "dataSource": "Source: Master Rental Live\/HDOs\r\n",
+            "hasTarget": "False",
+            "cityPerspective": "this is a test",
+            "contact": ""
+        },
+        "data": {
+            "calculatedValue": 2771,
+            "body": "Good",
+            "colour": "#1dd1a1"
+        }
+    },{
+        "id": 7.000,
+        "label": "Connection Performance Status",
+        "caption": "As of 2020-03-23",
+        "description": "<ul><li>Current Usage: 500 hosts (calls)</li><li>Capacity available: 6000* Cisco has given us unlimited surplus usage waiver till May 31</li><li>Global system is seeing busy signals</li><li>Cisco has done solution capacity increase for us</li></ul>",
+        "body": "",
+        "category": ["TeleWork"],
+        "keywords": [],
+        "options": {},
+        "custom": {
+            "theme": [
+                "General Population"
+            ],
+            "desiredDirection": "DOWN",
+            "variance": 0,
+            "yearVariance": 0,
+            "indicatorType": "daily",
+            "valueType": "number",
+            "divisor": 1000,
+            "decimalAccuracy": null,
+            "yearToDate": "False",
+            "dataSource": "Source: Master Rental Live\/HDOs\r\n",
+            "hasTarget": "False",
+            "cityPerspective": "this is a test",
+            "contact": ""
+        },
+        "data": {
+            "calculatedValue": 2771,
+            "body": "Good",
+            "colour": "#1dd1a1"
+        }
+    },{
+        "id": 8.000,
+        "label": "Technology Services Status",
+        "caption": "Adequate",
+        "description": "<ul><li>Current Usage: 500 hosts (calls)</li><li>Capacity available: 6000* Cisco has given us unlimited surplus usage waiver till May 31</li><li>Global system is seeing busy signals</li><li>Cisco has done solution capacity increase for us</li></ul>",
+        "body": "",
+        "category": ["TeleWork"],
+        "keywords": [],
+        "options": {},
+        "custom": {
+            "theme": [
+                "General Population"
+            ],
+            "desiredDirection": "DOWN",
+            "variance": 0,
+            "yearVariance": 0,
+            "indicatorType": "daily",
+            "valueType": "number",
+            "divisor": 1000,
+            "decimalAccuracy": null,
+            "yearToDate": "False",
+            "dataSource": "Source: Master Rental Live\/HDOs\r\n",
+            "hasTarget": "False",
+            "cityPerspective": "this is a test",
+            "contact": ""
+        },
+        "data": {
+            "calculatedValue": 2771,
+            "body": "Good",
+            "colour": "#1dd1a1"
         }
     }
 ]

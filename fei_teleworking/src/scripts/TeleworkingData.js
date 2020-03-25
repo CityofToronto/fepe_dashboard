@@ -1,4 +1,3 @@
-
 class TeleworkingData{
     constructor(){
       this.fuse = '';
@@ -36,9 +35,9 @@ class TeleworkingData{
     }
 
 
-    analysis(compVal1,compVal2,variance, isPercent = true, dd){
+    analysis(compVal1=0,compVal2=0,variance, isPercent = true, dd, unit){
 
-      console.log( compVal1,compVal2,variance, isPercent, dd )
+      console.log( 'ytdTotal:analysis',Math.abs(compVal1-compVal2), Math.abs((compVal1 * 1.10) - compVal2),variance, isPercent, dd )
       let sCHANGE = isPercent?(compVal1 - compVal2) * 100:(compVal1/compVal2-1) * 100;
           sCHANGE = Math.abs(sCHANGE.toFixed(2)) + "%";
 
@@ -57,33 +56,239 @@ class TeleworkingData{
           sMESSAGE = 'Decrease of'
         }
 
-        if ( compVal1 > compVal2 && dd=="Up" ) {
+        if ( compVal1 > compVal2 && dd.toLowerCase()=="up" ) {
           sPOSNEG = 1;
-        } else if (compVal1 < compVal2 && dd=="Down") {
+        } else if (compVal1 < compVal2 && dd.toLowerCase()=="down") {
           sPOSNEG = 1;
         } else {
           sPOSNEG = -1;
         }
       }
-
+      
       return {
         direction:sDIRECTION,
         isPositive:sPOSNEG,
-        text:`${sMESSAGE} ${sCHANGE} from previous Year`
+        text:`${sMESSAGE} ${sCHANGE} from previous ${unit}`
       }
     }
 
-    
+    getXLSL({path, worksheet, type, title, colours, showLines, columns, axisLabels, filterby, featurelayer, confidenceInterval}={}){
+      
+      var url = path;
+      var results = {}
+
+
+      return new Promise(function(resolve, reject){
+
+        /* set up async GET request */
+        var req = new XMLHttpRequest();
+        req.open("GET", url, true);
+        req.responseType = "arraybuffer";
+
+        req.onload = function(e) {
+          var data = new Uint8Array(req.response);
+
+          var workbook = XLSX.read(data, {type:"array",cellStyles:false});
+          var json = XLSX.utils.sheet_to_json(workbook.Sheets[worksheet])
+          var html = XLSX.utils.sheet_to_html(workbook.Sheets[worksheet])        
+
+          var data = [];
+          var labels = [];
+          var dataLabels = []
+          var dataSets = [];
+          var dataNotes = []
+          var errors = []
+          var dataErrors = {}
+          var filterLabels = []
+
+          columns.forEach((column,column_index)=>{
+            data[column_index] = [];
+            dataLabels[column_index] = [];
+            dataErrors[column_index] = {}
+            dataNotes[column_index] = []
+            labels.push(column)
+          })
+
+          json.forEach((row,ndx)=>{
+            const lbl = Object.values( row )[0].trim()
+            const dataColumn = workbook.Sheets[worksheet].B1.v.trim()
+
+            dataLabels[ndx] = lbl;
+            filterLabels[lbl] = row[dataColumn.replace(/$\*/g,'')]
+
+            columns.forEach((column,_index)=>{
+              dataErrors[_index][lbl] ={
+                plus: parseFloat(row[`${column}[ErrorHigh]`]||row[`${column}[Errorhigh]`]),
+                minus : parseFloat(row[`${column}[ErrorLow]`]||row[`${column}[Errorlow]`])
+              }
+              dataNotes[_index].push(row[`${column}[Tooltip]`]||row[`${column}[ToolTip]`]||'');
+              data[_index].push( parseFloat(row[column]) )
+              dataSets[_index] = []
+            })
+          })
+
+/*
+          var totalRows = json[json.length-1].__rowNum__
+          for(var ndx = 0; ndx <= totalRows; ndx++){
+            const row = json[ndx-1]|| '';
+            const lbl = Object.values( row )[0]
+            const dataColumn = workbook.Sheets[worksheet].B1.v.trim()
+
+            dataLabels[ndx] = lbl;
+            filterLabels[lbl] = row[dataColumn.replace(/$\/g,'')]
+
+            columns.forEach((column,_index)=>{
+              dataErrors[_index][lbl] ={
+                plus: parseFloat(row[`${column}[ErrorHigh]`]),
+                minus : parseFloat(row[`${column}[ErrorLow]`])
+              }
+              dataNotes[_index].push(row[`${column}[Tooltip]`]||'');
+              data[_index].push( parseFloat(row[column]) )
+              dataSets[_index] = []
+            })
+          }
+ */
+
+
+
+          const pointStyles = ['circle','triangle','star','cross','rectRounded','line','dash','crossRot','rect','rectRot']
+          const borderDash = [ [0,0],[8,8],[8,1,8] ]
+        
+          labels.forEach((_label,ndx)=>{
+            const hoverColours = colours.map((cur,ndx)=>{ 
+              return `rgb(${Color(cur).values.rgb.map(c=>{return c}).join(',')})`
+            })
+
+            const defaultColours = colours.map((cur,ndx)=>{ 
+              return `rgb(${Color(cur).lighten(0.3).desaturate(0.1).values.rgb.map(c=>{return c}).join(',')})`
+            })
+          
+
+            backgroundColors = function(){
+              if( type.match(/(bar)/gi)){
+                if(labels.length == 1 && defaultColours.length > 1){
+                  return defaultColours
+                }
+                
+                return defaultColours[ndx]
+              } else {
+                return (defaultColours.length>1)?defaultColours:defaultColours[ndx]
+              }
+            }
+            hoverBackgroundColors = function(){
+              if( type.match(/(bar)/gi)){
+                if(labels.length == 1 && hoverColours.length > 1){
+                  return hoverColours
+                }
+                
+                return hoverColours[ndx]
+              } else {
+                return (hoverColours.length>1)?hoverColours:hoverColours[ndx]
+              }
+            }
+
+            dataSets[ndx] = {
+              label: _label,
+              data: data[ndx],
+              xAxesID: (type==="horizontalBar")?axisLabels[1]:axisLabels[0],
+              yAxesID: (type==="horizontalBar")?axisLabels[0]:axisLabels[1],
+              errorBars: dataErrors[ndx],
+              dataNotes: dataNotes[ndx],
+
+              borderDash: borderDash[ndx],
+              borderWidth: (type.toLowerCase().indexOf("bar") != -1)?0:1,
+              //borderColor: (type!=="line")?defaultColour[ndx]:hoverColour[ndx],
+              //backgroundColor: (type!=="line")?defaultColour[ndx]:hoverColour[ndx],
+              backgroundColor: backgroundColors(),
+              hoverBackgroundColor: hoverBackgroundColors(),
+
+              pointStyle: pointStyles[ndx],
+              pointBorderColor: colours[ndx],
+              pointBorderWidth: 0,
+              pointRadius:5,
+              pointBackgroundColor: defaultColours[ndx],
+              pointHoverBackgroundColor: hoverColours[ndx],
+
+              showLines: showLines,
+              lineTension: 0,
+              fill: false
+            }           
+
+          })
+
+          //@if DEBUG
+            console.log(`<${type}>`)
+            console.log('JSON', json)
+            console.log('Labels', labels)
+            console.log('Data Labels', dataLabels)
+            console.log('Data', data)
+            console.log('DataSets', dataSets)
+            console.log('DataErrors', errors)
+            console.log('Data Notes', dataNotes)
+            console.log('Feature Layer Path', featurelayer)
+            console.log(`</${type}>`)
+            console.log(``)
+          //@endif
+
+          results = {
+            featureLayer: featurelayer,
+            filterID:  filterby === ''?workbook.Sheets[worksheet].A1.v.trim():filterby,
+            filterLabels:  filterLabels,
+            filterLabel: workbook.Sheets[worksheet].B1.v.trim().replace(/\*$/g,''),
+            dataErrors: errors,
+            labels: dataLabels,
+            datasets: dataSets
+          }
+
+          resolve(results)
+        }
+        req.send();
+    })
+  
+  }
+  
     getData(period='year'){
       let URI = '/*@echo DATA_SRC*/';
       
       return fetch(URI).then(res=>{return res.json()}).then(res=>{
-        
+        console.log('getData',res)
+
+        /*
+        this.getXLSL({
+          path:'/data/mydata.xlsx',
+          worksheet:'Sheet1',
+          columns:['Sample A'],
+          colours:['#333'],
+          axisLabels:['A','B'],
+          type:'bar'
+        }).then(res=>{
+          console.log('getXLSL:results',res)
+        })
+        */
+
+
+
+
         res.map(results=>{
+          console.log(results.datasource)
+
+          // if(results.hasOwnProperty('datasource')){
+          //   this.getXLSL({
+          //     path:'/data/mydata.xlsx',
+          //     worksheet:'Sheet1',
+          //     columns:['Sample A'],
+          //     colours:['#333'],
+          //     axisLabels:['A','B'],
+          //     type:'bar'
+          //   }).then(res=>{
+          //     results.data = res;
+          //   })
+          // }
+
+          if(!results.hasOwnProperty('datasource') && results.data.hasOwnProperty('dataset'))
           results.data.datasets.forEach(dataset=>{
             let dataTemp = [];
 
-            console.log('RESULTS', dataset,dataset.data[0].hasOwnProperty('x'))
             if(dataset.data[0].hasOwnProperty('x')){
               dataset.data.forEach(d=>{
                 dataTemp.push({
@@ -95,8 +300,6 @@ class TeleworkingData{
             } else {
               return dataset.data
             }
-
-            
           })
         })
         
@@ -108,7 +311,13 @@ class TeleworkingData{
         /*
          Set indicators & do anaylsis
         */
+      
+
        return res.map((indicator,ndx)=>{
+
+          // Check to see if the indicator has a drilldown chart
+          if(!indicator.data.hasOwnProperty('datasets')) return indicator;
+
           let ytd = indicator.custom.yearToDate;
           let it = indicator.custom.indicatorType;
           let indicatorConfig = {};
@@ -121,7 +330,12 @@ class TeleworkingData{
           let timeRangeLabel,timeRangeFullLabel;
           let data = indicator.data;
 
-          
+          // Generate Chart Labels With Time Based Data
+          indicator.data.labels = [...new Set(indicator.data.datasets.map(dataset=>dataset.data).flat().map(data=>{
+            if(data.hasOwnProperty('x')) return data.x
+            return data
+          }))] 
+
           // Apply chart background
           indicator.data.datasets.forEach((dataset,ndx)=>{
             if(!dataset.hasOwnProperty('backgroundColor'))
@@ -160,25 +374,34 @@ class TeleworkingData{
                   'Current Value': `${timeRangeFullLabel} YTD: ${ytdTotal.toString().formatNumber()}`,
                   'Comparison Value': `Previous ${timeRangeLabel} : ${ytdTotalPrevious.toString().formatNumber()}`,
                   '% Changed':`${((ytdTotal/ytdTotalPrevious-1) * 100).toString().formatNumber(2)}%`,
-                  'Analysis':this.analysis(ytdTotal,ytdTotalPrevious,indicator.custom.variance,indicator.custom.valueType=='percent',dd)
+                  'Analysis':this.analysis(ytdTotal,ytdTotalPrevious,indicator.custom.variance,indicator.custom.valueType=='percent',dd,indicator.custom.indicatorType)
                 },{
                   'Trend': 'Current Period vs. Last Year At This Time',
                   'Current Value': `${timeRangeFullLabel} : ${valueEnd.toString().formatNumber()}`,
                   'Comparison Value': `Previous ${timeRangeLabel} : ${valueBegin.toString().formatNumber()}`,
                   '% Changed':`${((valueEnd/valueBegin-1) * 100).toString().formatNumber(2)}%`,
-                  'Analysis':this.analysis(valueEnd,valueBegin,indicator.custom.variance,indicator.custom.valueType=='percent',dd)
+                  'Analysis':this.analysis(valueEnd,valueBegin,indicator.custom.variance,indicator.custom.valueType=='percent',dd,indicator.custom.indicatorType)
                 },{
                   'Trend': 'Current Period vs. Last Period',
                   'Current Value': `${timeRangeFullLabel} : ${mTotal.toString().formatNumber()}`,
                   'Comparison Value': `Previous Month : ${mTotalPrevious.toString().formatNumber()} `,
                   '% Changed': `${((mTotal/mTotalPrevious-1) * 100).toString().formatNumber(2)}%`,
-                  'Analysis':this.analysis(mTotal,mTotalPrevious,indicator.custom.variance,indicator.custom.valueType=='percent',indicator.custom.desiredDirection)
+                  'Analysis':this.analysis(mTotal,mTotalPrevious,indicator.custom.variance,indicator.custom.valueType=='percent',indicator.custom.desiredDirection,indicator.custom.indicatorType)
                 }]
               break;
               
             case 'false':
               //ThisYear.forEach(val=>{ ytdTotal+= val.y });
-                              
+              ytdTotal = indicator.data.datasets.map(dataset=>dataset.datasetType=='Actual'?dataset.data:[]).flat().map(data=>{
+                console.log('ytd',data)
+                if(data.hasOwnProperty('y')) return data.y
+                return data
+              }).reduce((p,v,ndx,arr)=>{
+                return p+v
+              })
+              console.log('ytdTotal',indicator.id,ytdTotal)
+
+
               if(it != null)
               switch(it.toLowerCase()){
                 default:
@@ -213,7 +436,10 @@ class TeleworkingData{
                     format: 'MMM YYYY'
                   };
                   indicator.data.labels = indicator.data.labels.map(label=>{
-                    return parseInt(moment().month(label).format('X'));
+                    let tempLabel = moment().month(label).format('X')
+                      if( tempLabel === "Invalid date") return label;
+                      return parseInt( tempLabel );
+
                   })
 
                   break;
@@ -237,7 +463,12 @@ class TeleworkingData{
                       format: '[Q]Q - YYYY'
                     };
                     indicator.data.labels = indicator.data.labels.map(label=>{
-                      return parseInt( moment().quarter( parseInt(label.replace(/(Quarter\s)/gi, '')) ).format('x') );
+                      let tempLabel = moment().quarter( parseInt(label.replace(/(Quarter\s)/gi, '')) ).format('x');
+                      if( tempLabel  === "Invalid date") return label;
+                      return  parseInt(tempLabel);
+
+
+                      //return parseInt( moment().quarter( parseInt(label.replace(/(Quarter\s)/gi, '')) ).format('x') );
                     })
                   break;
                 // case 'seasonaly':
@@ -304,30 +535,51 @@ class TeleworkingData{
                       format: 'YYYY'
                     };
                     indicator.data.labels = indicator.data.labels.map(label=>{
-                      return parseInt( moment().year( label ).format('x'));
+                      let tempLabel = moment().year(label).format('x')
+                      if( tempLabel === "Invalid date") return label;
+                      return parseInt( tempLabel );
                     })
                   break;
                 case 'daily':
                     //Compare previous Year
-                    // ThisYear = data[data.length-1];
-                    // LastYear = data[data.length-2];
+                    
+                    ytdTotal = data.datasets.map(dataset=>{
+                      let dataLength = dataset.data.length;
+                      return dataset.datasetType=='Actual'?dataset.data[dataLength-1].y:0
+                    }).reduce((p,v)=>p+v);
 
-                    // ytdTotal = ThisYear.y;
-                    // ytdTotalPrevious = LastYear.y
+                    ytdTotalPrevious = data.datasets.map(dataset=>{
+                      let dataLength = dataset.data.length;
+                      return dataset.datasetType=='Actual'?dataset.data[dataLength-2].y:0
+                    }).reduce((p,v)=>p+v);
+                    console.log('ytdTotal:Daily Totals',ytdTotal,ytdTotalPrevious);
 
-                    // valueBegin = ThisYear.y
-                    // valueEnd = LastYear.y
+                    valueBegin = ytdTotalPrevious;
+                    valueEnd = ytdTotal;
 
-                    // subTitle = `${ThisYear.x.format('YYYY')}`
-                    // timeRangeLabel = 'Year';
-                    // timeRangeFullLabel = ThisYear.x.format('YYYY');
+                    console.log('ytdTotal:BeginEnd',valueBegin,valueEnd)
+                    /*
+                    ThisYear = data[data.length-1];
+                    LastYear = data[data.length-2];
 
+                    ytdTotal = ThisYear.y;
+                    ytdTotalPrevious = LastYear.y
+
+                    valueBegin = ThisYear.y
+                    valueEnd = LastYear.y
+
+                    subTitle = `${ThisYear.x.format('YYYY')}`
+                    timeRangeLabel = 'Year';
+                    timeRangeFullLabel = ThisYear.x.format('YYYY');
+                    */
                     indicator.config = { 
                       unit: 'day',
                       format: 'MM-DD'
                     };
                     indicator.data.labels = indicator.data.labels.map(label=>{
-                      return parseInt( moment().day( label ).format('x') );
+                      let tempLabel = moment().day(label).format('x')
+                      if( tempLabel === "Invalid date") return label;
+                      return parseInt( tempLabel );
                     })
                   break;
                 // case 'weekly':
@@ -351,17 +603,27 @@ class TeleworkingData{
                   format: 'DD'
                 };
                 indicator.data.labels = indicator.data.labels.map(label=>{
-                  return parseInt( moment().day( label ).format('x') );
+                  let tempLabel = moment().week( parseInt(label.replace(/(Week\s)/gi, '')) ).format('x');
+                  if(tempLabel === "Invalid date") return label;
+                  return parseInt(tempLabel);
                 })
               }
 
               let calculatedValue;
               
               if(!ytdTotal){
-                ytdTotal = 0;
+                ytdTotal = '0';
               }
               switch(indicator.custom.valueType){
                 case 'count':
+                  if (ytdTotal > 1000000) {
+                    ytdTotal = ytdTotal/1000000;
+                    calculatedValue = `$${(ytdTotal).toString().formatNumber(2)} M`;
+                  } else {
+                    calculatedValue = `$${(ytdTotal).toString().formatNumber(2)}`; 
+                  }
+                  break;
+                case 'currency':
                   if (ytdTotal > 1000000) {
                     ytdTotal = ytdTotal/1000000;
                     calculatedValue = `$${(ytdTotal).toString().formatNumber(2)} M`;
@@ -379,9 +641,10 @@ class TeleworkingData{
                   break;
                 case 'percent': calculatedValue = `${(ytdTotal*100).toFixed(2)}%`; break;
               }
-              indicator.custom['calculatedValue'] = calculatedValue
-              console.log('ytdTotal',calculatedValue )
 
+              if(!indicator.data.hasOwnProperty('calculatedValue')){
+                if(calculatedValue) indicator.data['calculatedValue'] = calculatedValue;
+              }
               
               let change = `${((valueEnd/valueBegin-1) * 100).toString().formatNumber(3)}%`;
               indicator.custom['trendAnalysis'] = [{
@@ -389,13 +652,13 @@ class TeleworkingData{
                 'Current Value': `${subTitle} : ${ytdTotal}`,
                 'Comparison Value': `Previous Year : ${ytdTotalPrevious} `,
                 '% Changed':change,
-                'Analysis':this.analysis(ytdTotal,ytdTotalPrevious,indicator.custom.variance,indicator.custom.valueType==='percent',indicator.custom.desiredDirection)
+                'Analysis':this.analysis(ytdTotal,ytdTotalPrevious,indicator.custom.variance,indicator.custom.valueType==='percent',indicator.custom.desiredDirection,indicator.config.unit)
               },{
                 'Trend': 'Current Period vs. Last Period',
                 'Current Value': `${subTitle} : ${ytdTotal}`,
                 'Comparison Value': `Previous Month : ${mTotal} `,
                 '% Changed':change,
-                'Analysis':this.analysis(mTotal,mTotalPrevious,indicator.custom.variance,indicator.custom.valueType==='percent',indicator.custom.desiredDirection)
+                'Analysis':this.analysis(mTotal,mTotalPrevious,indicator.custom.variance,indicator.custom.valueType==='percent',indicator.custom.desiredDirection,indicator.config.unit)
               }]
 
               break;
@@ -414,11 +677,7 @@ class TeleworkingData{
                   }
                 }] 
               }
-
-
           
-          
-          console.log('Indicator',it, indicator.config )
           return indicator;
        })
           

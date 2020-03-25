@@ -29,19 +29,19 @@ function debounce(func, wait, immediate) {
 
 
 
-
+function init(){
 let data = new TeleworkingData();
 let categories = [];
 let directions=[]
 let $filterIndicators = document.getElementById('js-category');
 let $filterDirection = document.getElementById('js-desired-direction');
 let $filterPopulation = document.getElementById('js-population-group');
+let $dashboardNav = document.getElementById('js-dashboard__nav');
 let cardsTemp = {};
 
 console.log('START', data)
 
 data.getData().then(res=>{
-  console.log('GETDATA')
   localStorage.setItem('DashboardData',JSON.stringify(res));
   let $dashboardBody = document.createElement('div');
   let categoriesTemp = [];
@@ -50,63 +50,87 @@ data.getData().then(res=>{
 
   let $cards = res.forEach((result,ndx)=>{
     if(!result)return {}
-    
+    let $card;
 
-
-    let icon;
-    let colour;    
-    let trend = result.custom.trendAnalysis[0];
-
-    switch (trend.Analysis.direction.toLowerCase()){
-      case 'down': icon = 'glyphicon glyphicon-arrow-down'; break;
-      case 'up': icon = 'glyphicon glyphicon-arrow-up'; break;
-      default: icon = 'glyphicon glyphicon-minus'; break;
-    }
-    switch (trend.Analysis.isPositive){
-      case -1: colour = '#88161f'; break;
-      case 1: colour = '#208816'; break;
-      case 0: colour = '#374047'; break;
-    }
-    
-
-    
-    colourTemp.push(colour);
-    //directionTemp.push('trend.Analysis.direction');
+    categoriesTemp.push(...result.category )
     directionTemp.push('-');
     //populationTemp.concat(result.population);
     categoriesTemp.push(...result.category )
 
-    let $card= `
-    <div 
-      data-category="${result.category.toString().toLowerCase()}" 
-      data-status="${trend.Analysis.direction}" 
-      data-keywords="${result.keywords.toString().toLowerCase()}"
-      id="panel-${ndx}" 
-      class="card card-height">
-        <cotui-chart 
-          id="card-1" 
-          chart-value="${result.data.calculatedValue.toString().formatNumber()}"
-          href="#detail/${result.id||'test'}" 
-          chart-type="card" 
-          caption="${result.caption}" 
-          chart-colour="${colour}" 
-          chart-title="${result.label}" 
-          x-axisLabel="Fill Date" 
-          y-axisLabel="Total Fills">
-            <span class="${icon}" style="font-size: 0.75em; color: ${colour}"></span>
-        </cotui-chart>
-    </div>`;
+    if(!result.data.hasOwnProperty('datasets') ){
+    $card= `
+      <div 
+        data-category="${result.category.toString().toLowerCase()}" 
+        data-status="none" 
+        data-keywords="${result.keywords.toString().toLowerCase()}"
+        id="panel-${ndx}" 
+        class="card card-height">
+          <cotui-chart 
+            id="card-${ndx}" 
+            chart-value="${result.data.body}"
+            chart-type="card" 
+            caption="${result.caption}" 
+            chart-colour="${result.data.colour}" 
+            chart-title="${result.label}" 
+            x-axisLabel="Fill Date" 
+            y-axisLabel="Total Fills">
+              <span class="" style="font-size: 0.75em; color: #333333"></span>
+          </cotui-chart>
+      </div>`;
+    }
 
+    if(result.data.hasOwnProperty('datasets')){
+      let icon;
+      let colour;    
+      let trend = result.custom.trendAnalysis[0];
+
+      console.log('trend',result.custom.trendAnalysis)
+      switch (trend.Analysis.direction.toLowerCase()){
+        case 'down': icon = 'glyphicon glyphicon-arrow-down'; break;
+        case 'up': icon = 'glyphicon glyphicon-arrow-up'; break;
+        default: icon = 'glyphicon glyphicon-minus'; break;
+      }
+      switch (trend.Analysis.isPositive){
+        case -1: colour = '#88161f'; break;
+        case 1: colour = '#208816'; break;
+        case 0: colour = '#374047'; break;
+      }
+
+      colourTemp.push(colour);
+      //directionTemp.push('trend.Analysis.direction');
+
+      $card= `
+        <div 
+          title="${trend.Analysis.text}"
+          data-category="${result.category.toString().toLowerCase()}" 
+          data-status="${trend.Analysis.direction}" 
+          data-keywords="${result.keywords.toString().toLowerCase()}"
+          id="panel-${ndx}" 
+          class="card card-height">
+            <cotui-chart 
+              id="card-${ndx}" 
+              chart-value="${result.data.hasOwnProperty('calculatedValue')?result.data.calculatedValue.toString().formatNumber():''}"
+              href="#detail/${result.id}" 
+              chart-type="card" 
+              caption="${result.caption}" 
+              chart-colour="${colour}" 
+              chart-title="${result.label}" 
+              x-axisLabel="Fill Date" 
+              y-axisLabel="Total Fills">
+                <span class="${icon}" style="font-size: 0.75em; color: ${colour}" aria-label="${trend.Analysis.text}"></span>
+            </cotui-chart>
+        </div>`;
+    }
     //$dashboardBody.innerHTML += $card;
 
+
+    
     var category = result.category.toString().toLowerCase();
     if(!cardsTemp.hasOwnProperty(category)){
       cardsTemp[category] = [$card];
     } else {
       cardsTemp[category].push($card);
-    }
-    
-
+    }    
     return  JSON.parse( `{"${result.category.toString().toLowerCase()}" : "$card"}` );
   })
 
@@ -121,27 +145,33 @@ data.getData().then(res=>{
   })
 
   //let $tabs = document.getElementById('js-categories');
-  let $tabs = document.createElement('cotui-tabs');
-
   categories = [...new Set(categoriesTemp)].sort();
-  categories.forEach((category,ndx)=>{
-    let li = `<li id="${category.replace(/\s/gi,'_').toLowerCase()}-${ndx}"><button class="btn btn-link" role="menuitem" data-category="${category.toLowerCase()}">${category}</button></li>`
-    $filterIndicators.insertAdjacentHTML('beforeend', li);
-    
-    let $tab = document.createElement('div');
-        $tab.setAttribute('data-label',category.replace(/\&amp\;/gi,'&'))
-        $tab.id = `js-tab__category-${ndx}`;  
-        $tabs.appendChild($tab);
+  
+  if(categories.length > 1){
+    console.log('renderTabs',categories)
+    let $tabs = document.createElement('cotui-tabs');
+    categories.forEach((category,ndx)=>{
+      let li = `<li id="${category.replace(/\s/gi,'_').toLowerCase()}-${ndx}"><button class="btn btn-link" role="menuitem" data-category="${category.toLowerCase()}">${category}</button></li>`
+      $filterIndicators.insertAdjacentHTML('beforeend', li);
+      
+      let $tab = document.createElement('div');
+          $tab.setAttribute('data-label',category.replace(/\&amp\;/gi,'&'))
+          $tab.id = `js-tab__category-${ndx}`;  
+          $tabs.appendChild($tab);
 
-        for(var cate in cardsTemp){
-          if(cate == category.toLowerCase()) $tab.innerHTML += `<div class="dashboard__grid--tile">${cardsTemp[cate].join('')}</div>`;
-        }     
+          for(var cate in cardsTemp){
+            if(cate == category.toLowerCase()) $tab.innerHTML += `<div class="dashboard__grid--tile">${cardsTemp[cate].join('')}</div>`;
+          }     
     })
     $tabs.setAttribute('selected','js-tab__category-0');
     $tabs.setAttribute('label','Toronto Dashboard Themes');
   
     document.getElementById('js-categories').appendChild($tabs)
-  
+  } else {
+    for(var cate in cardsTemp){
+      document.getElementById('js-categories').innerHTML += `<div class="dashboard__grid--tile">${cardsTemp[cate].join('')}</div>`;
+    }
+  }
  
   let $body = document.getElementById('master')
   while($dashboardBody.firstChild) {
@@ -191,9 +221,7 @@ data.getData().then(res=>{
     var val = evt.target.value.trim();
     var searchResult = fused.search(val);
     
-
-
-  console.log('TEST', searchResult, val)
+    console.log('searchResult', searchResult, val)
     cards.forEach(card=>{
       if(val != ''){
         card.style.display = 'none';
@@ -219,11 +247,7 @@ data.getData().then(res=>{
 
 });
 
-
-
-
-
-
+}
 
 
 
@@ -236,7 +260,8 @@ data.getData().then(res=>{
 
 $(document).ready(function(){
   const dashboard = new Dashboard();
-  console.log('DASHBOARD', dashboard);
+  console.log('DASHBOARD', Color, dashboard);
+  init();
   dashboard.startRouter();
 
   // var themeBtn = document.querySelectorAll('#theme-filter [data-category]')
